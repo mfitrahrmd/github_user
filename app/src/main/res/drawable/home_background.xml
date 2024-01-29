@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/bg_1"
+        android:gravity="top|center"
+        android:left="98dp"
+        android:top="48dp"/>
+    <item
+        android:drawable="@drawable/bg_2"
+        android:gravity="top|center"
+        android:top="128dp"
+        android:right="256dp"/>
+    <item
+        android:drawable="@drawable/bg_3"
+        android:gravity="top|left" />
+    <item
+        android:drawable="@drawable/bg_4"
+        android:gravity="top|center"
+        android:top="64dp"
+        android:right="128dp"/>
+    <item
+        android:drawable="@drawable/bg_5"
+        android:gravity="top|right"
+        android:top="156dp"
+        android:right="-12dp"
+        />
+    <item
+        android:drawable="@drawable/bg_6"
+        android:gravity="top|center" />
+    <item
+        android:drawable="@drawable/bg_7"
+        android:gravity="top|right"
+        android:top="48dp"
+        android:right="48dp"/>
+
+    <item
+        android:drawable="@drawable/bg_8"
+        android:gravity="bottom|center"
+        android:bottom="-64dp"/>
+    <item
+        android:drawable="@drawable/bg_9"
+        android:gravity="bottom|right"
+        android:bottom="32dp"
+        android:right="64dp"/>
+    <item
+        android:drawable="@drawable/bg_11"
+        android:gravity="bottom|center"
+        android:bottom="184dp"/>
+    <item
+        android:drawable="@drawable/bg_12"
+        android:gravity="bottom|left"
+        android:bottom="164dp"
+        android:left="89dp"/>
+    <item
+        android:drawable="@drawable/bg_13"
+        android:gravity="bottom|right"
+        android:right="-64dp"/>
+    <item
+        android:drawable="@drawable/bg_14"
+        android:gravity="bottom|left"
+        android:left="-112dp"
+        android:bottom="56dp"/>
+    <item
+        android:drawable="@drawable/bg_15"
+        android:gravity="bottom|right"
+        android:bottom="128dp"/>
+</layer-list>
