@@ -1,6 +1,9 @@
 
 <resources>
     <color name="seed">#FDDF36</color>
+    <color name="primary_main">#FDDF36</color>
+    <color name="primary_dark">#C3AC29</color>
+    <color name="primary_light">#FFE96B</color>
     <color name="md_theme_light_primary">#FDDF36</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_primaryContainer">#FFE248</color>
@@ -63,5 +66,7 @@
     <color name="md_theme_dark_scrim">#171716</color>
     <color name="black">#000000</color>
     <color name="blackLight">#171716</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#DDDDDD</color>
 
 </resources>
