@@ -35,4 +35,9 @@
         <item name="android:paddingHorizontal">16dp</item>
         <item name="android:paddingVertical">8dp</item>
     </style>
+    
+    <style name="Theme.GithubUser.RoundedSquareImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
+    </style>
 </resources>

@@ -6,11 +6,14 @@
     android:layout_height="wrap_content"
     android:padding="24dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivAvatar"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:background="@drawable/square_image"
+        android:padding="1dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/blackLight"
+        app:shapeAppearanceOverlay="@style/Theme.GithubUser.RoundedSquareImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
