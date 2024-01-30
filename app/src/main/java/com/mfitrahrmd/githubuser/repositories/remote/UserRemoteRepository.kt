@@ -21,11 +21,15 @@ class UserRemoteRepository : UserRepository() {
     override suspend fun searchUsers(query: String): List<User>? {
         val res = _githubService.searchUsers(query)
 
+        if (!res.isSuccessful) throw Exception(res.message())
+
         return res.body()?.toUser()
     }
 
     override suspend fun findUserByUsername(username: String): User? {
         val res = _githubService.findUserByUsername(username)
+
+        if (!res.isSuccessful) throw Exception(res.message())
 
         return res.body()?.toUser()
     }

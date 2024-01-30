@@ -56,7 +56,7 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                 delay(1_000L)
                 val foundUsers = _userRepository.searchUsers(POPULAR_INDO_USERS_QUERY)
                 val detailUsers: MutableList<User> = mutableListOf()
-                foundUsers?.map {
+                foundUsers?.forEach {
                     // TODO : fix rate limit by authenticate into Github
                     val foundUser = _userRepository.findUserByUsername(it.login)
                     if (foundUser != null) {
@@ -68,7 +68,7 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                 }
             } catch (e: Exception) {
                 _popularIndoUsersState.update {
-                    UiState.Error()
+                    UiState.Error(e.message)
                 }
             }
         }
