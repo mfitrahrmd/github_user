@@ -3,6 +3,7 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.mfitrahrmd.githubuser.databinding.ItemPopularIndoUsersBinding
 import com.mfitrahrmd.githubuser.models.User
 
@@ -22,6 +23,9 @@ class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
             with(_popularIndoUsers[position]) {
                 tvName.text = this.name
                 tvUsername.text = this.login
+                Glide.with(holder.binding.root)
+                    .load(this.avatarUrl)
+                    .into(ivAvatar)
             }
         }
     }
