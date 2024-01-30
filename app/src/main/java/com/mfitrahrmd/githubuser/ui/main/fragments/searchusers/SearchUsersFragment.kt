@@ -96,7 +96,7 @@ class SearchUsersFragment : Fragment() {
                                 shimmerSearchUsers.stopShimmer()
                                 shimmerSearchUsers.visibility = View.GONE
                                 rvSearchUsers.visibility = View.GONE
-                                Toast.makeText(root.context, currentUiState.message, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(root.context, currentUiState.message ?: DEFAULT_ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -129,12 +129,16 @@ class SearchUsersFragment : Fragment() {
                                 shimmerPopularIndoUsers.stopShimmer()
                                 shimmerPopularIndoUsers.visibility = View.GONE
                                 rvPopularIndoUsers.visibility = View.GONE
-                                Toast.makeText(root.context, currentUiState.message, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(view?.context, currentUiState.message ?: DEFAULT_ERROR_MESSAGE, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    companion object {
+        const val DEFAULT_ERROR_MESSAGE = "unexpected error"
     }
 }
