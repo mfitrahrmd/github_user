@@ -1,4 +1,4 @@
-package com.mfitrahrmd.githubuser.ui.main.fragments.home
+package com.mfitrahrmd.githubuser.ui
 
 sealed class UiState<T>(val message: String?) {
     class Loading<T>(message: String?) : UiState<T>(message) {

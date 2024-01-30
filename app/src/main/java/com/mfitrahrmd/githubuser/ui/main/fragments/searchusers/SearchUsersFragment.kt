@@ -1,7 +1,6 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
 import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
-import com.mfitrahrmd.githubuser.ui.main.fragments.home.UiState
-import kotlinx.coroutines.flow.collect
+import com.mfitrahrmd.githubuser.ui.UiState
 import kotlinx.coroutines.launch
 
 class SearchUsersFragment : Fragment() {
