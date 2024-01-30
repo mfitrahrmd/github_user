@@ -29,24 +29,10 @@
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
 
-    <style name="Theme.GithubUser.Button">
-        <item name="android:background">@drawable/bg_primary</item>
-        <item name="android:paddingHorizontal">24dp</item>
-        <item name="android:paddingVertical">12dp</item>
-    </style>
-
-    <style name="Theme.GithubUser.Button.Black">
-        <item name="android:background">@drawable/bg_dark</item>
-        <item name="android:textColor">?attr/colorPrimaryInverse</item>
-    </style>
-
-    <style name="Theme.GithubUser.Button.Outlined">
-        <item name="android:background">@drawable/ol_primary</item>
-        <item name="android:textColor">?attr/colorPrimary</item>
-    </style>
-
-    <style name="Theme.GithubUser.Button.Outlined.Black">
-        <item name="android:background">@drawable/ol_dark</item>
-        <item name="android:textColor">@color/blackLight</item>
+    <style name="Theme.GithubUser.Neo">
+        <item name="android:background">@drawable/neo</item>
+        <item name="android:stateListAnimator">@animator/pressed_animation</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingVertical">8dp</item>
     </style>
 </resources>
