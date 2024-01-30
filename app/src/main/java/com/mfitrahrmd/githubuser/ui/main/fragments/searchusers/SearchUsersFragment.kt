@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionInflater
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
 import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
 import com.mfitrahrmd.githubuser.ui.UiState
@@ -21,6 +22,12 @@ class SearchUsersFragment : Fragment() {
     private val _viewModel: SearchUsersViewModel by viewModels(factoryProducer = { AppViewModelProvider.Factory })
     private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter(emptyList())
     private val _popularIndoUsersAdapter: PopularIndoUsersAdapter = PopularIndoUsersAdapter(emptyList())
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

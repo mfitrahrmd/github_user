@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.databinding.FragmentHomeBinding
@@ -15,7 +16,9 @@ class HomeFragment : Fragment() {
     private fun bind() {
         with(_binding) {
             btnSearchUsers.setOnClickListener {
-                findNavController().navigate(R.id.action_homeFragment_to_searchUsers)
+                findNavController().navigate(R.id.action_homeFragment_to_searchUsers, null, null, FragmentNavigatorExtras(
+                    ivLogo to "ivLogo"
+                ))
             }
         }
     }
