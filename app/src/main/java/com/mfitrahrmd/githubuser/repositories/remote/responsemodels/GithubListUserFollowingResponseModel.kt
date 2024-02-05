@@ -3,6 +3,7 @@ package com.mfitrahrmd.githubuser.repositories.remote.responsemodels
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.mfitrahrmd.githubuser.models.User
 
 @Parcelize
 data class GithubListUserFollowingResponseModel(
@@ -62,3 +63,28 @@ data class GithubListUserFollowingResponseModel(
 	val organizationsUrl: String
 
 ) : Parcelable
+
+fun List<GithubListUserFollowingResponseModel>.toUser(): List<User> {
+	return this.map {
+		User(
+			id = it.id,
+			gravatarId = it.gravatarId,
+			subscriptionsUrl = it.subscriptionsUrl,
+			receivedEventsUrl = it.receivedEventsUrl,
+			reposUrl = it.reposUrl,
+			starredUrl = it.starredUrl,
+			siteAdmin = it.siteAdmin,
+			type = it.type,
+			url = it.url,
+			organizationsUrl = it.organizationsUrl,
+			nodeId = it.nodeId,
+			login = it.login,
+			htmlUrl = it.htmlUrl,
+			gistsUrl = it.gistsUrl,
+			followersUrl = it.followersUrl,
+			followingUrl = it.followingUrl,
+			eventsUrl = it.eventsUrl,
+			avatarUrl = it.avatarUrl,
+		)
+	}
+}

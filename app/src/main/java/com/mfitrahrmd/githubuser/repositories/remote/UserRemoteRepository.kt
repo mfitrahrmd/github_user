@@ -4,12 +4,18 @@ import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.repositories.UserRepository
 import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.toUser
 import com.mfitrahrmd.githubuser.repositories.remote.services.GithubService
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class UserRemoteRepository : UserRepository() {
+    private val  _token = "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"
+
     private val _githubService = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .client(OkHttpClient.Builder().addInterceptor {
+            it.proceed(it.request().newBuilder().addHeader("Authorization", "token $_token").build())
+        }.build())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(GithubService::class.java)
@@ -35,11 +41,19 @@ class UserRemoteRepository : UserRepository() {
     }
 
     override suspend fun listUserFollowers(username: String): List<User>? {
-        TODO("Not yet implemented")
+        val res = _githubService.listUserFollowers(username)
+
+        if (!res.isSuccessful) throw Exception(res.errorBody().toString())
+
+        return res.body()?.toUser()
     }
 
     override suspend fun listUserFollowing(username: String): List<User>? {
-        TODO("Not yet implemented")
+        val res = _githubService.listUserFollowing(username)
+
+        if (!res.isSuccessful) throw Exception(res.errorBody().toString())
+
+        return res.body()?.toUser()
     }
 
 }
