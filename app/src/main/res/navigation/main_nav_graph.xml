@@ -19,6 +19,15 @@
         android:id="@+id/searchUsers"
         android:name="com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment"
         android:label="fragment_search_users"
-        tools:layout="@layout/fragment_search_users" />
+        tools:layout="@layout/fragment_search_users" >
+        <action
+            android:id="@+id/action_searchUsers_to_detailUserFragment"
+            app:destination="@id/detailUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailUserFragment"
+        android:name="com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserFragment"
+        android:label="fragment_detail_user"
+        tools:layout="@layout/fragment_detail_user" />
 
 </navigation>
