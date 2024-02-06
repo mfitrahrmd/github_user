@@ -23,6 +23,7 @@ class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
             with(_popularIndoUsers[position]) {
                 tvName.text = this.name
                 tvUsername.text = this.login
+                tvBio.text = this.bio
                 Glide.with(holder.binding.root)
                     .load(this.avatarUrl)
                     .into(ivAvatar)

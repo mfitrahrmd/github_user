@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.databinding.ItemSearchUsersBinding
 import com.mfitrahrmd.githubuser.models.User
 
@@ -28,8 +30,10 @@ class SearchUsersAdapter(private var _users: List<User>) :
     override fun onBindViewHolder(holder: SearchUsersViewHolder, position: Int) {
         with(holder.binding) {
             with(_users[position]) {
-                tvName.text = name ?: "-"
-                tvUsername.text = login.ifBlank { "-" }
+                tvUsername.text = holder.itemView.context.getString(R.string.username, login)
+                Glide.with(holder.binding.root)
+                    .load(this.avatarUrl)
+                    .into(ivAvatar)
             }
         }
     }

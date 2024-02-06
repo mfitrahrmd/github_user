@@ -4,6 +4,8 @@
     style="@style/Theme.GithubUser.Neo"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:minWidth="300dp"
+    android:maxWidth="500dp"
     android:padding="24dp">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -40,6 +42,19 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvBio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textStyle="italic"
+        android:maxLines="1"
+        android:ellipsize="marquee"
+        style="@style/TextAppearance.MaterialComponents.Caption"
+        app:layout_constraintTop_toBottomOf="@id/ivAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cgLinks"
