@@ -11,10 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import com.mfitrahrmd.githubuser.R
+import com.mfitrahrmd.githubuser.adapters.PopularIndoUsersAdapter
+import com.mfitrahrmd.githubuser.adapters.SearchUsersAdapter
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
 import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
 import com.mfitrahrmd.githubuser.ui.UiState
@@ -23,7 +26,9 @@ import kotlinx.coroutines.launch
 class SearchUsersFragment : Fragment() {
     private lateinit var _binding: FragmentSearchUsersBinding
     private val _viewModel: SearchUsersViewModel by viewModels(factoryProducer = { AppViewModelProvider.Factory })
-    private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter(emptyList())
+    private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter(emptyList()) {
+        findNavController().navigate(SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(it.login))
+    }
     private val _popularIndoUsersAdapter: PopularIndoUsersAdapter =
         PopularIndoUsersAdapter(emptyList())
 

@@ -1,4 +1,4 @@
-package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
+package com.mfitrahrmd.githubuser.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,17 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mfitrahrmd.githubuser.R
-import com.mfitrahrmd.githubuser.databinding.ItemSearchUsersBinding
+import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
 import com.mfitrahrmd.githubuser.models.User
 
-class SearchUsersAdapter(private var _users: List<User>) :
+class SearchUsersAdapter(private var _users: List<User>, private val _onItemClick: (User) -> Unit) :
     RecyclerView.Adapter<SearchUsersAdapter.SearchUsersViewHolder>() {
-    class SearchUsersViewHolder(val binding: ItemSearchUsersBinding) :
+    class SearchUsersViewHolder(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchUsersViewHolder {
         return SearchUsersViewHolder(
-            ItemSearchUsersBinding.inflate(
+            ItemUserBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -34,6 +34,9 @@ class SearchUsersAdapter(private var _users: List<User>) :
                 Glide.with(holder.binding.root)
                     .load(this.avatarUrl)
                     .into(ivAvatar)
+                root.setOnClickListener {
+                    _onItemClick(this)
+                }
             }
         }
     }

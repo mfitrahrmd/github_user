@@ -1,4 +1,4 @@
-package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
+package com.mfitrahrmd.githubuser.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

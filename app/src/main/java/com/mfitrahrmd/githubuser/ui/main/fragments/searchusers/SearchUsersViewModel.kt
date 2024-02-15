@@ -34,7 +34,6 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                 _searchUsersState.update {
                     UiState.Loading()
                 }
-                delay(1_000L)
                 val foundUsers = _userRepository.searchUsers(query)
                 _searchUsersState.update {
                     UiState.Success(foundUsers)
@@ -53,7 +52,6 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                 _popularIndoUsersState.update {
                     UiState.Loading()
                 }
-                delay(1_000L)
                 val foundUsers = _userRepository.searchUsers(POPULAR_INDO_USERS_QUERY)
                 val detailUsers: MutableList<User> = mutableListOf()
                 foundUsers?.forEach {
