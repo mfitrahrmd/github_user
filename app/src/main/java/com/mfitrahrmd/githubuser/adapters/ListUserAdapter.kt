@@ -9,30 +9,31 @@ import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
 import com.mfitrahrmd.githubuser.models.User
 
 class ListUserAdapter(private var _users: List<User>) : RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
-    private lateinit var _binding: ItemUserBinding
+    class ListUserViewHolder(private val _binding: ItemUserBinding) : RecyclerView.ViewHolder(_binding.root) {
+        fun bind(user: User) {
+            with(user) {
+                with(_binding) {
+                    tvUsername.text = itemView.context.getString(R.string.username, login)
+                    Glide.with(_binding.root)
+                        .load(avatarUrl)
+                        .into(ivAvatar)
+                }
+            }
 
-    class ListUserViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListUserViewHolder {
-        _binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
-        return ListUserViewHolder(_binding)
+        return ListUserViewHolder(ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun getItemCount(): Int = _users.size
 
     override fun onBindViewHolder(holder: ListUserViewHolder, position: Int) {
-        with(_binding) {
-            with(_users[position]) {
-                tvUsername.text = holder.itemView.context.getString(R.string.username, login)
-                Glide.with(holder.binding.root)
-                    .load(this.avatarUrl)
-                    .into(ivAvatar)
-            }
-        }
+        holder.bind(_users[position])
     }
 
-    fun setData(setter: (List<User>) -> List<User>) {
+    fun setUsers(setter: (List<User>) -> List<User>) {
         _users = setter(_users)
         notifyDataSetChanged()
     }

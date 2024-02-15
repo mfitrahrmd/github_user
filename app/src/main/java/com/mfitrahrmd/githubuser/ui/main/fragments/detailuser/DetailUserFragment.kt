@@ -74,55 +74,6 @@ class DetailUserFragment : Fragment() {
                 }
             }
         }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                _viewModel.userFollowingState.collect { currentUiState ->
-                    when (currentUiState) {
-                        is UiState.Success -> {
-                            _userFollowingFollowersAdapter.setFollowingData {
-                                currentUiState.data ?: emptyList()
-                            }
-                        }
-
-                        is UiState.Loading -> {
-                        }
-
-                        is UiState.Error -> {
-                            Toast.makeText(
-                                view?.context,
-                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else SearchUsersFragment.DEFAULT_ERROR_MESSAGE,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                _viewModel.userFollowersState.collect { currentUiState ->
-                    when (currentUiState) {
-                        is UiState.Success -> {
-                            _userFollowingFollowersAdapter.setFollowersData {
-                                currentUiState.data ?: emptyList()
-                            }
-                        }
-
-                        is UiState.Loading -> {
-                        }
-
-                        is UiState.Error -> {
-                            Toast.makeText(
-                                view?.context,
-                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else SearchUsersFragment.DEFAULT_ERROR_MESSAGE,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
-            }
-        }
-
     }
 
     override fun onCreateView(
@@ -131,7 +82,9 @@ class DetailUserFragment : Fragment() {
     ): View {
         _binding = FragmentDetailUserBinding.inflate(inflater, container, false)
 
-        _userFollowingFollowersAdapter = UserFollowingFollowersAdapter(emptyList(), emptyList(), requireFragmentManager(), lifecycle)
+        Log.d("VIEWMODEL", _viewModel.toString())
+
+        _userFollowingFollowersAdapter = UserFollowingFollowersAdapter(_viewModel, requireActivity())
 
         return _binding.root
     }
