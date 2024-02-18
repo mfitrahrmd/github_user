@@ -1,5 +1,6 @@
 package com.mfitrahrmd.githubuser.ui
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
@@ -8,6 +9,8 @@ import com.mfitrahrmd.githubuser.GithubUserApplication
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersViewModel
 
+class EmptyViewModel : ViewModel()
+
 object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
@@ -15,6 +18,9 @@ object AppViewModelProvider {
         }
         initializer {
             DetailUserViewModel(githubUserApplication().appContainer.userRepository)
+        }
+        initializer {
+            EmptyViewModel()
         }
     }
 
