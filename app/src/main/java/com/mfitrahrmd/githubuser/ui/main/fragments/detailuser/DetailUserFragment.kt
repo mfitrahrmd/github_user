@@ -17,7 +17,7 @@ import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.adapters.UserFollowingFollowersAdapter
 import com.mfitrahrmd.githubuser.databinding.FragmentDetailUserBinding
 import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
-import com.mfitrahrmd.githubuser.ui.UiState
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.launch
 
@@ -40,7 +40,7 @@ class DetailUserFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 _viewModel.userState.collect { currentUiState ->
                     when(currentUiState) {
-                        is UiState.Success -> {
+                        is BaseState.Success -> {
                             with(_binding) {
                                 shimmerDetailUser.stopShimmer()
                                 shimmerDetailUser.visibility = View.GONE
@@ -56,14 +56,14 @@ class DetailUserFragment : Fragment() {
                             }
                         }
 
-                        is UiState.Loading-> {
+                        is BaseState.Loading-> {
                             with(_binding) {
                                 shimmerDetailUser.startShimmer()
                                 shimmerDetailUser.visibility = View.VISIBLE
                             }
                         }
 
-                        is UiState.Error -> {
+                        is BaseState.Error -> {
                             Toast.makeText(
                                 view?.context,
                                 if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else SearchUsersFragment.DEFAULT_ERROR_MESSAGE,

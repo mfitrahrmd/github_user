@@ -2,12 +2,8 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -20,8 +16,7 @@ import com.mfitrahrmd.githubuser.adapters.PopularIndoUsersAdapter
 import com.mfitrahrmd.githubuser.adapters.SearchUsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
-import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
-import com.mfitrahrmd.githubuser.ui.UiState
+import com.mfitrahrmd.githubuser.base.BaseState
 import kotlinx.coroutines.launch
 
 class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsersViewModel>(SearchUsersViewModel::class.java) {
@@ -107,7 +102,7 @@ class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsers
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.searchUsersState.collect { currentUiState ->
                     when (currentUiState) {
-                        is UiState.Success -> {
+                        is BaseState.Success -> {
                             _searchUsersAdapter.setUsers {
                                 currentUiState.data ?: emptyList()
                             }
@@ -120,7 +115,7 @@ class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsers
                             }
                         }
 
-                        is UiState.Loading -> {
+                        is BaseState.Loading -> {
                             with(viewBinding) {
                                 shimmerSearchUsers.apply {
                                     startShimmer()
@@ -130,7 +125,7 @@ class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsers
                             }
                         }
 
-                        is UiState.Error -> {
+                        is BaseState.Error -> {
                             with(viewBinding) {
                                 shimmerSearchUsers.apply {
                                     stopShimmer()
@@ -153,7 +148,7 @@ class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsers
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.popularIndoUsersState.collect { currentUiState ->
                     when (currentUiState) {
-                        is UiState.Success -> {
+                        is BaseState.Success -> {
                             _popularIndoUsersAdapter.setPopularIndoUsers {
                                 currentUiState.data ?: emptyList()
                             }
@@ -166,7 +161,7 @@ class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsers
                             }
                         }
 
-                        is UiState.Loading -> {
+                        is BaseState.Loading -> {
                             with(viewBinding) {
                                 shimmerPopularIndoUsers.apply {
                                     startShimmer()
@@ -176,7 +171,7 @@ class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsers
                             }
                         }
 
-                        is UiState.Error -> {
+                        is BaseState.Error -> {
                             with(viewBinding) {
                                 shimmerPopularIndoUsers.apply {
                                     stopShimmer()

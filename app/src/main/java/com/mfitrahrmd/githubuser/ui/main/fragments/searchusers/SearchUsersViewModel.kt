@@ -4,23 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.repositories.UserRepository
-import com.mfitrahrmd.githubuser.ui.UiState
+import com.mfitrahrmd.githubuser.base.BaseState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewModel() {
-    private var _searchUsersState: MutableStateFlow<UiState<List<User>?>> =
-        MutableStateFlow(UiState.Success())
-    val searchUsersState: StateFlow<UiState<List<User>?>> = _searchUsersState
+    private var _searchUsersState: MutableStateFlow<BaseState<List<User>?>> =
+        MutableStateFlow(BaseState.Success())
+    val searchUsersState: StateFlow<BaseState<List<User>?>> = _searchUsersState
 
-    private var _popularIndoUsersState: MutableStateFlow<UiState<List<User>?>> = MutableStateFlow(
-        UiState.Success()
+    private var _popularIndoUsersState: MutableStateFlow<BaseState<List<User>?>> = MutableStateFlow(
+        BaseState.Success()
     )
-    val popularIndoUsersState: StateFlow<UiState<List<User>?>> = _popularIndoUsersState
+    val popularIndoUsersState: StateFlow<BaseState<List<User>?>> = _popularIndoUsersState
 
     init {
         viewModelScope.launch {
@@ -32,15 +31,15 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _searchUsersState.update {
-                    UiState.Loading()
+                    BaseState.Loading()
                 }
                 val foundUsers = _userRepository.searchUsers(query)
                 _searchUsersState.update {
-                    UiState.Success(foundUsers)
+                    BaseState.Success(foundUsers)
                 }
             } catch (e: Exception) {
                 _searchUsersState.update {
-                    UiState.Error(e.message)
+                    BaseState.Error(e.message)
                 }
             }
         }
@@ -50,7 +49,7 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _popularIndoUsersState.update {
-                    UiState.Loading()
+                    BaseState.Loading()
                 }
                 val foundUsers = _userRepository.searchUsers(POPULAR_INDO_USERS_QUERY)
                 val detailUsers: MutableList<User> = mutableListOf()
@@ -62,11 +61,11 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                     }
                 }
                 _popularIndoUsersState.update {
-                    UiState.Success(detailUsers)
+                    BaseState.Success(detailUsers)
                 }
             } catch (e: Exception) {
                 _popularIndoUsersState.update {
-                    UiState.Error(e.message)
+                    BaseState.Error(e.message)
                 }
             }
         }

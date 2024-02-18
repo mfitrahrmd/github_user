@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfitrahrmd.githubuser.adapters.ListUserAdapter
 import com.mfitrahrmd.githubuser.databinding.FragmentUserFollowBinding
 import com.mfitrahrmd.githubuser.models.User
-import com.mfitrahrmd.githubuser.ui.UiState
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class UserFollowFragment(private val _dataFlow: StateFlow<UiState<List<User>>>?) : Fragment() {
+class UserFollowFragment(private val _dataFlow: StateFlow<BaseState<List<User>>>?) : Fragment() {
     private lateinit var _binding: FragmentUserFollowBinding
     private val _listUserFollowAdapter = ListUserAdapter(emptyList())
 
@@ -53,7 +53,7 @@ class UserFollowFragment(private val _dataFlow: StateFlow<UiState<List<User>>>?)
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 _dataFlow?.collect { currentUiState ->
                     when(currentUiState) {
-                        is UiState.Success -> {
+                        is BaseState.Success -> {
                             with(_binding) {
                                 shimmerFollow.stopShimmer()
                                 shimmerFollow.visibility = View.GONE
@@ -63,13 +63,13 @@ class UserFollowFragment(private val _dataFlow: StateFlow<UiState<List<User>>>?)
                                 currentUiState.data ?: it
                             }
                         }
-                        is UiState.Loading -> {
+                        is BaseState.Loading -> {
                             with(_binding) {
                                 shimmerFollow.startShimmer()
                                 shimmerFollow.visibility = View.VISIBLE
                             }
                         }
-                        is UiState.Error -> {
+                        is BaseState.Error -> {
                             Toast.makeText(
                                 view?.context,
                                 if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else SearchUsersFragment.DEFAULT_ERROR_MESSAGE,
