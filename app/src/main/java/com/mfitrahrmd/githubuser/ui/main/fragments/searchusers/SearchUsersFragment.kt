@@ -18,138 +18,125 @@ import androidx.transition.TransitionInflater
 import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.adapters.PopularIndoUsersAdapter
 import com.mfitrahrmd.githubuser.adapters.SearchUsersAdapter
+import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
 import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
 import com.mfitrahrmd.githubuser.ui.UiState
 import kotlinx.coroutines.launch
 
-class SearchUsersFragment : Fragment() {
-    private lateinit var _binding: FragmentSearchUsersBinding
-    private val _viewModel: SearchUsersViewModel by viewModels(factoryProducer = { AppViewModelProvider.Factory })
+class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsersViewModel>(SearchUsersViewModel::class.java) {
     private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter(emptyList()) {
         findNavController().navigate(SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(it.login))
     }
+
     private val _popularIndoUsersAdapter: PopularIndoUsersAdapter =
         PopularIndoUsersAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         sharedElementEnterTransition =
             TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSearchUsersBinding.inflate(inflater, container, false)
-
-        return _binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        bind(_searchUsersAdapter, _popularIndoUsersAdapter)
-        observe(_searchUsersAdapter, _popularIndoUsersAdapter)
-    }
-
-    private fun bind(
-        searchUsersAdapter: SearchUsersAdapter,
-        popularIndoUsersAdapter: PopularIndoUsersAdapter
-    ) {
-        with(_binding) {
+    override fun bind() {
+        with(viewBinding) {
             /*
             * Setup search view
             * */
-            searchView.setupWithSearchBar(searchBar)
-            searchView
-                .editText
-                .setOnEditorActionListener { _, _, _ ->
-                    searchBar.setText(searchView.text)
-                    searchView.hide()
-                    lifecycleScope.launch {
-                        _viewModel.searchUsers(searchView.text.toString())
+            searchView.apply {
+                setupWithSearchBar(searchBar)
+                editText
+                    .setOnEditorActionListener { _, _, _ ->
+                        searchBar.setText(searchView.text)
+                        searchView.hide()
+                        lifecycleScope.launch {
+                            viewModel.searchUsers(searchView.text.toString())
+                        }
+
+                        false
                     }
+            }
+            rvSearchUsers.apply {
+                layoutManager = LinearLayoutManager(
+                    this@SearchUsersFragment.context,
+                    LinearLayoutManager.VERTICAL,
                     false
-                }
-            rvSearchUsers.layoutManager = LinearLayoutManager(
-                this@SearchUsersFragment.context,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
-            rvSearchUsers.adapter = searchUsersAdapter
-
-            rvPopularIndoUsers.layoutManager = LinearLayoutManager(
-                this@SearchUsersFragment.context,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-            rvPopularIndoUsers.adapter = popularIndoUsersAdapter
-            rvPopularIndoUsers.addItemDecoration(object : RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(
-                    outRect: Rect,
-                    view: View,
-                    parent: RecyclerView,
-                    state: RecyclerView.State
-                ) {
-                    super.getItemOffsets(outRect, view, parent, state)
-
-                    val position = parent.getChildLayoutPosition(view)
-
-                    when(position) {
-                        0 -> {
-                            outRect.right =
-                                resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
-                        }
-                        parent.childCount - 1 -> {
-                            outRect.left =
-                                resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
-                        }
-                        else -> {
-                            outRect.right =
-                                resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
-                            outRect.left =
-                                resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
+                )
+                adapter = _searchUsersAdapter
+            }
+            rvPopularIndoUsers.apply {
+                layoutManager = LinearLayoutManager(
+                    this@SearchUsersFragment.context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
+                adapter = _popularIndoUsersAdapter
+                addItemDecoration(object : RecyclerView.ItemDecoration() {
+                    override fun getItemOffsets(
+                        outRect: Rect,
+                        view: View,
+                        parent: RecyclerView,
+                        state: RecyclerView.State
+                    ) {
+                        super.getItemOffsets(outRect, view, parent, state)
+                        val position = parent.getChildLayoutPosition(view)
+                        when(position) {
+                            0 -> {
+                                outRect.right =
+                                    resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
+                            }
+                            parent.childCount - 1 -> {
+                                outRect.left =
+                                    resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
+                            }
+                            else -> {
+                                outRect.right =
+                                    resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
+                                outRect.left =
+                                    resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
         }
     }
 
-    private fun observe(
-        searchUsersAdapter: SearchUsersAdapter,
-        popularIndoUsersAdapter: PopularIndoUsersAdapter
-    ) {
+    override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                _viewModel.searchUsersState.collect { currentUiState ->
+                viewModel.searchUsersState.collect { currentUiState ->
                     when (currentUiState) {
                         is UiState.Success -> {
-                            searchUsersAdapter.setUsers {
+                            _searchUsersAdapter.setUsers {
                                 currentUiState.data ?: emptyList()
                             }
-                            with(_binding) {
-                                shimmerSearchUsers.stopShimmer()
-                                shimmerSearchUsers.visibility = View.GONE
+                            with(viewBinding) {
+                                shimmerSearchUsers.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
                                 rvSearchUsers.visibility = View.VISIBLE
                             }
                         }
 
                         is UiState.Loading -> {
-                            with(_binding) {
-                                shimmerSearchUsers.startShimmer()
-                                shimmerSearchUsers.visibility = View.VISIBLE
+                            with(viewBinding) {
+                                shimmerSearchUsers.apply {
+                                    startShimmer()
+                                    visibility = View.VISIBLE
+                                }
                                 rvSearchUsers.visibility = View.GONE
                             }
                         }
 
                         is UiState.Error -> {
-                            with(_binding) {
-                                shimmerSearchUsers.stopShimmer()
-                                shimmerSearchUsers.visibility = View.GONE
+                            with(viewBinding) {
+                                shimmerSearchUsers.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+
+                                }
                                 rvSearchUsers.visibility = View.GONE
                                 Toast.makeText(
                                     view?.context,
@@ -164,31 +151,37 @@ class SearchUsersFragment : Fragment() {
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                _viewModel.popularIndoUsersState.collect { currentUiState ->
+                viewModel.popularIndoUsersState.collect { currentUiState ->
                     when (currentUiState) {
                         is UiState.Success -> {
-                            popularIndoUsersAdapter.setPopularIndoUsers {
+                            _popularIndoUsersAdapter.setPopularIndoUsers {
                                 currentUiState.data ?: emptyList()
                             }
-                            with(_binding) {
-                                shimmerPopularIndoUsers.stopShimmer()
-                                shimmerPopularIndoUsers.visibility = View.GONE
+                            with(viewBinding) {
+                                shimmerPopularIndoUsers.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
                                 rvPopularIndoUsers.visibility = View.VISIBLE
                             }
                         }
 
                         is UiState.Loading -> {
-                            with(_binding) {
-                                shimmerPopularIndoUsers.startShimmer()
-                                shimmerPopularIndoUsers.visibility = View.VISIBLE
+                            with(viewBinding) {
+                                shimmerPopularIndoUsers.apply {
+                                    startShimmer()
+                                    visibility = View.VISIBLE
+                                }
                                 rvPopularIndoUsers.visibility = View.GONE
                             }
                         }
 
                         is UiState.Error -> {
-                            with(_binding) {
-                                shimmerPopularIndoUsers.stopShimmer()
-                                shimmerPopularIndoUsers.visibility = View.GONE
+                            with(viewBinding) {
+                                shimmerPopularIndoUsers.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
                                 rvPopularIndoUsers.visibility = View.GONE
                                 Toast.makeText(
                                     view?.context,

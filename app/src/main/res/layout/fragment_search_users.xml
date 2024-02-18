@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="12dp"
@@ -51,20 +50,92 @@
         android:textFontWeight="700"
         app:layout_constraintTop_toBottomOf="@id/topBar" />
 
+    <FrameLayout
+        android:id="@+id/fPopularIndoUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPopularIndoUsers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone" />
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerPopularIndoUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:orientation="horizontal"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers" />
+            app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearchUsers"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_popular_indo_users_shimmer" />
+
+                <include layout="@layout/item_popular_indo_users_shimmer" />
+
+                <include layout="@layout/item_popular_indo_users_shimmer" />
+
+                <include layout="@layout/item_popular_indo_users_shimmer" />
+
+                <include layout="@layout/item_popular_indo_users_shimmer" />
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fSearchUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/rvPopularIndoUsers" />
+        app:layout_constraintTop_toBottomOf="@id/fPopularIndoUsers">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerSearchUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/rvPopularIndoUsers">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+
+                <include layout="@layout/item_user_shimmer" />
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+    </FrameLayout>
 
     <com.google.android.material.search.SearchView
         android:id="@+id/searchView"
@@ -78,69 +149,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerSearchUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/rvPopularIndoUsers">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-
-            <include layout="@layout/item_user_shimmer" />
-        </LinearLayout>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerPopularIndoUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-        </LinearLayout>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
