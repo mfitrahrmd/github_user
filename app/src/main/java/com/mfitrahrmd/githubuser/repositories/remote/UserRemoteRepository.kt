@@ -9,12 +9,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class UserRemoteRepository : UserRepository() {
-    private val  _token = "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"
+    private val _token = "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"
 
     private val _githubService = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(OkHttpClient.Builder().addInterceptor {
-            it.proceed(it.request().newBuilder().addHeader("Authorization", "token $_token").build())
+            it.proceed(
+                it.request().newBuilder().addHeader("Authorization", "token $_token").build()
+            )
         }.build())
         .addConverterFactory(GsonConverterFactory.create())
         .build()

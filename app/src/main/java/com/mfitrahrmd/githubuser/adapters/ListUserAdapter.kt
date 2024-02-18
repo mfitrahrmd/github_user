@@ -8,8 +8,10 @@ import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
 import com.mfitrahrmd.githubuser.models.User
 
-class ListUserAdapter(private var _users: List<User>) : RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
-    class ListUserViewHolder(private val _binding: ItemUserBinding) : RecyclerView.ViewHolder(_binding.root) {
+class ListUserAdapter(private var _users: List<User>) :
+    RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
+    class ListUserViewHolder(private val _binding: ItemUserBinding) :
+        RecyclerView.ViewHolder(_binding.root) {
         fun bind(user: User) {
             with(user) {
                 with(_binding) {
@@ -24,7 +26,13 @@ class ListUserAdapter(private var _users: List<User>) : RecyclerView.Adapter<Lis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListUserViewHolder {
-        return ListUserViewHolder(ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ListUserViewHolder(
+            ItemUserBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int = _users.size

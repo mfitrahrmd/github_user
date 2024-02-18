@@ -8,7 +8,7 @@ interface AppContainer {
     val userRepository: UserRepository
 }
 
-class AppDataContainer(private val _context: Context): AppContainer {
+class AppDataContainer(private val _context: Context) : AppContainer {
     override val userRepository: UserRepository by lazy {
         UserRemoteRepository()
     }

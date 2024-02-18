@@ -3,8 +3,8 @@ package com.mfitrahrmd.githubuser.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.base.BaseState
+import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowFragment
 import kotlinx.coroutines.flow.StateFlow
 

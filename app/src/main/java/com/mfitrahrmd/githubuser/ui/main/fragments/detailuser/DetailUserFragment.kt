@@ -2,11 +2,11 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,9 +15,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.adapters.UserFollowingFollowersAdapter
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentDetailUserBinding
 import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
-import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.launch
 
@@ -39,16 +39,25 @@ class DetailUserFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 _viewModel.userState.collect { currentUiState ->
-                    when(currentUiState) {
+                    when (currentUiState) {
                         is BaseState.Success -> {
                             with(_binding) {
                                 shimmerDetailUser.stopShimmer()
                                 shimmerDetailUser.visibility = View.GONE
 
                                 tvName.text = currentUiState.data?.name
-                                tvUsername.text = this@DetailUserFragment.getString(R.string.username, currentUiState.data?.login)
-                                tvFollowingCount.text = this@DetailUserFragment.getString(R.string.followingCount, currentUiState.data?.following)
-                                tvFollowersCount.text = this@DetailUserFragment.getString(R.string.followersCount, currentUiState.data?.followers)
+                                tvUsername.text = this@DetailUserFragment.getString(
+                                    R.string.username,
+                                    currentUiState.data?.login
+                                )
+                                tvFollowingCount.text = this@DetailUserFragment.getString(
+                                    R.string.followingCount,
+                                    currentUiState.data?.following
+                                )
+                                tvFollowersCount.text = this@DetailUserFragment.getString(
+                                    R.string.followersCount,
+                                    currentUiState.data?.followers
+                                )
                                 tvBio.text = currentUiState.data?.bio
                                 Glide.with(this@DetailUserFragment)
                                     .load(currentUiState.data?.avatarUrl)
@@ -56,7 +65,7 @@ class DetailUserFragment : Fragment() {
                             }
                         }
 
-                        is BaseState.Loading-> {
+                        is BaseState.Loading -> {
                             with(_binding) {
                                 shimmerDetailUser.startShimmer()
                                 shimmerDetailUser.visibility = View.VISIBLE
@@ -84,7 +93,8 @@ class DetailUserFragment : Fragment() {
 
         Log.d("VIEWMODEL", _viewModel.toString())
 
-        _userFollowingFollowersAdapter = UserFollowingFollowersAdapter(_viewModel, requireActivity())
+        _userFollowingFollowersAdapter =
+            UserFollowingFollowersAdapter(_viewModel, requireActivity())
 
         return _binding.root
     }

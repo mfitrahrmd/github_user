@@ -5,17 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
-import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersViewModel
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>(private val _viewModelClass: Class<VM>) : Fragment() {
+abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>(private val _viewModelClass: Class<VM>) :
+    Fragment() {
     private var _viewBinding: VB? = null
-    protected val viewBinding : VB
+    protected val viewBinding: VB
         get() = _viewBinding!!
 
     protected val viewModel: VM by lazy {
@@ -37,7 +36,12 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>(private val _viewM
     ): View? {
         val vbType = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0]
         val vbClass = vbType as Class<VB>
-        val inflate = vbClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
+        val inflate = vbClass.getMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
 
         _viewBinding = inflate.invoke(null, inflater, container, false) as VB
 

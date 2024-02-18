@@ -15,21 +15,30 @@ import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.adapters.PopularIndoUsersAdapter
 import com.mfitrahrmd.githubuser.adapters.SearchUsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
-import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
 import com.mfitrahrmd.githubuser.base.BaseState
+import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
 import kotlinx.coroutines.launch
 
-class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsersViewModel>(SearchUsersViewModel::class.java) {
+class SearchUsersFragment :
+    BaseFragment<FragmentSearchUsersBinding, SearchUsersViewModel>(SearchUsersViewModel::class.java) {
     private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter(emptyList()).apply {
         setOnItemClickListener {
-            findNavController().navigate(SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(it.login))
+            findNavController().navigate(
+                SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(
+                    it.login
+                )
+            )
         }
     }
 
     private val _popularIndoUsersAdapter: PopularIndoUsersAdapter =
         PopularIndoUsersAdapter(emptyList()).apply {
             setOnItemClickListener {
-                findNavController().navigate(SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(it.login))
+                findNavController().navigate(
+                    SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(
+                        it.login
+                    )
+                )
             }
         }
 
@@ -81,15 +90,17 @@ class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsers
                     ) {
                         super.getItemOffsets(outRect, view, parent, state)
                         val position = parent.getChildLayoutPosition(view)
-                        when(position) {
+                        when (position) {
                             0 -> {
                                 outRect.right =
                                     resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
                             }
+
                             parent.childCount - 1 -> {
                                 outRect.left =
                                     resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)
                             }
+
                             else -> {
                                 outRect.right =
                                     resources.getDimensionPixelSize(R.dimen.popular_indo_users_spacing)

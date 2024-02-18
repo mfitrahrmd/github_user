@@ -39,19 +39,19 @@ class UserLocalRepository : UserRepository() {
         id = 1
     )
 
-    override suspend fun searchUsers(query: String): List<User>? {
+    override suspend fun searchUsers(query: String): List<User> {
         return listOf(_user)
     }
 
-    override suspend fun findUserByUsername(username: String): User? {
+    override suspend fun findUserByUsername(username: String): User {
         return _user
     }
 
-    override suspend fun listUserFollowers(username: String): List<User>? {
+    override suspend fun listUserFollowers(username: String): List<User> {
         return listOf(_user)
     }
 
-    override suspend fun listUserFollowing(username: String): List<User>? {
+    override suspend fun listUserFollowing(username: String): List<User> {
         return listOf(_user)
     }
 }

@@ -15,7 +15,13 @@ class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularIndoUsersViewHolder {
-        return PopularIndoUsersViewHolder(ItemPopularIndoUsersBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return PopularIndoUsersViewHolder(
+            ItemPopularIndoUsersBinding.inflate(
+                LayoutInflater.from(
+                    parent.context
+                ), parent, false
+            )
+        )
     }
 
     override fun getItemCount(): Int = _popularIndoUsers.size

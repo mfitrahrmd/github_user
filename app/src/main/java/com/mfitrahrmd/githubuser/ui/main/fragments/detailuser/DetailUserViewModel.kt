@@ -2,24 +2,28 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import androidx.lifecycle.ViewModel
 import com.mfitrahrmd.githubuser.adapters.UserFollowingFollowersAdapter
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.repositories.UserRepository
-import com.mfitrahrmd.githubuser.base.BaseState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class DetailUserViewModel(private val _userRepository: UserRepository) : ViewModel(), UserFollowingFollowersAdapter.DataFlow {
-    private val _userState: MutableStateFlow<BaseState<User>> = MutableStateFlow(BaseState.Success())
+class DetailUserViewModel(private val _userRepository: UserRepository) : ViewModel(),
+    UserFollowingFollowersAdapter.DataFlow {
+    private val _userState: MutableStateFlow<BaseState<User>> =
+        MutableStateFlow(BaseState.Success())
     val userState: StateFlow<BaseState<User>> = _userState
 
     private val _userFollowingState: MutableStateFlow<BaseState<List<User>>> = MutableStateFlow(
-        BaseState.Success())
+        BaseState.Success()
+    )
     override val userFollowingState: StateFlow<BaseState<List<User>>> = _userFollowingState
 
     private val _userFollowersState: MutableStateFlow<BaseState<List<User>>> = MutableStateFlow(
-        BaseState.Success())
+        BaseState.Success()
+    )
     override val userFollowersState: StateFlow<BaseState<List<User>>> = _userFollowersState
 
     suspend fun getUser(username: String) {

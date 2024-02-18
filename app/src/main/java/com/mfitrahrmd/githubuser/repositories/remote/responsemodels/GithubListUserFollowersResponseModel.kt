@@ -1,90 +1,90 @@
 package com.mfitrahrmd.githubuser.repositories.remote.responsemodels
 
-import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.mfitrahrmd.githubuser.models.User
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GithubListUserFollowersResponseModel(
 
-	@field:SerializedName("gists_url")
-	val gistsUrl: String,
+    @field:SerializedName("gists_url")
+    val gistsUrl: String,
 
-	@field:SerializedName("repos_url")
-	val reposUrl: String,
+    @field:SerializedName("repos_url")
+    val reposUrl: String,
 
-	@field:SerializedName("following_url")
-	val followingUrl: String,
+    @field:SerializedName("following_url")
+    val followingUrl: String,
 
-	@field:SerializedName("starred_url")
-	val starredUrl: String,
+    @field:SerializedName("starred_url")
+    val starredUrl: String,
 
-	@field:SerializedName("login")
-	val login: String,
+    @field:SerializedName("login")
+    val login: String,
 
-	@field:SerializedName("followers_url")
-	val followersUrl: String,
+    @field:SerializedName("followers_url")
+    val followersUrl: String,
 
-	@field:SerializedName("type")
-	val type: String,
+    @field:SerializedName("type")
+    val type: String,
 
-	@field:SerializedName("url")
-	val url: String,
+    @field:SerializedName("url")
+    val url: String,
 
-	@field:SerializedName("subscriptions_url")
-	val subscriptionsUrl: String,
+    @field:SerializedName("subscriptions_url")
+    val subscriptionsUrl: String,
 
-	@field:SerializedName("received_events_url")
-	val receivedEventsUrl: String,
+    @field:SerializedName("received_events_url")
+    val receivedEventsUrl: String,
 
-	@field:SerializedName("avatar_url")
-	val avatarUrl: String,
+    @field:SerializedName("avatar_url")
+    val avatarUrl: String,
 
-	@field:SerializedName("events_url")
-	val eventsUrl: String,
+    @field:SerializedName("events_url")
+    val eventsUrl: String,
 
-	@field:SerializedName("html_url")
-	val htmlUrl: String,
+    @field:SerializedName("html_url")
+    val htmlUrl: String,
 
-	@field:SerializedName("site_admin")
-	val siteAdmin: Boolean,
+    @field:SerializedName("site_admin")
+    val siteAdmin: Boolean,
 
-	@field:SerializedName("id")
-	val id: Int,
+    @field:SerializedName("id")
+    val id: Int,
 
-	@field:SerializedName("gravatar_id")
-	val gravatarId: String,
+    @field:SerializedName("gravatar_id")
+    val gravatarId: String,
 
-	@field:SerializedName("node_id")
-	val nodeId: String,
+    @field:SerializedName("node_id")
+    val nodeId: String,
 
-	@field:SerializedName("organizations_url")
-	val organizationsUrl: String
+    @field:SerializedName("organizations_url")
+    val organizationsUrl: String
 
 ) : Parcelable
 
 fun List<GithubListUserFollowersResponseModel>.toUser(): List<User> {
-	return this.map {
-		User(
-			 id = it.id,
-			gravatarId = it.gravatarId,
-			subscriptionsUrl = it.subscriptionsUrl,
-			receivedEventsUrl = it.receivedEventsUrl,
-			reposUrl = it.reposUrl,
-			starredUrl = it.starredUrl,
-			siteAdmin = it.siteAdmin,
-			type = it.type,
-			url = it.url,
-			organizationsUrl = it.organizationsUrl,
-			nodeId = it.nodeId,
-			login = it.login,
-			htmlUrl = it.htmlUrl,
-			gistsUrl = it.gistsUrl,
-			followersUrl = it.followersUrl,
-			followingUrl = it.followingUrl,
-			eventsUrl = it.eventsUrl,
-			avatarUrl = it.avatarUrl,
-		)
-	}
+    return this.map {
+        User(
+            id = it.id,
+            gravatarId = it.gravatarId,
+            subscriptionsUrl = it.subscriptionsUrl,
+            receivedEventsUrl = it.receivedEventsUrl,
+            reposUrl = it.reposUrl,
+            starredUrl = it.starredUrl,
+            siteAdmin = it.siteAdmin,
+            type = it.type,
+            url = it.url,
+            organizationsUrl = it.organizationsUrl,
+            nodeId = it.nodeId,
+            login = it.login,
+            htmlUrl = it.htmlUrl,
+            gistsUrl = it.gistsUrl,
+            followersUrl = it.followersUrl,
+            followingUrl = it.followingUrl,
+            eventsUrl = it.eventsUrl,
+            avatarUrl = it.avatarUrl,
+        )
+    }
 }

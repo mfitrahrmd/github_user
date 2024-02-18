@@ -11,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfitrahrmd.githubuser.adapters.ListUserAdapter
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentUserFollowBinding
 import com.mfitrahrmd.githubuser.models.User
-import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -43,7 +43,11 @@ class UserFollowFragment(private val _dataFlow: StateFlow<BaseState<List<User>>>
 
     private fun bind() {
         with(_binding) {
-            rvFollow.layoutManager = LinearLayoutManager(this@UserFollowFragment.context, LinearLayoutManager.VERTICAL, false)
+            rvFollow.layoutManager = LinearLayoutManager(
+                this@UserFollowFragment.context,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
             rvFollow.adapter = _listUserFollowAdapter
         }
     }
@@ -52,7 +56,7 @@ class UserFollowFragment(private val _dataFlow: StateFlow<BaseState<List<User>>>
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 _dataFlow?.collect { currentUiState ->
-                    when(currentUiState) {
+                    when (currentUiState) {
                         is BaseState.Success -> {
                             with(_binding) {
                                 shimmerFollow.stopShimmer()
@@ -63,12 +67,14 @@ class UserFollowFragment(private val _dataFlow: StateFlow<BaseState<List<User>>>
                                 currentUiState.data ?: it
                             }
                         }
+
                         is BaseState.Loading -> {
                             with(_binding) {
                                 shimmerFollow.startShimmer()
                                 shimmerFollow.visibility = View.VISIBLE
                             }
                         }
+
                         is BaseState.Error -> {
                             Toast.makeText(
                                 view?.context,
