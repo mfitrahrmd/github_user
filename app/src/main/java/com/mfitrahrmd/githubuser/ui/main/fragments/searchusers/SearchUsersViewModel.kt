@@ -2,10 +2,12 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.repositories.UserRepository
-import com.mfitrahrmd.githubuser.base.BaseState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -52,16 +54,13 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                     BaseState.Loading()
                 }
                 val foundUsers = _userRepository.searchUsers(POPULAR_INDO_USERS_QUERY)
-                val detailUsers: MutableList<User> = mutableListOf()
-                foundUsers?.forEach {
-                    // TODO : fix rate limit by authenticate into Github
-                    val foundUser = _userRepository.findUserByUsername(it.login)
-                    if (foundUser != null) {
-                        detailUsers.add(foundUser)
+                val detailUsers = foundUsers?.map {
+                    async {
+                        _userRepository.findUserByUsername(it.login)
                     }
-                }
+                }?.awaitAll()
                 _popularIndoUsersState.update {
-                    BaseState.Success(detailUsers)
+                    BaseState.Success(detailUsers?.filterNotNull())
                 }
             } catch (e: Exception) {
                 _popularIndoUsersState.update {
