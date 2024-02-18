@@ -130,7 +130,6 @@ class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsers
                                 shimmerSearchUsers.apply {
                                     stopShimmer()
                                     visibility = View.GONE
-
                                 }
                                 rvSearchUsers.visibility = View.GONE
                                 Toast.makeText(

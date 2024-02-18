@@ -23,7 +23,6 @@ object AppViewModelProvider {
             EmptyViewModel()
         }
     }
-
 }
 
 fun CreationExtras.githubUserApplication(): GithubUserApplication =
