@@ -20,12 +20,18 @@ import com.mfitrahrmd.githubuser.base.BaseState
 import kotlinx.coroutines.launch
 
 class SearchUsersFragment : BaseFragment<FragmentSearchUsersBinding, SearchUsersViewModel>(SearchUsersViewModel::class.java) {
-    private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter(emptyList()) {
-        findNavController().navigate(SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(it.login))
+    private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter(emptyList()).apply {
+        setOnItemClickListener {
+            findNavController().navigate(SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(it.login))
+        }
     }
 
     private val _popularIndoUsersAdapter: PopularIndoUsersAdapter =
-        PopularIndoUsersAdapter(emptyList())
+        PopularIndoUsersAdapter(emptyList()).apply {
+            setOnItemClickListener {
+                findNavController().navigate(SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(it.login))
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

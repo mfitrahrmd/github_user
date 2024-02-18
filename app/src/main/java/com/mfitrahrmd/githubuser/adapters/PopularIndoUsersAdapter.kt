@@ -9,6 +9,8 @@ import com.mfitrahrmd.githubuser.models.User
 
 class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
     RecyclerView.Adapter<PopularIndoUsersAdapter.PopularIndoUsersViewHolder>() {
+    private var _onItemClickListener: ((User) -> Unit)? = null
+
     class PopularIndoUsersViewHolder(val binding: ItemPopularIndoUsersBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -27,8 +29,15 @@ class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
                 Glide.with(holder.binding.root)
                     .load(this.avatarUrl)
                     .into(ivAvatar)
+                holder.itemView.setOnClickListener {
+                    _onItemClickListener?.let { it1 -> it1(this) }
+                }
             }
         }
+    }
+
+    fun setOnItemClickListener(onItemClick: (User) -> Unit) {
+        _onItemClickListener = onItemClick
     }
 
     fun setPopularIndoUsers(setter: (currentPopularIndoUsers: List<User>) -> List<User>) {

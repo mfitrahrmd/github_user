@@ -9,8 +9,10 @@ import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
 import com.mfitrahrmd.githubuser.models.User
 
-class SearchUsersAdapter(private var _users: List<User>, private val _onItemClick: (User) -> Unit) :
+class SearchUsersAdapter(private var _users: List<User>) :
     RecyclerView.Adapter<SearchUsersAdapter.SearchUsersViewHolder>() {
+    private var _onItemClickListener: ((User) -> Unit)? = null
+
     class SearchUsersViewHolder(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -34,11 +36,15 @@ class SearchUsersAdapter(private var _users: List<User>, private val _onItemClic
                 Glide.with(holder.binding.root)
                     .load(this.avatarUrl)
                     .into(ivAvatar)
-                root.setOnClickListener {
-                    _onItemClick(this)
+                holder.itemView.setOnClickListener {
+                    _onItemClickListener?.let { it1 -> it1(this) }
                 }
             }
         }
+    }
+
+    fun setOnItemClickListener(onItemClick: (User) -> Unit) {
+        _onItemClickListener = onItemClick
     }
 
     fun setUsers(setter: (currentUsers: List<User>) -> List<User>) {
