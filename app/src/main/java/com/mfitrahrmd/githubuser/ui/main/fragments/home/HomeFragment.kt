@@ -14,10 +14,8 @@ import com.mfitrahrmd.githubuser.databinding.FragmentHomeBinding
 import com.mfitrahrmd.githubuser.ui.EmptyViewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, EmptyViewModel>(EmptyViewModel::class.java) {
-    private lateinit var _binding: FragmentHomeBinding
-
     override fun bind() {
-        with(_binding) {
+        with(viewBinding) {
             btnSearchUsers.setOnClickListener {
                 findNavController().navigate(R.id.action_homeFragment_to_searchUsers, null, null, FragmentNavigatorExtras(
                     ivLogo to "ivLogo"
