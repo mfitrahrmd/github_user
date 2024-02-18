@@ -7,6 +7,8 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.mfitrahrmd.githubuser.GithubUserApplication
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserViewModel
+import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowersViewModel
+import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowingViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersViewModel
 
 class EmptyViewModel : ViewModel()
@@ -21,6 +23,12 @@ object AppViewModelProvider {
         }
         initializer {
             EmptyViewModel()
+        }
+        initializer {
+            UserFollowingViewModel(githubUserApplication().appContainer.userRepository)
+        }
+        initializer {
+            UserFollowersViewModel(githubUserApplication().appContainer.userRepository)
         }
     }
 }

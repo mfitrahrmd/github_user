@@ -1,34 +1,22 @@
 package com.mfitrahrmd.githubuser.adapters
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.mfitrahrmd.githubuser.base.BaseState
-import com.mfitrahrmd.githubuser.models.User
-import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowFragment
-import kotlinx.coroutines.flow.StateFlow
 
 class UserFollowingFollowersAdapter(
-    private val _dataFlow: DataFlow,
-    fragmentActivity: FragmentActivity
-) : FragmentStateAdapter(fragmentActivity) {
-    interface DataFlow {
-        val userFollowingState: StateFlow<BaseState<List<User>>>
-        val userFollowersState: StateFlow<BaseState<List<User>>>
-    }
-
-    val pages = listOf(
-        Page("Following", UserFollowFragment(_dataFlow.userFollowingState)),
-        Page("Followers", UserFollowFragment(_dataFlow.userFollowersState)),
-    )
-
-    override fun getItemCount(): Int = pages.size
+    private val _pages: List<Page>,
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    override fun getItemCount(): Int = _pages.size
 
     override fun createFragment(position: Int): Fragment {
-        return pages[position].fragment
+        return _pages[position].fragment
     }
 
-    data class Page(
+    class Page(
         val title: String, // title used by tab layout
         val fragment: Fragment
     )

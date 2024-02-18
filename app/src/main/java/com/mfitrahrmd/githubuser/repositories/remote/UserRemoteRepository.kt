@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class UserRemoteRepository : UserRepository() {
-    private val _token = "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"
+    private val _token = "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"
 
     private val _githubService = Retrofit.Builder()
         .baseUrl(BASE_URL)

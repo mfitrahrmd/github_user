@@ -42,7 +42,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>(private val _viewM
             ViewGroup::class.java,
             Boolean::class.java
         )
-
         _viewBinding = inflate.invoke(null, inflater, container, false) as VB
 
         return _viewBinding?.root
