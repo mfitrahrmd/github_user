@@ -1,6 +1,5 @@
 package com.mfitrahrmd.githubuser.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,8 +10,8 @@ import com.mfitrahrmd.githubuser.models.User
 
 class ListUserAdapter(private var _users: List<User>) :
     RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
-        val users: List<User>
-            get() = _users
+    val users: List<User>
+        get() = _users
 
     class ListUserViewHolder(private val _binding: ItemUserBinding) :
         RecyclerView.ViewHolder(_binding.root) {
