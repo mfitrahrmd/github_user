@@ -20,7 +20,11 @@ class UserFollowersFragment :
     private lateinit var username: String
     private val _listUserFollowersAdapter: ListUserAdapter = ListUserAdapter(emptyList()).apply {
         setOnItemClickListener {
-            findNavController().navigate(DetailUserFragmentDirections.actionDetailUserFragmentSelf(it.login))
+            findNavController().navigate(
+                DetailUserFragmentDirections.actionDetailUserFragmentSelf(
+                    it.login
+                )
+            )
         }
     }
 

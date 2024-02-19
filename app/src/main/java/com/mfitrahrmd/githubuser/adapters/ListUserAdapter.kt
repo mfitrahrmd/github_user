@@ -28,7 +28,6 @@ class ListUserAdapter(private var _users: List<User>) :
                     }
                 }
             }
-
         }
     }
 
