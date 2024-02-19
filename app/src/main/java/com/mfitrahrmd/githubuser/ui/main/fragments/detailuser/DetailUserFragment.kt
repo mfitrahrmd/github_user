@@ -20,17 +20,21 @@ private const val ARG_USERNAME = "username"
 
 class DetailUserFragment :
     BaseFragment<FragmentDetailUserBinding, DetailUserViewModel>(DetailUserViewModel::class.java) {
-    private var username: String? = null
+    private lateinit var username: String
 
     override fun bind() {
         val pages = listOf(
             UserFollowingFollowersAdapter.Page(
                 "Following",
-                UserFollowingFragment.newInstance(username ?: "")
+                UserFollowingFragment.newInstance(
+                    UserFollowingFragmentArgs.Builder(username).build()
+                )
             ),
             UserFollowingFollowersAdapter.Page(
                 "Followers",
-                UserFollowersFragment.newInstance(username ?: "")
+                UserFollowersFragment.newInstance(
+                    UserFollowersFragmentArgs.Builder(username).build()
+                )
             )
         )
         with(viewBinding) {
@@ -103,28 +107,20 @@ class DetailUserFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            username = it.getString(ARG_USERNAME)
-        }
+        username = DetailUserFragmentArgs.fromBundle(arguments as Bundle).username
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        username?.let {
-            lifecycleScope.launch {
-                launch {
-                    viewModel.getUser(it)
-                }
-            }
+        lifecycleScope.launch {
+            viewModel.initData(username)
         }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(username: String) = DetailUserFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_USERNAME, username)
-            }
+        fun newInstance(args: DetailUserFragmentArgs) = DetailUserFragment().apply {
+            arguments = args.toBundle()
         }
     }
 }

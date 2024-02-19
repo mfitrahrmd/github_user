@@ -14,29 +14,20 @@ import com.mfitrahrmd.githubuser.databinding.FragmentUserFollowBinding
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.launch
 
-private const val ARG_USERNAME = "username"
-
 class UserFollowersFragment :
     BaseFragment<FragmentUserFollowBinding, UserFollowersViewModel>(UserFollowersViewModel::class.java) {
-    private var username: String? = null
-    private lateinit var _listUserFollowAdapter: ListUserAdapter
+    private lateinit var username: String
+    private val _listUserFollowAdapter: ListUserAdapter = ListUserAdapter(emptyList())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            username = it.getString(ARG_USERNAME)
-        }
-        _listUserFollowAdapter = ListUserAdapter(emptyList())
+        username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        username?.let {
-            lifecycleScope.launch {
-                launch {
-                    viewModel.getListFollowers(it)
-                }
-            }
+        lifecycleScope.launch {
+            viewModel.initData(username)
         }
     }
 
@@ -108,11 +99,9 @@ class UserFollowersFragment :
 
     companion object {
         @JvmStatic
-        fun newInstance(username: String) =
+        fun newInstance(userFollowersFragmentArgs: UserFollowersFragmentArgs) =
             UserFollowersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_USERNAME, username)
-                }
+                arguments = userFollowersFragmentArgs.toBundle()
             }
     }
 }

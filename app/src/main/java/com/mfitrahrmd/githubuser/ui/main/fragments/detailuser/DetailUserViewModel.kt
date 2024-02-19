@@ -13,6 +13,21 @@ class DetailUserViewModel(private val _userRepository: UserRepository) : ViewMod
         MutableStateFlow(BaseState.Success())
     val userState: StateFlow<BaseState<User>> = _userState
 
+    suspend fun initData(username: String) {
+        when (_userState.value) {
+            is BaseState.Success -> {
+                val state = (_userState.value as BaseState.Success<User>)
+                if (state.data == null) {
+                    getUser(username)
+                }
+            }
+
+            else -> {
+                getUser(username)
+            }
+        }
+    }
+
     suspend fun getUser(username: String) {
         try {
             _userState.update {

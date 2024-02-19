@@ -14,6 +14,21 @@ class UserFollowingViewModel(private val _userRepository: UserRepository) : View
     )
     val userFollowingState: StateFlow<BaseState<List<User>>> = _userFollowingState
 
+    suspend fun initData(username: String) {
+        when (_userFollowingState.value) {
+            is BaseState.Success -> {
+                val state = (_userFollowingState.value as BaseState.Success<List<User>>)
+                if (state.data.isNullOrEmpty()) {
+                    getListFollowing(username)
+                }
+            }
+
+            else -> {
+                getListFollowing(username)
+            }
+        }
+    }
+
     suspend fun getListFollowing(username: String) {
         try {
             _userFollowingState.update {

@@ -14,6 +14,22 @@ class UserFollowersViewModel(private val _userRepository: UserRepository) : View
     )
     val userFollowersState: StateFlow<BaseState<List<User>>> = _userFollowersState
 
+    suspend fun initData(username: String) {
+        when (_userFollowersState.value) {
+            is BaseState.Success -> {
+                val state = (_userFollowersState.value as BaseState.Success<List<User>>)
+                if (state.data.isNullOrEmpty()) {
+                    getListFollowers(username)
+                }
+            }
+
+            else -> {
+                getListFollowers(username)
+            }
+        }
+    }
+
+
     suspend fun getListFollowers(username: String) {
         try {
             _userFollowersState.update {
