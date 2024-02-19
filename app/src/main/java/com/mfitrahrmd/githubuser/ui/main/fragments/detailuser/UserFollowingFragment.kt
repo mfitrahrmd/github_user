@@ -1,12 +1,15 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.adapters.ListUserAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
@@ -17,7 +20,11 @@ import kotlinx.coroutines.launch
 class UserFollowingFragment :
     BaseFragment<FragmentUserFollowBinding, UserFollowingViewModel>(UserFollowingViewModel::class.java) {
     private lateinit var username: String
-    private val _listUserFollowAdapter: ListUserAdapter = ListUserAdapter(emptyList())
+    private val _listUserFollowingAdapter: ListUserAdapter = ListUserAdapter(emptyList()).apply {
+        setOnItemClickListener {
+            findNavController().navigate(DetailUserFragmentDirections.actionDetailUserFragmentSelf(it.login))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +51,7 @@ class UserFollowingFragment :
                     LinearLayoutManager.VERTICAL,
                     false
                 )
-                adapter = _listUserFollowAdapter
+                adapter = _listUserFollowingAdapter
             }
         }
     }
@@ -61,7 +68,7 @@ class UserFollowingFragment :
                                     visibility = View.GONE
                                 }
                             }
-                            _listUserFollowAdapter.apply {
+                            _listUserFollowingAdapter.apply {
                                 setUsers {
                                     currentUiState.data ?: it
                                 }

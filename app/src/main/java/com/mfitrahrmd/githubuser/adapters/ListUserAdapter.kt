@@ -12,16 +12,20 @@ class ListUserAdapter(private var _users: List<User>) :
     RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
     val users: List<User>
         get() = _users
+    private var _onItemClickListener: ((User) -> Unit)? = null
 
     class ListUserViewHolder(private val _binding: ItemUserBinding) :
         RecyclerView.ViewHolder(_binding.root) {
-        fun bind(user: User) {
+        fun bind(holder: ListUserViewHolder, user: User, onItemClickListener: ((User) -> Unit)?) {
             with(user) {
                 with(_binding) {
                     tvUsername.text = itemView.context.getString(R.string.username, login)
                     Glide.with(_binding.root)
                         .load(avatarUrl)
                         .into(ivAvatar)
+                    holder.itemView.setOnClickListener {
+                        onItemClickListener?.let { it1 -> it1(user) }
+                    }
                 }
             }
 
@@ -41,7 +45,11 @@ class ListUserAdapter(private var _users: List<User>) :
     override fun getItemCount(): Int = _users.size
 
     override fun onBindViewHolder(holder: ListUserViewHolder, position: Int) {
-        holder.bind(_users[position])
+        holder.bind(holder, _users[position], _onItemClickListener)
+    }
+
+    fun setOnItemClickListener(onItemClick: (User) -> Unit) {
+        _onItemClickListener = onItemClick
     }
 
     fun setUsers(setter: (List<User>) -> List<User>) {

@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionInflater
 import com.mfitrahrmd.githubuser.R
+import com.mfitrahrmd.githubuser.adapters.ListUserAdapter
 import com.mfitrahrmd.githubuser.adapters.PopularIndoUsersAdapter
-import com.mfitrahrmd.githubuser.adapters.SearchUsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class SearchUsersFragment :
     BaseFragment<FragmentSearchUsersBinding, SearchUsersViewModel>(SearchUsersViewModel::class.java) {
-    private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter(emptyList()).apply {
+    private val _listSearchUsersAdapter: ListUserAdapter = ListUserAdapter(emptyList()).apply {
         setOnItemClickListener {
             findNavController().navigate(
                 SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(
@@ -72,7 +72,7 @@ class SearchUsersFragment :
                     LinearLayoutManager.VERTICAL,
                     false
                 )
-                adapter = _searchUsersAdapter
+                adapter = _listSearchUsersAdapter
             }
             rvPopularIndoUsers.apply {
                 layoutManager = LinearLayoutManager(
@@ -120,7 +120,7 @@ class SearchUsersFragment :
                 viewModel.searchUsersState.collect { currentUiState ->
                     when (currentUiState) {
                         is BaseState.Success -> {
-                            _searchUsersAdapter.setUsers {
+                            _listSearchUsersAdapter.setUsers {
                                 currentUiState.data ?: emptyList()
                             }
                             with(viewBinding) {

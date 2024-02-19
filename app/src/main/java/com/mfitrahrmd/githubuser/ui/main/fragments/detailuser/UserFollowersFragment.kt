@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfitrahrmd.githubuser.adapters.ListUserAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
@@ -17,7 +18,11 @@ import kotlinx.coroutines.launch
 class UserFollowersFragment :
     BaseFragment<FragmentUserFollowBinding, UserFollowersViewModel>(UserFollowersViewModel::class.java) {
     private lateinit var username: String
-    private val _listUserFollowAdapter: ListUserAdapter = ListUserAdapter(emptyList())
+    private val _listUserFollowersAdapter: ListUserAdapter = ListUserAdapter(emptyList()).apply {
+        setOnItemClickListener {
+            findNavController().navigate(DetailUserFragmentDirections.actionDetailUserFragmentSelf(it.login))
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +49,7 @@ class UserFollowersFragment :
                     LinearLayoutManager.VERTICAL,
                     false
                 )
-                adapter = _listUserFollowAdapter
+                adapter = _listUserFollowersAdapter
             }
         }
     }
@@ -61,7 +66,7 @@ class UserFollowersFragment :
                                     visibility = View.GONE
                                 }
                             }
-                            _listUserFollowAdapter.apply {
+                            _listUserFollowersAdapter.apply {
                                 setUsers {
                                     currentUiState.data ?: it
                                 }
