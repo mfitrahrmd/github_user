@@ -35,6 +35,12 @@ class DetailUserFragment :
                 UserFollowersFragment.newInstance(
                     UserFollowersFragmentArgs.Builder(username).build()
                 )
+            ),
+            UserFollowingFollowersAdapter.Page(
+                "Repositories",
+                DetailUserRepositoriesFragment.newInstance(
+                    DetailUserRepositoriesFragmentArgs.Builder(username).build()
+                )
             )
         )
         with(viewBinding) {

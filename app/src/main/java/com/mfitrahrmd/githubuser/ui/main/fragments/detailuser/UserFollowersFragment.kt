@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class UserFollowersFragment :
     BaseFragment<FragmentUserFollowBinding, UserFollowersViewModel>(UserFollowersViewModel::class.java) {
-    private lateinit var username: String
+    private lateinit var _username: String
     private val _listUserFollowersAdapter: ListUserAdapter = ListUserAdapter(emptyList()).apply {
         setOnItemClickListener {
             findNavController().navigate(
@@ -30,13 +30,13 @@ class UserFollowersFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
+        _username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            viewModel.initData(username)
+            viewModel.initData(_username)
         }
     }
 
