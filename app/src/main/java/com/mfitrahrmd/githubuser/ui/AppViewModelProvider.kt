@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.mfitrahrmd.githubuser.GithubUserApplication
+import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserRepositoriesViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowersViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowingViewModel
@@ -29,6 +30,9 @@ object AppViewModelProvider {
         }
         initializer {
             UserFollowersViewModel(githubUserApplication().appContainer.userRepository)
+        }
+        initializer {
+            DetailUserRepositoriesViewModel()
         }
     }
 }
