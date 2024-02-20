@@ -74,7 +74,6 @@ class UserFollowersFragment :
                                 setUsers {
                                     currentUiState.data ?: it
                                 }
-                                notifyDataSetChanged()
                             }
                         }
 

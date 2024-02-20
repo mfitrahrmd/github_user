@@ -53,5 +53,6 @@ class ListUserAdapter(private var _users: List<User>) :
 
     fun setUsers(setter: (List<User>) -> List<User>) {
         _users = setter(_users)
+        notifyDataSetChanged()
     }
 }

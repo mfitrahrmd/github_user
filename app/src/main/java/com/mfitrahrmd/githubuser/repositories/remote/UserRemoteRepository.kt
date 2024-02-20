@@ -1,6 +1,8 @@
 package com.mfitrahrmd.githubuser.repositories.remote
 
+import android.util.Log
 import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.repositories.Pagination
 import com.mfitrahrmd.githubuser.repositories.UserRepository
 import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.toUser
 import com.mfitrahrmd.githubuser.repositories.remote.services.GithubService
@@ -9,13 +11,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class UserRemoteRepository : UserRepository() {
-    private val _token = "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"
+    private val _token = "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"
 
     private val _githubService = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(OkHttpClient.Builder().addInterceptor {
             it.proceed(
-                it.request().newBuilder().addHeader("Authorization", "token $_token").build()
+                it.request().newBuilder().addHeader("Authorization", "token $_token").addHeader("Accept", "application/vnd.github+json").build()
             )
         }.build())
         .addConverterFactory(GsonConverterFactory.create())
@@ -26,12 +28,32 @@ class UserRemoteRepository : UserRepository() {
         const val BASE_URL = "https://api.github.com/"
     }
 
-    override suspend fun searchUsers(query: String): List<User>? {
-        val res = _githubService.searchUsers(query)
-
+    override suspend fun searchUsers(query: String, page: String?): Pagination<List<User>> {
+        val res = _githubService.searchUsers(query, page)
         if (!res.isSuccessful) throw Exception(res.errorBody().toString())
+        var prev: Int? = null
+        var next: Int? = null
+        var first: Int? = null
+        var last: Int? = null
+        val link = res.headers().get("link")
+        if (!link.isNullOrBlank()) {
+            link.split(",").forEach {
+                if (it.contains("\"prev\"")) {
+                    prev = it.substring(it.indexOf("page=")+5).substringBefore(">").toIntOrNull()
+                }
+                if (it.contains("\"next\"")) {
+                    next = it.substring(it.indexOf("page=")+5).substringBefore(">").toIntOrNull()
+                }
+                if (it.contains("\"first\"")) {
+                    first = it.substring(it.indexOf("page=")+5).substringBefore(">").toIntOrNull()
+                }
+                if (it.contains("\"last\"")) {
+                    last = it.substring(it.indexOf("page=")+5).substringBefore(">").toIntOrNull()
+                }
+            }
+        }
 
-        return res.body()?.toUser()
+        return Pagination(first, last, prev, next, res.body()?.toUser())
     }
 
     override suspend fun findUserByUsername(username: String): User? {

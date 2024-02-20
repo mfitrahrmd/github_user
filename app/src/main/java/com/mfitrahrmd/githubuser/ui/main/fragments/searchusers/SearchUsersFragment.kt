@@ -2,6 +2,7 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
@@ -59,11 +60,12 @@ class SearchUsersFragment :
                     .setOnEditorActionListener { _, _, _ ->
                         searchBar.setText(searchView.text)
                         searchView.hide()
+                        viewModel.username = searchView.text.toString()
                         lifecycleScope.launch {
-                            viewModel.searchUsers(searchView.text.toString())
+                            viewModel.searchUsers()
                         }
 
-                        false
+                        true
                     }
             }
             rvSearchUsers.apply {
@@ -73,6 +75,17 @@ class SearchUsersFragment :
                     false
                 )
                 adapter = _listSearchUsersAdapter
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        val linearLayoutManager: LinearLayoutManager = layoutManager as LinearLayoutManager
+                        if (linearLayoutManager.findLastCompletelyVisibleItemPosition() == _listSearchUsersAdapter.users.lastIndex) {
+                            lifecycleScope.launch {
+                                viewModel.loadMoreSearchUsers()
+                            }
+                        }
+                    }
+                })
             }
             rvPopularIndoUsers.apply {
                 layoutManager = LinearLayoutManager(
@@ -117,9 +130,9 @@ class SearchUsersFragment :
     override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.searchUsersState.collect { currentUiState ->
-                    when (currentUiState) {
-                        is BaseState.Success -> {
+                viewModel.uiState.collect { currentUiState ->
+                    when (currentUiState.status) {
+                        is Status.Success -> {
                             _listSearchUsersAdapter.setUsers {
                                 currentUiState.data ?: emptyList()
                             }
@@ -132,7 +145,7 @@ class SearchUsersFragment :
                             }
                         }
 
-                        is BaseState.Loading -> {
+                        is Status.Loading -> {
                             with(viewBinding) {
                                 shimmerSearchUsers.apply {
                                     startShimmer()
@@ -142,7 +155,7 @@ class SearchUsersFragment :
                             }
                         }
 
-                        is BaseState.Error -> {
+                        is Status.Error -> {
                             with(viewBinding) {
                                 shimmerSearchUsers.apply {
                                     stopShimmer()
@@ -151,11 +164,13 @@ class SearchUsersFragment :
                                 rvSearchUsers.visibility = View.GONE
                                 Toast.makeText(
                                     view?.context,
-                                    if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,
+                                    currentUiState.status.message,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
+
+                        is Status.Idle -> {}
                     }
                 }
             }
