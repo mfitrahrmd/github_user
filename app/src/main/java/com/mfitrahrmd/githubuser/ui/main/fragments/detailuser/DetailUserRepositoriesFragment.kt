@@ -24,20 +24,13 @@ import kotlinx.coroutines.launch
 
 class DetailUserRepositoriesFragment : Fragment() {
     private val _viewModel: DetailUserRepositoriesViewModel by viewModels(factoryProducer = {AppViewModelProvider.Factory})
+    private lateinit var _composeView: ComposeView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
         _viewModel.setUsername(username)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val vm: DetailUserRepositoriesViewModel by viewModels(factoryProducer = {AppViewModelProvider.Factory})
-        return ComposeView(requireContext()).apply {
+        _composeView = ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 GithubUserTheme {
@@ -45,6 +38,14 @@ class DetailUserRepositoriesFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return _composeView
     }
 
     @Composable
@@ -69,6 +70,11 @@ class DetailUserRepositoriesFragment : Fragment() {
                 else -> {}
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        _composeView.requestLayout()
     }
 
     companion object {
