@@ -8,6 +8,7 @@ import com.mfitrahrmd.githubuser.repositories.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -91,6 +92,7 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                 _next = foundUsers.next
                 _first = foundUsers.first
                 _last = foundUsers.last
+                delay(3000L)
                 _uiState.update {
                     if (foundUsers.data != null) {
                         return@update UiState(Status.Success("success"), it.data?.plus(foundUsers.data))

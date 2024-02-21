@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="12dp"
@@ -50,25 +51,24 @@
         android:textFontWeight="700"
         app:layout_constraintTop_toBottomOf="@id/topBar" />
 
-    <FrameLayout
-        android:id="@+id/fPopularIndoUsers"
+    <LinearLayout
+        android:id="@+id/lPopularIndoUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPopularIndoUsers"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:layout_height="wrap_content" />
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmerPopularIndoUsers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,55 +88,50 @@
             </LinearLayout>
 
         </com.facebook.shimmer.ShimmerFrameLayout>
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/fSearchUsers"
+    </LinearLayout>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvSearchUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/fPopularIndoUsers">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvSearchUsers"
+        app:layout_constraintTop_toBottomOf="@id/lPopularIndoUsers">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmerSearchUsers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/rvPopularIndoUsers">
-
-            <LinearLayout
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchUsers"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:nestedScrollingEnabled="true"/>
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerSearchUsers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <include layout="@layout/item_user_shimmer" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <include layout="@layout/item_user_shimmer" />
+                    <include layout="@layout/item_user_shimmer" />
 
-                <include layout="@layout/item_user_shimmer" />
+                    <include layout="@layout/item_user_shimmer" />
 
-                <include layout="@layout/item_user_shimmer" />
+                    <include layout="@layout/item_user_shimmer" />
 
-                <include layout="@layout/item_user_shimmer" />
+                    <include layout="@layout/item_user_shimmer" />
 
-                <include layout="@layout/item_user_shimmer" />
+                    <include layout="@layout/item_user_shimmer" />
 
-                <include layout="@layout/item_user_shimmer" />
+                </LinearLayout>
 
-                <include layout="@layout/item_user_shimmer" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
+        </LinearLayout>
 
-                <include layout="@layout/item_user_shimmer" />
-
-                <include layout="@layout/item_user_shimmer" />
-            </LinearLayout>
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-    </FrameLayout>
-
+    </androidx.core.widget.NestedScrollView>
     <com.google.android.material.search.SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"

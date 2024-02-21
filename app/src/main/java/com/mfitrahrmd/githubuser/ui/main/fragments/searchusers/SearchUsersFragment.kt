@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -68,6 +69,14 @@ class SearchUsersFragment :
                         true
                     }
             }
+            nsvSearchUsers.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                Log.d("SCROLL", scrollY.toString())
+                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                    lifecycleScope.launch {
+                        viewModel.loadMoreSearchUsers()
+                    }
+                }
+            })
             rvSearchUsers.apply {
                 layoutManager = LinearLayoutManager(
                     this@SearchUsersFragment.context,
@@ -75,17 +84,6 @@ class SearchUsersFragment :
                     false
                 )
                 adapter = _listSearchUsersAdapter
-                addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        super.onScrolled(recyclerView, dx, dy)
-                        val linearLayoutManager: LinearLayoutManager = layoutManager as LinearLayoutManager
-                        if (linearLayoutManager.findLastCompletelyVisibleItemPosition() == _listSearchUsersAdapter.users.lastIndex) {
-                            lifecycleScope.launch {
-                                viewModel.loadMoreSearchUsers()
-                            }
-                        }
-                    }
-                })
             }
             rvPopularIndoUsers.apply {
                 layoutManager = LinearLayoutManager(
@@ -133,15 +131,16 @@ class SearchUsersFragment :
                 viewModel.uiState.collect { currentUiState ->
                     when (currentUiState.status) {
                         is Status.Success -> {
-                            _listSearchUsersAdapter.setUsers {
-                                currentUiState.data ?: emptyList()
+                            if (_listSearchUsersAdapter.users.isEmpty()) {
+                                _listSearchUsersAdapter.setUsers {
+                                    currentUiState.data ?: emptyList()
+                                }
                             }
                             with(viewBinding) {
                                 shimmerSearchUsers.apply {
                                     stopShimmer()
                                     visibility = View.GONE
                                 }
-                                rvSearchUsers.visibility = View.VISIBLE
                             }
                         }
 
@@ -151,7 +150,6 @@ class SearchUsersFragment :
                                     startShimmer()
                                     visibility = View.VISIBLE
                                 }
-                                rvSearchUsers.visibility = View.GONE
                             }
                         }
 
