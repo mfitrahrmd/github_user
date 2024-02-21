@@ -31,12 +31,13 @@ class UserFollowersFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
+        viewModel.username = _username
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            viewModel.initData(_username)
+            viewModel.initData()
         }
     }
 
@@ -99,6 +100,8 @@ class UserFollowersFragment :
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
+
+                        else -> {}
                     }
                 }
             }

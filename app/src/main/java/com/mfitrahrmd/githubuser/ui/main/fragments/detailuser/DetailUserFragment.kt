@@ -105,6 +105,8 @@ class DetailUserFragment :
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
+
+                        else -> {}
                     }
                 }
             }
@@ -114,12 +116,13 @@ class DetailUserFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         username = DetailUserFragmentArgs.fromBundle(arguments as Bundle).username
+        viewModel.username = username
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            viewModel.initData(username)
+            viewModel.initData()
         }
     }
 

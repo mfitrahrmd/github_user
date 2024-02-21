@@ -10,38 +10,32 @@ import kotlinx.coroutines.flow.update
 
 class UserFollowersViewModel(private val _userRepository: UserRepository) : ViewModel() {
     private val _userFollowersState: MutableStateFlow<BaseState<List<User>>> = MutableStateFlow(
-        BaseState.Success()
+        BaseState.Idle()
     )
-    val userFollowersState: StateFlow<BaseState<List<User>>> = _userFollowersState
+    val userFollowersState: StateFlow<BaseState<List<User>>>
+        get() = _userFollowersState
 
-    suspend fun initData(username: String) {
-        when (_userFollowersState.value) {
-            is BaseState.Success -> {
-                val state = (_userFollowersState.value as BaseState.Success<List<User>>)
-                if (state.data.isNullOrEmpty()) {
-                    getListFollowers(username)
-                }
-            }
+    var username: String = ""
 
-            else -> {
-                getListFollowers(username)
-            }
+    suspend fun initData() {
+        if (_userFollowersState.value.data == null) {
+            getListFollowers()
         }
     }
 
 
-    suspend fun getListFollowers(username: String) {
+    suspend fun getListFollowers() {
         try {
             _userFollowersState.update {
-                BaseState.Loading()
+                BaseState.Loading(null, null)
             }
             val followers = _userRepository.listUserFollowers(username)
             _userFollowersState.update {
-                BaseState.Success(followers)
+                BaseState.Success(null, followers)
             }
         } catch (e: Exception) {
             _userFollowersState.update {
-                BaseState.Error(e.message)
+                BaseState.Error(e.message, null)
             }
         }
     }

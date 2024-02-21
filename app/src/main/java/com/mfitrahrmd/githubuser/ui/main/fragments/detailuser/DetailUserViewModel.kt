@@ -10,36 +10,30 @@ import kotlinx.coroutines.flow.update
 
 class DetailUserViewModel(private val _userRepository: UserRepository) : ViewModel() {
     private val _userState: MutableStateFlow<BaseState<User>> =
-        MutableStateFlow(BaseState.Success())
-    val userState: StateFlow<BaseState<User>> = _userState
+        MutableStateFlow(BaseState.Idle())
+    val userState: StateFlow<BaseState<User>>
+        get() = _userState
 
-    suspend fun initData(username: String) {
-        when (_userState.value) {
-            is BaseState.Success -> {
-                val state = (_userState.value as BaseState.Success<User>)
-                if (state.data == null) {
-                    getUser(username)
-                }
-            }
+    var username: String = ""
 
-            else -> {
-                getUser(username)
-            }
+    suspend fun initData() {
+        if (_userState.value.data == null) {
+            getUser()
         }
     }
 
-    suspend fun getUser(username: String) {
+    suspend fun getUser() {
         try {
             _userState.update {
-                BaseState.Loading()
+                BaseState.Loading(null, null)
             }
             val user = _userRepository.findUserByUsername(username)
             _userState.update {
-                BaseState.Success(user)
+                BaseState.Success(null, user)
             }
         } catch (e: Exception) {
             _userState.update {
-                BaseState.Error(e.message)
+                BaseState.Error(e.message, null)
             }
         }
     }

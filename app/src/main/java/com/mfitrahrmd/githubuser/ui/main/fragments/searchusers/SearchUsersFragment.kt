@@ -19,6 +19,7 @@ import com.mfitrahrmd.githubuser.adapters.PopularIndoUsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchUsersFragment :
@@ -70,10 +71,11 @@ class SearchUsersFragment :
                     }
             }
             nsvSearchUsers.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                Log.d("SCROLL", scrollY.toString())
                 if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                    lifecycleScope.launch {
-                        viewModel.loadMoreSearchUsers()
+                    if (viewModel.searchUsersState.value !is BaseState.Loading) {
+                        lifecycleScope.launch {
+                            viewModel.loadMoreSearchUsers()
+                        }
                     }
                 }
             })
@@ -128,33 +130,45 @@ class SearchUsersFragment :
     override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { currentUiState ->
-                    when (currentUiState.status) {
-                        is Status.Success -> {
-                            if (_listSearchUsersAdapter.users.isEmpty()) {
-                                _listSearchUsersAdapter.setUsers {
-                                    currentUiState.data ?: emptyList()
-                                }
+                viewModel.searchUsersState.collect { currentUiState ->
+                    when (currentUiState) {
+                        is BaseState.Success -> {
+                            _listSearchUsersAdapter.setUsers {
+                                currentUiState.data ?: emptyList()
                             }
                             with(viewBinding) {
                                 shimmerSearchUsers.apply {
                                     stopShimmer()
                                     visibility = View.GONE
                                 }
+                                if (_listSearchUsersAdapter.users.isEmpty()) {
+                                    tvInfo.apply {
+                                        text = getString(R.string.no_user_found, viewModel.username)
+                                        visibility = View.VISIBLE
+                                    }
+                                } else {
+                                    tvInfo.visibility = View.GONE
+                                    rvSearchUsers.visibility = View.VISIBLE
+                                }
+                                tvTitleSearchResult.visibility = View.VISIBLE
                             }
                         }
 
-                        is Status.Loading -> {
+                        is BaseState.Loading -> {
+                            Log.d("LOADING", "loading")
                             with(viewBinding) {
+                                tvInfo.visibility = View.GONE
                                 shimmerSearchUsers.apply {
                                     startShimmer()
                                     visibility = View.VISIBLE
                                 }
+                                rvSearchUsers.visibility = View.GONE
                             }
                         }
 
-                        is Status.Error -> {
+                        is BaseState.Error -> {
                             with(viewBinding) {
+                                tvInfo.visibility = View.GONE
                                 shimmerSearchUsers.apply {
                                     stopShimmer()
                                     visibility = View.GONE
@@ -162,13 +176,13 @@ class SearchUsersFragment :
                                 rvSearchUsers.visibility = View.GONE
                                 Toast.makeText(
                                     view?.context,
-                                    currentUiState.status.message,
+                                    currentUiState.message ?: DEFAULT_ERROR_MESSAGE,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
 
-                        is Status.Idle -> {}
+                        else -> {}
                     }
                 }
             }
@@ -214,6 +228,8 @@ class SearchUsersFragment :
                                 ).show()
                             }
                         }
+
+                        else -> {}
                     }
                 }
             }

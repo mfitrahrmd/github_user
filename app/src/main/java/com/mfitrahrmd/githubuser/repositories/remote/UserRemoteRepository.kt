@@ -1,6 +1,7 @@
 package com.mfitrahrmd.githubuser.repositories.remote
 
 import android.util.Log
+import com.mfitrahrmd.githubuser.BuildConfig
 import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.repositories.Pagination
 import com.mfitrahrmd.githubuser.repositories.UserRepository
@@ -11,22 +12,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class UserRemoteRepository : UserRepository() {
-    private val _token = "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"
-
     private val _githubService = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(BuildConfig.API_BASE_URL)
         .client(OkHttpClient.Builder().addInterceptor {
             it.proceed(
-                it.request().newBuilder().addHeader("Authorization", "token $_token").addHeader("Accept", "application/vnd.github+json").build()
+                it.request().newBuilder().addHeader("Authorization", "token ${BuildConfig.API_KEY}").addHeader("Accept", "application/vnd.github+json").build()
             )
         }.build())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(GithubService::class.java)
-
-    companion object {
-        const val BASE_URL = "https://api.github.com/"
-    }
 
     override suspend fun searchUsers(query: String, page: String?): Pagination<List<User>> {
         val res = _githubService.searchUsers(query, page)

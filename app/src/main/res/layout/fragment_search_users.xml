@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="12dp"
-    android:paddingVertical="24dp"
     tools:context=".ui.main.fragments.searchusers.SearchUsersFragment">
 
     <LinearLayout
@@ -47,6 +46,7 @@
         style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
         android:text="Popular Users"
         android:textFontWeight="700"
         app:layout_constraintTop_toBottomOf="@id/topBar" />
@@ -89,15 +89,36 @@
 
         </com.facebook.shimmer.ShimmerFrameLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvTitleSearchResult"
+        style="@style/TextAppearance.Material3.TitleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:text="Search Result"
+        android:visibility="gone"
+        android:textFontWeight="700"
+        app:layout_constraintTop_toBottomOf="@id/lPopularIndoUsers" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsvSearchUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/lPopularIndoUsers">
+        app:layout_constraintTop_toBottomOf="@id/tvTitleSearchResult">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="32dp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:visibility="gone" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSearchUsers"
                 android:layout_width="match_parent"
