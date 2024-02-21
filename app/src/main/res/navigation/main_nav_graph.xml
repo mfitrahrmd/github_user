@@ -32,6 +32,32 @@
         <argument
             android:name="username"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailUserFragment_self"
+            app:destination="@id/detailUserFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFollowingFragment"
+        android:name="com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowingFragment"
+        android:label="UserFollowingFragment" >
+        <argument android:name="username"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFollowersFragment"
+        android:name="com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowersFragment"
+        android:label="UserFollowersFragment" >
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailUserRepositoriesFragment"
+        android:name="com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserRepositoriesFragment"
+        android:label="DetailUserRepositoriesFragment" >
+        <argument
+            android:name="username"
+            app:argType="string" />
     </fragment>
 
 </navigation>

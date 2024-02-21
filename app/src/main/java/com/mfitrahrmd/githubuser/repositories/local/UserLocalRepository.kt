@@ -1,6 +1,7 @@
 package com.mfitrahrmd.githubuser.repositories.local
 
 import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.repositories.Pagination
 import com.mfitrahrmd.githubuser.repositories.UserRepository
 
 class UserLocalRepository : UserRepository() {
@@ -39,19 +40,19 @@ class UserLocalRepository : UserRepository() {
         id = 1
     )
 
-    override suspend fun searchUsers(query: String): List<User>? {
-        return listOf(_user)
+    override suspend fun searchUsers(query: String, page: String?): Pagination<List<User>> {
+        return Pagination(null, null, null, null, listOf())
     }
 
-    override suspend fun findUserByUsername(username: String): User? {
+    override suspend fun findUserByUsername(username: String): User {
         return _user
     }
 
-    override suspend fun listUserFollowers(username: String): List<User>? {
+    override suspend fun listUserFollowers(username: String): List<User> {
         return listOf(_user)
     }
 
-    override suspend fun listUserFollowing(username: String): List<User>? {
+    override suspend fun listUserFollowing(username: String): List<User> {
         return listOf(_user)
     }
 }

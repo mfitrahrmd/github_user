@@ -1,77 +1,39 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import androidx.lifecycle.ViewModel
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.repositories.UserRepository
-import com.mfitrahrmd.githubuser.ui.UiState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class DetailUserViewModel(private val _userRepository: UserRepository) : ViewModel() {
-    private val _userState: MutableStateFlow<UiState<User>> = MutableStateFlow(UiState.Success())
-    val userState: StateFlow<UiState<User>> = _userState
+    private val _userState: MutableStateFlow<BaseState<User>> =
+        MutableStateFlow(BaseState.Idle())
+    val userState: StateFlow<BaseState<User>>
+        get() = _userState
 
-    private val _userFollowingState: MutableStateFlow<UiState<List<User>>> = MutableStateFlow(UiState.Success())
-    val userFollowingState: StateFlow<UiState<List<User>>> = _userFollowingState
+    var username: String = ""
 
-    private val _userFollowersState: MutableStateFlow<UiState<List<User>>> = MutableStateFlow(UiState.Success())
-    val userFollowersState: StateFlow<UiState<List<User>>> = _userFollowersState
+    suspend fun initData() {
+        if (_userState.value.data == null) {
+            getUser()
+        }
+    }
 
-    suspend fun getUser(username: String) {
+    suspend fun getUser() {
         try {
             _userState.update {
-                UiState.Loading()
+                BaseState.Loading(null, null)
             }
-
-            delay(3_000L)
             val user = _userRepository.findUserByUsername(username)
-
             _userState.update {
-                UiState.Success(user)
+                BaseState.Success(null, user)
             }
         } catch (e: Exception) {
             _userState.update {
-                UiState.Error(e.message)
-            }
-        }
-    }
-
-    suspend fun getListFollowing(username: String) {
-        try {
-            _userFollowingState.update {
-                UiState.Loading()
-            }
-
-            delay(3_000L)
-            val following = _userRepository.listUserFollowing(username)
-
-            _userFollowingState.update {
-                UiState.Success(following)
-            }
-        } catch (e: Exception) {
-            _userFollowingState.update {
-                UiState.Error(e.message)
-            }
-        }
-    }
-
-    suspend fun getListFollowers(username: String) {
-        try {
-            _userFollowersState.update {
-                UiState.Loading()
-            }
-
-            delay(3_000L)
-            val followers = _userRepository.listUserFollowers(username)
-
-            _userFollowersState.update {
-                UiState.Success(followers)
-            }
-        } catch (e: Exception) {
-            _userFollowersState.update {
-                UiState.Error(e.message)
+                BaseState.Error(e.message, null)
             }
         }
     }

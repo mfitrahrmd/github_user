@@ -1,12 +1,18 @@
 package com.mfitrahrmd.githubuser.ui
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.mfitrahrmd.githubuser.GithubUserApplication
+import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserRepositoriesViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserViewModel
+import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowersViewModel
+import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowingViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersViewModel
+
+class EmptyViewModel : ViewModel()
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -16,8 +22,19 @@ object AppViewModelProvider {
         initializer {
             DetailUserViewModel(githubUserApplication().appContainer.userRepository)
         }
+        initializer {
+            EmptyViewModel()
+        }
+        initializer {
+            UserFollowingViewModel(githubUserApplication().appContainer.userRepository)
+        }
+        initializer {
+            UserFollowersViewModel(githubUserApplication().appContainer.userRepository)
+        }
+        initializer {
+            DetailUserRepositoriesViewModel()
+        }
     }
-
 }
 
 fun CreationExtras.githubUserApplication(): GithubUserApplication =

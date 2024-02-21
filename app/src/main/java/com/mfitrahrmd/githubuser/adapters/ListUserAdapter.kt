@@ -8,31 +8,50 @@ import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
 import com.mfitrahrmd.githubuser.models.User
 
-class ListUserAdapter(private var _users: List<User>) : RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
-    private lateinit var _binding: ItemUserBinding
+class ListUserAdapter(private var _users: List<User>) :
+    RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
+    val users: List<User>
+        get() = _users
+    private var _onItemClickListener: ((User) -> Unit)? = null
 
-    class ListUserViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
+    class ListUserViewHolder(private val _binding: ItemUserBinding) :
+        RecyclerView.ViewHolder(_binding.root) {
+        fun bind(holder: ListUserViewHolder, user: User, onItemClickListener: ((User) -> Unit)?) {
+            with(user) {
+                with(_binding) {
+                    tvUsername.text = itemView.context.getString(R.string.username, login)
+                    Glide.with(_binding.root)
+                        .load(avatarUrl)
+                        .into(ivAvatar)
+                    holder.itemView.setOnClickListener {
+                        onItemClickListener?.let { it1 -> it1(user) }
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListUserViewHolder {
-        _binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
-        return ListUserViewHolder(_binding)
+        return ListUserViewHolder(
+            ItemUserBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int = _users.size
 
     override fun onBindViewHolder(holder: ListUserViewHolder, position: Int) {
-        with(_binding) {
-            with(_users[position]) {
-                tvUsername.text = holder.itemView.context.getString(R.string.username, login)
-                Glide.with(holder.binding.root)
-                    .load(this.avatarUrl)
-                    .into(ivAvatar)
-            }
-        }
+        holder.bind(holder, _users[position], _onItemClickListener)
     }
 
-    fun setData(setter: (List<User>) -> List<User>) {
+    fun setOnItemClickListener(onItemClick: (User) -> Unit) {
+        _onItemClickListener = onItemClick
+    }
+
+    fun setUsers(setter: (List<User>) -> List<User>) {
         _users = setter(_users)
         notifyDataSetChanged()
     }

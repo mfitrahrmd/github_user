@@ -4,7 +4,6 @@ import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.GithubFindUs
 import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.GithubListUserFollowersResponseModel
 import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.GithubListUserFollowingResponseModel
 import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.GithubSearchUsersResponseModel
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -12,7 +11,7 @@ import retrofit2.http.Query
 
 interface GithubService {
     @GET("search/users")
-    suspend fun searchUsers(@Query("q") q: String): Response<GithubSearchUsersResponseModel>
+    suspend fun searchUsers(@Query("q") q: String, @Query("page") page: String? = null): Response<GithubSearchUsersResponseModel>
 
     @GET("users/{username}")
     suspend fun findUserByUsername(@Path("username") username: String): Response<GithubFindUserByUsernameResponseModel>

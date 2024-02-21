@@ -3,4 +3,5 @@
     <string name="username">\@%1$s</string>
     <string name="followingCount">%1$d following</string>
     <string name="followersCount">%1$d followers</string>
+    <string name="no_user_found">No users found with keyword \'%1$s\'</string>
 </resources>
