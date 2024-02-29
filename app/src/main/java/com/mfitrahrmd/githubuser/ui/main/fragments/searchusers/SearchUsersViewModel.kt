@@ -1,6 +1,5 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mfitrahrmd.githubuser.base.BaseState
@@ -9,7 +8,6 @@ import com.mfitrahrmd.githubuser.repositories.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

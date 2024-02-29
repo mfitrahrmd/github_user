@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         style="@style/TextAppearance.Material3.HeadlineSmall"
-        android:text="Try to build a Team or just Connect with Others"
+        android:text="@string/home_greet"
         android:textAlignment="center"
         app:layout_constraintTop_toBottomOf="@+id/ivLogo"
         app:layout_constraintStart_toStartOf="@+id/ivLogo"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         style="@style/Theme.GithubUser.Neo"
-        android:text="Search Users"
+        android:text="@string/search_users"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="@id/ivLogo"
         app:layout_constraintEnd_toEndOf="@id/ivLogo" />

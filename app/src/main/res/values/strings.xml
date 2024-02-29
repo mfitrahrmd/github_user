@@ -4,4 +4,10 @@
     <string name="followingCount">%1$d following</string>
     <string name="followersCount">%1$d followers</string>
     <string name="no_user_found">No users found with keyword \'%1$s\'</string>
+    <string name="home_greet">Try to build a Team or just Connect with Others</string>
+    <string name="search_users">Search Users</string>
+    <string name="search">Search ...</string>
+    <string name="popular_users">Popular Users</string>
+    <string name="search_result">Search Result</string>
+    <string name="find_a_user">Find a User..</string>
 </resources>

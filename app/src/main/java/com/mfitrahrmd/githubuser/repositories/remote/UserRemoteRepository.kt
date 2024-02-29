@@ -1,6 +1,5 @@
 package com.mfitrahrmd.githubuser.repositories.remote
 
-import android.util.Log
 import com.mfitrahrmd.githubuser.BuildConfig
 import com.mfitrahrmd.githubuser.models.User
 import com.mfitrahrmd.githubuser.repositories.Pagination

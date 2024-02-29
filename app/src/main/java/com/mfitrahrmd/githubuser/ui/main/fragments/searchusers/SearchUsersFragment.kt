@@ -19,7 +19,6 @@ import com.mfitrahrmd.githubuser.adapters.PopularIndoUsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchUsersFragment :

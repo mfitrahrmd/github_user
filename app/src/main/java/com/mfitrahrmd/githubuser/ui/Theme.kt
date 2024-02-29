@@ -11,7 +11,7 @@ import com.mfitrahrmd.githubuser.R
 @Composable
 fun GithubUserTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
         lightColorScheme(

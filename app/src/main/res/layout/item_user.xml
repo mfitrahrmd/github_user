@@ -30,5 +30,4 @@
         app:layout_constraintBottom_toBottomOf="@id/ivAvatar"
         app:layout_constraintStart_toEndOf="@id/ivAvatar"/>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

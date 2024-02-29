@@ -36,10 +36,6 @@
         <item name="android:paddingVertical">8dp</item>
     </style>
 
-    <style name="Theme.GithubUser.Neo.Circle">
-        <item name="android:drawable">@drawable/neo_circle</item>
-    </style>
-    
     <style name="Theme.GithubUser.RoundedSquareImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10%</item>
