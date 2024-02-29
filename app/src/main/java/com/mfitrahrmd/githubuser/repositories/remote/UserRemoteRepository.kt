@@ -2,9 +2,9 @@ package com.mfitrahrmd.githubuser.repositories.remote
 
 import com.mfitrahrmd.githubuser.BuildConfig
 import com.mfitrahrmd.githubuser.entities.User
+import com.mfitrahrmd.githubuser.mapper.toUser
 import com.mfitrahrmd.githubuser.repositories.Pagination
 import com.mfitrahrmd.githubuser.repositories.UserRepository
-import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.toUser
 import com.mfitrahrmd.githubuser.repositories.remote.services.GithubService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -47,7 +47,7 @@ class UserRemoteRepository : UserRepository() {
             }
         }
 
-        return Pagination(first, last, prev, next, res.body()?.toUser())
+        return Pagination(first, last, prev, next, res.body()?.items?.toUser())
     }
 
     override suspend fun findUserByUsername(username: String): User? {

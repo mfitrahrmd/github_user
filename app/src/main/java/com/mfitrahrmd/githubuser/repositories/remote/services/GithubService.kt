@@ -1,8 +1,6 @@
 package com.mfitrahrmd.githubuser.repositories.remote.services
 
-import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.GithubFindUserByUsernameResponseModel
-import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.GithubListUserFollowersResponseModel
-import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.GithubListUserFollowingResponseModel
+import com.mfitrahrmd.githubuser.entities.network.NetworkUser
 import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.GithubSearchUsersResponseModel
 import retrofit2.Response
 import retrofit2.http.GET
@@ -14,11 +12,11 @@ interface GithubService {
     suspend fun searchUsers(@Query("q") q: String, @Query("page") page: String? = null): Response<GithubSearchUsersResponseModel>
 
     @GET("users/{username}")
-    suspend fun findUserByUsername(@Path("username") username: String): Response<GithubFindUserByUsernameResponseModel>
+    suspend fun findUserByUsername(@Path("username") username: String): Response<NetworkUser>
 
     @GET("users/{username}/followers")
-    suspend fun listUserFollowers(@Path("username") username: String): Response<List<GithubListUserFollowersResponseModel>>
+    suspend fun listUserFollowers(@Path("username") username: String): Response<List<NetworkUser>>
 
     @GET("users/{username}/following")
-    suspend fun listUserFollowing(@Path("username") username: String): Response<List<GithubListUserFollowingResponseModel>>
+    suspend fun listUserFollowing(@Path("username") username: String): Response<List<NetworkUser>>
 }

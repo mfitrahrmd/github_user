@@ -1,12 +1,11 @@
-package com.mfitrahrmd.githubuser.repositories.remote.responsemodels
+package com.mfitrahrmd.githubuser.entities.network
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.mfitrahrmd.githubuser.entities.User
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class GithubFindUserByUsernameResponseModel(
+data class NetworkUser(
 
     @field:SerializedName("gists_url")
     val gistsUrl: String,
@@ -104,40 +103,3 @@ data class GithubFindUserByUsernameResponseModel(
     @field:SerializedName("node_id")
     val nodeId: String
 ) : Parcelable
-
-fun GithubFindUserByUsernameResponseModel.toUser(): User {
-    return User(
-        id = this.id,
-        followers = this.followers,
-        following = this.following,
-        twitterUsername = this.twitterUsername,
-        gravatarId = this.gravatarId,
-        company = this.company,
-        createdAt = this.createdAt,
-        updatedAt = this.updatedAt,
-        reposUrl = this.reposUrl,
-        starredUrl = this.starredUrl,
-        siteAdmin = this.siteAdmin,
-        type = this.type,
-        subscriptionsUrl = this.subscriptionsUrl,
-        url = this.url,
-        receivedEventsUrl = this.receivedEventsUrl,
-        organizationsUrl = this.organizationsUrl,
-        nodeId = this.nodeId,
-        login = this.login,
-        htmlUrl = this.htmlUrl,
-        gistsUrl = this.gistsUrl,
-        followingUrl = this.followingUrl,
-        followersUrl = this.followersUrl,
-        eventsUrl = this.eventsUrl,
-        avatarUrl = this.avatarUrl,
-        bio = this.bio,
-        blog = this.blog,
-        email = this.email,
-        hireable = this.hireable,
-        location = this.location,
-        name = this.name,
-        publicGists = this.publicGists,
-        publicRepos = this.publicRepos
-    )
-}
