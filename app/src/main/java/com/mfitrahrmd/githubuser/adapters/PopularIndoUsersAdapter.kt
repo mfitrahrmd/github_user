@@ -2,13 +2,16 @@ package com.mfitrahrmd.githubuser.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mfitrahrmd.githubuser.databinding.ItemPopularIndoUsersBinding
 import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.utils.UsersDiff
 
 class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
     RecyclerView.Adapter<PopularIndoUsersAdapter.PopularIndoUsersViewHolder>() {
+    private val _popularIndoUsersDiff = AsyncListDiffer<User>(this, UsersDiff)
     private var _onItemClickListener: ((User) -> Unit)? = null
 
     class PopularIndoUsersViewHolder(val binding: ItemPopularIndoUsersBinding) :
@@ -24,11 +27,11 @@ class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
         )
     }
 
-    override fun getItemCount(): Int = _popularIndoUsers.size
+    override fun getItemCount(): Int = _popularIndoUsersDiff.currentList.size
 
     override fun onBindViewHolder(holder: PopularIndoUsersViewHolder, position: Int) {
         with(holder.binding) {
-            with(_popularIndoUsers[position]) {
+            with(_popularIndoUsersDiff.currentList[position]) {
                 tvName.text = this.name
                 tvUsername.text = this.login
                 tvBio.text = this.bio
@@ -47,7 +50,7 @@ class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
     }
 
     fun setPopularIndoUsers(setter: (currentPopularIndoUsers: List<User>) -> List<User>) {
-        _popularIndoUsers = setter(_popularIndoUsers)
-        notifyDataSetChanged()
+        val newPopularIndoUsers = setter(_popularIndoUsersDiff.currentList)
+        _popularIndoUsersDiff.submitList(newPopularIndoUsers)
     }
 }

@@ -2,16 +2,19 @@ package com.mfitrahrmd.githubuser.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
 import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.utils.UsersDiff
 
 class ListUserAdapter(private var _users: List<User>) :
     RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
+    private val _usersDiffer = AsyncListDiffer<User>(this, UsersDiff)
     val users: List<User>
-        get() = _users
+        get() = _usersDiffer.currentList
     private var _onItemClickListener: ((User) -> Unit)? = null
 
     class ListUserViewHolder(private val _binding: ItemUserBinding) :
@@ -41,10 +44,10 @@ class ListUserAdapter(private var _users: List<User>) :
         )
     }
 
-    override fun getItemCount(): Int = _users.size
+    override fun getItemCount(): Int = _usersDiffer.currentList.size
 
     override fun onBindViewHolder(holder: ListUserViewHolder, position: Int) {
-        holder.bind(holder, _users[position], _onItemClickListener)
+        holder.bind(holder, _usersDiffer.currentList[position], _onItemClickListener)
     }
 
     fun setOnItemClickListener(onItemClick: (User) -> Unit) {
@@ -52,7 +55,7 @@ class ListUserAdapter(private var _users: List<User>) :
     }
 
     fun setUsers(setter: (List<User>) -> List<User>) {
-        _users = setter(_users)
-        notifyDataSetChanged()
+        val newUsers = setter(_usersDiffer.currentList)
+        _usersDiffer.submitList(newUsers)
     }
 }
