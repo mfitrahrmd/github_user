@@ -1,7 +1,7 @@
 package com.mfitrahrmd.githubuser.repositories.remote
 
 import com.mfitrahrmd.githubuser.BuildConfig
-import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.repositories.Pagination
 import com.mfitrahrmd.githubuser.repositories.UserRepository
 import com.mfitrahrmd.githubuser.repositories.remote.responsemodels.toUser

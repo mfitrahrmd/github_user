@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
-import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.utils.UsersDiff
 
 class ListUserAdapter(private var _users: List<User>) :

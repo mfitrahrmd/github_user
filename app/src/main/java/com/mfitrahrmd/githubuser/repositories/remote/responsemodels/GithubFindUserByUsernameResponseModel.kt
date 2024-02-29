@@ -2,7 +2,7 @@ package com.mfitrahrmd.githubuser.repositories.remote.responsemodels
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.entities.User
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

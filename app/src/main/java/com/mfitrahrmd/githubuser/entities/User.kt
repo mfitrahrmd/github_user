@@ -1,4 +1,4 @@
-package com.mfitrahrmd.githubuser.models
+package com.mfitrahrmd.githubuser.entities
 
 data class User(
     val gistsUrl: String,

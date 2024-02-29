@@ -3,7 +3,7 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mfitrahrmd.githubuser.base.BaseState
-import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.repositories.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

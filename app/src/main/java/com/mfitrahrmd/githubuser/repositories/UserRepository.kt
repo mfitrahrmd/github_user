@@ -1,6 +1,6 @@
 package com.mfitrahrmd.githubuser.repositories
 
-import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.entities.User
 
 abstract class UserRepository {
     abstract suspend fun searchUsers(query: String, page: String? = null): Pagination<List<User>>

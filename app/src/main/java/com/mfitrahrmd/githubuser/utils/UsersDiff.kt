@@ -1,7 +1,7 @@
 package com.mfitrahrmd.githubuser.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.mfitrahrmd.githubuser.models.User
+import com.mfitrahrmd.githubuser.entities.User
 
 object UsersDiff : DiffUtil.ItemCallback<User>() {
     override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {

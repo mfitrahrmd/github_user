@@ -78,9 +78,9 @@ data class User(
     val organizationsUrl: String
 ) : Parcelable
 
-fun GithubSearchUsersResponseModel.toUser(): List<com.mfitrahrmd.githubuser.models.User> {
+fun GithubSearchUsersResponseModel.toUser(): List<com.mfitrahrmd.githubuser.entities.User> {
     return this.items.map {
-        com.mfitrahrmd.githubuser.models.User(
+        com.mfitrahrmd.githubuser.entities.User(
             url = it.url,
             avatarUrl = it.avatarUrl,
             eventsUrl = it.eventsUrl,
