@@ -22,7 +22,7 @@ class UserFollowingFragment :
         setOnItemClickListener {
             findNavController().navigate(
                 DetailUserFragmentDirections.actionDetailUserFragmentSelf(
-                    it.login
+                    it.username
                 )
             )
         }

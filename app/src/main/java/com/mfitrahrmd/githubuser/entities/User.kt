@@ -1,19 +1,19 @@
 package com.mfitrahrmd.githubuser.entities
 
+import java.util.Date
+
 data class User(
     val gistsUrl: String,
 
     val reposUrl: String,
 
-    val followingUrl: String,
-
     val twitterUsername: String? = null,
 
     val bio: String? = null,
 
-    val createdAt: String? = null,
+    val createdAt: Date? = null,
 
-    val login: String,
+    val username: String,
 
     val type: String,
 
@@ -21,7 +21,7 @@ data class User(
 
     val subscriptionsUrl: String,
 
-    val updatedAt: String? = null,
+    val updatedAt: Date? = null,
 
     val siteAdmin: Boolean,
 
@@ -41,15 +41,11 @@ data class User(
 
     val starredUrl: String,
 
-    val followersUrl: String,
-
     val publicGists: Int? = null,
 
     val url: String,
 
     val receivedEventsUrl: String,
-
-    val followers: Int? = null,
 
     val avatarUrl: String,
 
@@ -57,12 +53,31 @@ data class User(
 
     val htmlUrl: String,
 
-    val following: Int? = null,
+    val following: Following,
+
+    val followers: Followers,
 
     val name: String? = null,
 
     val location: String? = null,
 
-    val nodeId: String
+    val nodeId: String,
 
-)
+    val favorite: Favorite
+
+) {
+    data class Following(
+        val count: Int? = null,
+        val url: String
+    )
+
+    data class Followers(
+        val count: Int? = null,
+        val url: String
+    )
+
+    data class Favorite(
+        val `is`: Boolean,
+        val addedAt: Date? = null
+    )
+}

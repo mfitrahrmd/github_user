@@ -60,15 +60,15 @@ class DetailUserFragment :
                                 tvName.text = currentUiState.data?.name
                                 tvUsername.text = this@DetailUserFragment.getString(
                                     R.string.username,
-                                    currentUiState.data?.login
+                                    currentUiState.data?.username
                                 )
                                 tvFollowingCount.text = this@DetailUserFragment.getString(
                                     R.string.followingCount,
-                                    currentUiState.data?.following
+                                    currentUiState.data?.following?.count
                                 )
                                 tvFollowersCount.text = this@DetailUserFragment.getString(
                                     R.string.followersCount,
-                                    currentUiState.data?.followers
+                                    currentUiState.data?.followers?.count
                                 )
                                 tvBio.text = currentUiState.data?.bio
                                 Glide.with(this@DetailUserFragment)

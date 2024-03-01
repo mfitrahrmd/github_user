@@ -3,12 +3,12 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 import androidx.lifecycle.ViewModel
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.entities.User
-import com.mfitrahrmd.githubuser.repositories.UserRepository
+import com.mfitrahrmd.githubuser.repositories.UserDetailRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class UserFollowersViewModel(private val _userRepository: UserRepository) : ViewModel() {
+class UserFollowersViewModel(private val _userDetailRepository: UserDetailRepository) : ViewModel() {
     private val _userFollowersState: MutableStateFlow<BaseState<List<User>>> = MutableStateFlow(
         BaseState.Idle()
     )
@@ -29,7 +29,7 @@ class UserFollowersViewModel(private val _userRepository: UserRepository) : View
             _userFollowersState.update {
                 BaseState.Loading(null, null)
             }
-            val followers = _userRepository.listUserFollowers(username)
+            val followers = _userDetailRepository.listUserFollowers(username)
             _userFollowersState.update {
                 BaseState.Success(null, followers)
             }

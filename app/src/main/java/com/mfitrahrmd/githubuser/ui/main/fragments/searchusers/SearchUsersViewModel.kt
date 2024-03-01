@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.entities.User
-import com.mfitrahrmd.githubuser.repositories.UserRepository
+import com.mfitrahrmd.githubuser.repositories.Pagination
+import com.mfitrahrmd.githubuser.repositories.UserDetailRepository
+import com.mfitrahrmd.githubuser.repositories.UserSearchRepository
+import com.mfitrahrmd.githubuser.repositories.UserPopularRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -13,17 +16,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewModel() {
-    private var _perPage: Int = 30
-    private var _page: Int = 1
-    private var _prev: Int? = null
-    private var _next: Int? = null
-    private var _first: Int? = null
-    private var _last: Int? = null
+class SearchUsersViewModel(
+    private val _userSearchRepository: UserSearchRepository,
+    private val _userDetailRepository: UserDetailRepository,
+    private val _userPopularRepository: UserPopularRepository
+) : ViewModel() {
+    private var _searchUsersPagination: Pagination = Pagination(null, null, null, null)
+    private var _popularUsersPagination: Pagination = Pagination(null, null, null, null)
 
     var username: String = ""
 
-    private var _searchUsersState: MutableStateFlow<BaseState<List<User>?>> = MutableStateFlow(BaseState.Idle())
+    private var _searchUsersState: MutableStateFlow<BaseState<List<User>?>> =
+        MutableStateFlow(BaseState.Idle())
     val searchUsersState: StateFlow<BaseState<List<User>?>>
         get() = _searchUsersState
 
@@ -31,7 +35,7 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
         BaseState.Idle()
     )
     val popularIndoUsersState: StateFlow<BaseState<List<User>?>>
-        get () = _popularIndoUsersState
+        get() = _popularIndoUsersState
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -46,11 +50,13 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                 _searchUsersState.update {
                     BaseState.Loading(null, null)
                 }
-                val foundUsers = _userRepository.searchUsers(username)
-                _prev = foundUsers.previous
-                _next = foundUsers.next
-                _first = foundUsers.first
-                _last = foundUsers.last
+                val foundUsers = _userSearchRepository.searchUsers(username)
+                _searchUsersPagination.apply {
+                    previous = foundUsers.previous
+                    next = foundUsers.next
+                    first = foundUsers.first
+                    last = foundUsers.last
+                }
                 _searchUsersState.update {
                     BaseState.Success(null, foundUsers.data)
                 }
@@ -63,7 +69,7 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
     }
 
     suspend fun loadMoreSearchUsers() {
-        if (_next == null) {
+        if (_searchUsersPagination.next == null) {
             return
         }
         viewModelScope.launch(Dispatchers.IO) {
@@ -71,11 +77,13 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                 _searchUsersState.update {
                     BaseState.Loading(null, it.data)
                 }
-                val foundUsers = _userRepository.searchUsers(username, _next.toString())
-                _prev = foundUsers.previous
-                _next = foundUsers.next
-                _first = foundUsers.first
-                _last = foundUsers.last
+                val foundUsers = _userSearchRepository.searchUsers(username, _searchUsersPagination.next.toString())
+                _searchUsersPagination.apply {
+                    previous = foundUsers.previous
+                    next = foundUsers.next
+                    first = foundUsers.first
+                    last = foundUsers.last
+                }
                 _searchUsersState.update {
                     if (foundUsers.data != null) {
                         return@update BaseState.Success(null, it.data?.plus(foundUsers.data))
@@ -96,10 +104,16 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
                 _popularIndoUsersState.update {
                     BaseState.Loading(null, null)
                 }
-                val foundUsers = _userRepository.searchUsers(POPULAR_INDO_USERS_QUERY)
+                val foundUsers = _userPopularRepository.searchPopularUsers(POPULAR_USERS_LOCATION)
+                _popularUsersPagination.apply {
+                    previous = foundUsers.previous
+                    next = foundUsers.next
+                    first = foundUsers.first
+                    last = foundUsers.last
+                }
                 val detailUsers = foundUsers.data?.map {
                     async {
-                        _userRepository.findUserByUsername(it.login)
+                        _userDetailRepository.findUserByUsername(it.username)
                     }
                 }?.awaitAll()
                 _popularIndoUsersState.update {
@@ -114,6 +128,6 @@ class SearchUsersViewModel(private val _userRepository: UserRepository) : ViewMo
     }
 
     companion object {
-        const val POPULAR_INDO_USERS_QUERY = "location:indonesia"
+        const val POPULAR_USERS_LOCATION = "indonesia"
     }
 }

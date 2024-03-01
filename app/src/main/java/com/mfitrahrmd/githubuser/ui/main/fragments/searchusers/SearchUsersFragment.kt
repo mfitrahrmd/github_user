@@ -27,7 +27,7 @@ class SearchUsersFragment :
         setOnItemClickListener {
             findNavController().navigate(
                 SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(
-                    it.login
+                    it.username
                 )
             )
         }
@@ -38,7 +38,7 @@ class SearchUsersFragment :
             setOnItemClickListener {
                 findNavController().navigate(
                     SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(
-                        it.login
+                        it.username
                     )
                 )
             }

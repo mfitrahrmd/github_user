@@ -22,7 +22,7 @@ class ListUserAdapter(private var _users: List<User>) :
         fun bind(holder: ListUserViewHolder, user: User, onItemClickListener: ((User) -> Unit)?) {
             with(user) {
                 with(_binding) {
-                    tvUsername.text = itemView.context.getString(R.string.username, login)
+                    tvUsername.text = itemView.context.getString(R.string.username, username)
                     Glide.with(_binding.root)
                         .load(avatarUrl)
                         .into(ivAvatar)

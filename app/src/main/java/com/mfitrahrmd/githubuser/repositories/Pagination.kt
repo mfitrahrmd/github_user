@@ -1,3 +1,4 @@
 package com.mfitrahrmd.githubuser.repositories
 
-data class Pagination<T>(val first: Int?, val last: Int?, val previous: Int?, val next: Int?, val data: T?)
+open class Pagination(var first: Int?, var last: Int?, var previous: Int?, var next: Int?)
+class WithPagination<T>(val data: T?, first: Int?, last: Int?, previous: Int?, next: Int?) : Pagination(first, last, previous, next)

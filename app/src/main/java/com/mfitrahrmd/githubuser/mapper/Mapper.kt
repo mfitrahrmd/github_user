@@ -2,6 +2,8 @@ package com.mfitrahrmd.githubuser.mapper
 
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.entities.network.NetworkUser
+import com.mfitrahrmd.githubuser.utils.DateFormat
+import java.text.SimpleDateFormat
 
 interface Mapper<I, O> {
     fun map(input: I): O
@@ -19,13 +21,11 @@ object NetworkUserToUser : Mapper<NetworkUser, User> {
     override fun map(input: NetworkUser): User {
         return User(
             id = input.id,
-            login = input.login,
+            username = input.login,
             name = input.name,
             blog = input.blog,
             avatarUrl = input.avatarUrl,
             eventsUrl = input.eventsUrl,
-            followingUrl = input.followingUrl,
-            followersUrl = input.followersUrl,
             gistsUrl = input.gistsUrl,
             htmlUrl = input.htmlUrl,
             nodeId = input.nodeId,
@@ -38,18 +38,22 @@ object NetworkUserToUser : Mapper<NetworkUser, User> {
             receivedEventsUrl = input.receivedEventsUrl,
             subscriptionsUrl = input.subscriptionsUrl,
             gravatarId = input.gravatarId,
-            followers = input.followers,
-            following = input.following,
+            followers = User.Followers(input.followers, input.followersUrl),
+            following = User.Following(input.following, input.followingUrl),
             twitterUsername = input.twitterUsername,
             company = input.company,
-            updatedAt = input.updatedAt,
-            createdAt = input.createdAt,
+            updatedAt = DateFormat.toDate(input.updatedAt),
+            createdAt = DateFormat.toDate(input.createdAt),
             bio = input.bio,
             hireable = input.hireable,
             location = input.location,
             email = input.email,
             publicGists = input.publicGists,
             publicRepos = input.publicRepos,
+            favorite = User.Favorite(
+                false,
+                null
+            )
         )
     }
 }

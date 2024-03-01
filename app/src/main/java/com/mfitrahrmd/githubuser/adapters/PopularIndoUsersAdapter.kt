@@ -33,7 +33,7 @@ class PopularIndoUsersAdapter(private var _popularIndoUsers: List<User>) :
         with(holder.binding) {
             with(_popularIndoUsersDiff.currentList[position]) {
                 tvName.text = this.name
-                tvUsername.text = this.login
+                tvUsername.text = this.username
                 tvBio.text = this.bio
                 Glide.with(holder.binding.root)
                     .load(this.avatarUrl)
