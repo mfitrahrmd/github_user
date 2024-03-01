@@ -1,13 +1,21 @@
 package com.mfitrahrmd.githubuser.utils
 
+import android.util.Log
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.Date
 import java.util.Locale
 
 object DateFormat {
-    fun toDate(date: String): Date {
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    fun toDate(date: String?): Date? {
+        if (date.isNullOrEmpty() || date.isBlank()) return null
 
-        return format.parse(date)
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val x = formatter.parse(date)
+        if (x != null) {
+            Log.d("DATE", x.toString())
+        }
+
+        return x
     }
 }

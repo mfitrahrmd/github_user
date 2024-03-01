@@ -4,6 +4,7 @@ import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.entities.network.NetworkUser
 import com.mfitrahrmd.githubuser.utils.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 
 interface Mapper<I, O> {
     fun map(input: I): O
