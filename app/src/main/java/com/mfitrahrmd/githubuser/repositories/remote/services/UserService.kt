@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface GithubService {
+interface UserService {
     @GET("search/users")
     suspend fun searchUsers(@Query("q") q: String, @Query("page") page: String? = null): Response<GithubSearchUsersResponseModel>
 

@@ -1,19 +1,19 @@
 package com.mfitrahrmd.githubuser.repositories.remote
 
 import com.mfitrahrmd.githubuser.BuildConfig
-import com.mfitrahrmd.githubuser.repositories.remote.services.GithubService
+import com.mfitrahrmd.githubuser.repositories.remote.services.UserService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RemoteService private constructor() {
     private val _retrofit: Retrofit
-    private var _userApi: GithubService? = null
+    private var _userApi: UserService? = null
 
-    val userApi: GithubService
+    val userApi: UserService
         get() {
             if (_userApi == null) {
-                _userApi = _retrofit.create(GithubService::class.java)
+                _userApi = _retrofit.create(UserService::class.java)
             }
 
             return _userApi!!
