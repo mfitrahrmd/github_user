@@ -1,7 +1,9 @@
 package com.mfitrahrmd.githubuser.repositories
 
+import androidx.paging.PagingData
 import com.mfitrahrmd.githubuser.entities.User
+import kotlinx.coroutines.flow.Flow
 
 interface UserSearchRepository {
-    suspend fun searchUsers(query: String, page: String? = null): WithPagination<List<User>>
+    fun get(query: String): Flow<PagingData<User>>
 }

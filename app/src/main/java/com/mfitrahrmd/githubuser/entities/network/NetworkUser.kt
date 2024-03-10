@@ -2,6 +2,9 @@ package com.mfitrahrmd.githubuser.entities.network
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.mfitrahrmd.githubuser.entities.db.DBPopularUser
+import com.mfitrahrmd.githubuser.mapper.NetworkToLocal
+import com.mfitrahrmd.githubuser.utils.DateFormat
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -102,4 +105,41 @@ data class NetworkUser(
 
     @field:SerializedName("node_id")
     val nodeId: String
-) : Parcelable
+) : Parcelable, NetworkToLocal<DBPopularUser> {
+    override fun toLocalEntity(): DBPopularUser {
+        return DBPopularUser(
+            id = this.id,
+            publicRepos = this.publicRepos,
+            publicGists = this.publicGists,
+            email = this.email,
+            location = this.location,
+            hireable = this.hireable,
+            bio = this.bio,
+            company = this.company,
+            twitterUsername = this.twitterUsername,
+            gravatarId = this.gravatarId,
+            subscriptionsUrl = this.subscriptionsUrl,
+            receivedEventsUrl = this.receivedEventsUrl,
+            reposUrl = this.reposUrl,
+            starredUrl = this.starredUrl,
+            siteAdmin = this.siteAdmin,
+            url = this.url,
+            organizationsUrl = this.organizationsUrl,
+            type = this.type,
+            nodeId = this.nodeId,
+            htmlUrl = this.htmlUrl,
+            gistsUrl = this.gistsUrl,
+            eventsUrl = this.eventsUrl,
+            avatarUrl = this.avatarUrl,
+            blog = this.blog,
+            name = this.name,
+            followers = this.followers,
+            following = this.following,
+            login = this.login,
+            followingUrl = this.followingUrl,
+            followersUrl = this.followersUrl,
+            updatedAt = DateFormat.toDate(this.updatedAt),
+            createdAt = DateFormat.toDate(this.createdAt)
+        )
+    }
+}

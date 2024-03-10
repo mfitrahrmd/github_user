@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class UserFollowersViewModel(private val _userDetailRepository: UserDetailRepository) : ViewModel() {
+class UserFollowersViewModel(private val _userDetailRepository: UserDetailRepository) :
+    ViewModel() {
     private val _userFollowersState: MutableStateFlow<BaseState<List<User>>> = MutableStateFlow(
         BaseState.Idle()
     )

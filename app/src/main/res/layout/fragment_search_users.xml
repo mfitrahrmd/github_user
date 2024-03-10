@@ -51,44 +51,11 @@
         android:textFontWeight="700"
         app:layout_constraintTop_toBottomOf="@id/topBar" />
 
-    <LinearLayout
-        android:id="@+id/lPopularIndoUsers"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPopularIndoUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvPopularIndoUsers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmerPopularIndoUsers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <include layout="@layout/item_popular_indo_users_shimmer" />
-
-                <include layout="@layout/item_popular_indo_users_shimmer" />
-
-                <include layout="@layout/item_popular_indo_users_shimmer" />
-
-                <include layout="@layout/item_popular_indo_users_shimmer" />
-
-                <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            </LinearLayout>
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers" />
 
     <TextView
         android:id="@+id/tvTitleSearchResult"
@@ -97,62 +64,16 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:text="@string/search_result"
-        android:visibility="gone"
         android:textFontWeight="700"
-        app:layout_constraintTop_toBottomOf="@id/lPopularIndoUsers" />
+        app:layout_constraintTop_toBottomOf="@id/rvPopularIndoUsers" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsvSearchUsers"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearchUsers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvTitleSearchResult">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tvInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="32dp"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:visibility="gone" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSearchUsers"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:nestedScrollingEnabled="true"/>
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/shimmerSearchUsers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleSearchResult"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include layout="@layout/item_user_shimmer" />
-
-                    <include layout="@layout/item_user_shimmer" />
-
-                    <include layout="@layout/item_user_shimmer" />
-
-                    <include layout="@layout/item_user_shimmer" />
-
-                    <include layout="@layout/item_user_shimmer" />
-
-                </LinearLayout>
-
-            </com.facebook.shimmer.ShimmerFrameLayout>
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
     <com.google.android.material.search.SearchView
         android:id="@+id/searchView"
         android:layout_width="0dp"

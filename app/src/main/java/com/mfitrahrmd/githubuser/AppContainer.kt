@@ -9,6 +9,7 @@ import com.mfitrahrmd.githubuser.repositories.UserPopularRepository
 import com.mfitrahrmd.githubuser.repositories.UserPopularRepositoryImpl
 import com.mfitrahrmd.githubuser.repositories.UserSearchRepository
 import com.mfitrahrmd.githubuser.repositories.UserSearchRepositoryImpl
+import com.mfitrahrmd.githubuser.repositories.local.database.UserDatabase
 import com.mfitrahrmd.githubuser.repositories.remote.RemoteService
 
 interface AppContainer {
@@ -22,16 +23,24 @@ class AppDataContainer(private val _context: Context) : AppContainer {
     private val _remoteService: RemoteService by lazy {
         RemoteService.getInstance()
     }
+    private val _userDatabase: UserDatabase by lazy {
+        UserDatabase.getInstance(_context)
+    }
     override val userSearchRepository: UserSearchRepository by lazy {
-        UserSearchRepositoryImpl(_remoteService)
+        UserSearchRepositoryImpl(
+            _remoteService,
+            _userDatabase.searchUserDao(),
+            _userDatabase.favoriteUserDao(),
+            _userDatabase.remoteKeyDao()
+        )
     }
     override val userDetailRepository: UserDetailRepository by lazy {
         UserDetailRepositoryImpl(_remoteService)
     }
     override val userFavoriteRepository: UserFavoriteRepository by lazy {
-        UserFavoriteRepositoryImpl()
+        UserFavoriteRepositoryImpl(_userDatabase.favoriteUserDao())
     }
     override val userPopularRepository: UserPopularRepository by lazy {
-        UserPopularRepositoryImpl(_remoteService)
+        UserPopularRepositoryImpl(_remoteService.userApi, _userDatabase.popularUserDao(), _userDatabase.favoriteUserDao())
     }
 }

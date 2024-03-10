@@ -13,16 +13,16 @@ object ApiExtractor {
         if (!link.isNullOrBlank()) {
             link.split(",").forEach {
                 if (it.contains("\"prev\"")) {
-                    prev = it.substring(it.indexOf("page=")+5).substringBefore(">").toIntOrNull()
+                    prev = it.substring(it.indexOf("page=") + 5).substringBefore(">").toIntOrNull()
                 }
                 if (it.contains("\"next\"")) {
-                    next = it.substring(it.indexOf("page=")+5).substringBefore(">").toIntOrNull()
+                    next = it.substring(it.indexOf("page=") + 5).substringBefore(">").toIntOrNull()
                 }
                 if (it.contains("\"first\"")) {
-                    first = it.substring(it.indexOf("page=")+5).substringBefore(">").toIntOrNull()
+                    first = it.substring(it.indexOf("page=") + 5).substringBefore(">").toIntOrNull()
                 }
                 if (it.contains("\"last\"")) {
-                    last = it.substring(it.indexOf("page=")+5).substringBefore(">").toIntOrNull()
+                    last = it.substring(it.indexOf("page=") + 5).substringBefore(">").toIntOrNull()
                 }
             }
         }

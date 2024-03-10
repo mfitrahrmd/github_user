@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -19,7 +20,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_BASE_URL", "\"https://api.github.com/\"")
-        buildConfigField("String", "API_KEY", "\"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\"")
+        buildConfigField("String", "API_KEY", "\"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\"")
     }
 
     buildTypes {
@@ -40,21 +41,30 @@ android {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
+    implementation("androidx.room:room-paging:2.6.1")
+    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
+
     implementation("androidx.compose.ui:ui:1.6.1")
     implementation("androidx.compose.compiler:compiler:1.5.9")
     implementation("androidx.compose.runtime:runtime-android:1.6.1")
     implementation("androidx.compose.foundation:foundation-android:1.6.1")
     implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.activity:activity-compose:1.8.2")
+
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation("androidx.fragment:fragment-ktx:1.6.2")

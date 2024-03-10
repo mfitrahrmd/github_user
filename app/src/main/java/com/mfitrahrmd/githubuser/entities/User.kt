@@ -3,9 +3,9 @@ package com.mfitrahrmd.githubuser.entities
 import java.util.Date
 
 data class User(
-    val gistsUrl: String,
+    val gistsUrl: String? = null,
 
-    val reposUrl: String,
+    val reposUrl: String? = null,
 
     val twitterUsername: String? = null,
 
@@ -15,15 +15,15 @@ data class User(
 
     val username: String,
 
-    val type: String,
+    val type: String? = null,
 
     val blog: String? = null,
 
-    val subscriptionsUrl: String,
+    val subscriptionsUrl: String? = null,
 
     val updatedAt: Date? = null,
 
-    val siteAdmin: Boolean,
+    val siteAdmin: Boolean? = null,
 
     val company: String? = null,
 
@@ -31,27 +31,27 @@ data class User(
 
     val publicRepos: Int? = null,
 
-    val gravatarId: String?,
+    val gravatarId: String? = null,
 
     val email: String? = null,
 
-    val organizationsUrl: String,
+    val organizationsUrl: String? = null,
 
     val hireable: Boolean? = null,
 
-    val starredUrl: String,
+    val starredUrl: String? = null,
 
     val publicGists: Int? = null,
 
     val url: String,
 
-    val receivedEventsUrl: String,
+    val receivedEventsUrl: String? = null,
 
     val avatarUrl: String,
 
-    val eventsUrl: String,
+    val eventsUrl: String? = null,
 
-    val htmlUrl: String,
+    val htmlUrl: String? = null,
 
     val following: Following,
 
@@ -61,19 +61,19 @@ data class User(
 
     val location: String? = null,
 
-    val nodeId: String,
+    val nodeId: String? = null,
 
     val favorite: Favorite
 
 ) {
     data class Following(
-        val count: Int? = null,
-        val url: String
+        val count: Int?,
+        val url: String?
     )
 
     data class Followers(
-        val count: Int? = null,
-        val url: String
+        val count: Int?,
+        val url: String?
     )
 
     data class Favorite(

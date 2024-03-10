@@ -6,7 +6,7 @@ import com.mfitrahrmd.githubuser.entities.network.NetworkUser
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class GithubSearchUsersResponseModel(
+class SearchUsers(
 
     @field:SerializedName("total_count")
     val totalCount: Int,

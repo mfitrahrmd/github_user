@@ -1,8 +1,11 @@
 package com.mfitrahrmd.githubuser.repositories
 
 import com.mfitrahrmd.githubuser.entities.User
+import com.mfitrahrmd.githubuser.repositories.local.dao.FavoriteUserDao
 
-class UserFavoriteRepositoryImpl : UserFavoriteRepository {
+class UserFavoriteRepositoryImpl(
+    private val _userFavoriteDao: FavoriteUserDao
+) : UserFavoriteRepository {
     override suspend fun addUserToFavorite(user: User) {
         TODO("Not yet implemented")
     }

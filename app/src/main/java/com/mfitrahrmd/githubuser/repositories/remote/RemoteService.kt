@@ -22,7 +22,8 @@ class RemoteService private constructor() {
     init {
         val client = OkHttpClient.Builder().addInterceptor {
             it.proceed(
-                it.request().newBuilder().addHeader("Authorization", "token ${BuildConfig.API_KEY}").addHeader("Accept", "application/vnd.github+json").build()
+                it.request().newBuilder().addHeader("Authorization", "token ${BuildConfig.API_KEY}")
+                    .addHeader("Accept", "application/vnd.github+json").build()
             )
         }
         _retrofit = Retrofit.Builder()

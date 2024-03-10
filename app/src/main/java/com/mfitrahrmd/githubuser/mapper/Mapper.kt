@@ -1,10 +1,10 @@
 package com.mfitrahrmd.githubuser.mapper
 
 import com.mfitrahrmd.githubuser.entities.User
+import com.mfitrahrmd.githubuser.entities.db.DBPopularUser
+import com.mfitrahrmd.githubuser.entities.db.DBSearchUser
 import com.mfitrahrmd.githubuser.entities.network.NetworkUser
 import com.mfitrahrmd.githubuser.utils.DateFormat
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 
 interface Mapper<I, O> {
     fun map(input: I): O
@@ -64,3 +64,117 @@ object ListNetworkUserToListUser : ListMapperImpl<NetworkUser, User>(NetworkUser
 fun NetworkUser.toUser() = NetworkUserToUser.map(this)
 
 fun List<NetworkUser>.toUser(): List<User> = ListNetworkUserToListUser.map(this)
+
+object UserToDBSearchUser : Mapper<User, DBSearchUser> {
+    override fun map(input: User): DBSearchUser {
+        return DBSearchUser(
+            id = input.id,
+            publicRepos = input.publicRepos,
+            publicGists = input.publicGists,
+            email = input.email,
+            location = input.location,
+            hireable = input.hireable,
+            bio = input.bio,
+            createdAt = input.createdAt,
+            updatedAt = input.updatedAt,
+            company = input.company,
+            twitterUsername = input.twitterUsername,
+            following = input.following.count,
+            followers = input.followers.count,
+            gravatarId = input.gravatarId,
+            subscriptionsUrl = input.subscriptionsUrl,
+            receivedEventsUrl = input.receivedEventsUrl,
+            reposUrl = input.reposUrl,
+            starredUrl = input.starredUrl,
+            siteAdmin = input.siteAdmin,
+            url = input.url,
+            organizationsUrl = input.organizationsUrl,
+            type = input.type,
+            nodeId = input.nodeId,
+            htmlUrl = input.htmlUrl,
+            gistsUrl = input.gistsUrl,
+            followersUrl = input.followers.url,
+            followingUrl = input.following.url,
+            eventsUrl = input.eventsUrl,
+            avatarUrl = input.avatarUrl,
+            blog = input.blog,
+            name = input.name,
+            login = input.username,
+        )
+    }
+}
+
+object ListUserToListDBSearchUser : ListMapperImpl<User, DBSearchUser>(UserToDBSearchUser)
+
+fun User.toDBSearchUser() = UserToDBSearchUser.map(this)
+
+fun List<User>.toDBSearchUser(): List<DBSearchUser> = ListUserToListDBSearchUser.map(this)
+
+
+fun DBSearchUser.toUser(favorite: User.Favorite): User = User(
+    id = this.id,
+    publicRepos = this.publicRepos,
+    publicGists = this.publicGists,
+    email = this.email,
+    location = this.location,
+    hireable = this.hireable,
+    bio = this.bio,
+    createdAt = this.createdAt,
+    updatedAt = this.updatedAt,
+    company = this.company,
+    twitterUsername = this.twitterUsername,
+    gravatarId = this.gravatarId,
+    subscriptionsUrl = this.subscriptionsUrl,
+    receivedEventsUrl = this.receivedEventsUrl,
+    reposUrl = this.reposUrl,
+    starredUrl = this.starredUrl,
+    siteAdmin = this.siteAdmin,
+    url = this.url,
+    organizationsUrl = this.organizationsUrl,
+    type = this.type,
+    nodeId = this.nodeId,
+    htmlUrl = this.htmlUrl,
+    gistsUrl = this.gistsUrl,
+    eventsUrl = this.eventsUrl,
+    avatarUrl = this.avatarUrl,
+    blog = this.blog,
+    name = this.name,
+    username = this.login,
+    following = User.Following(this.following, this.followingUrl),
+    followers = User.Followers(this.followers, this.followersUrl),
+    favorite = favorite
+)
+
+fun DBPopularUser.toUser(favorite: User.Favorite): User = User(
+    id = this.id,
+    publicRepos = this.publicRepos,
+    publicGists = this.publicGists,
+    email = this.email,
+    location = this.location,
+    hireable = this.hireable,
+    bio = this.bio,
+    createdAt = this.createdAt,
+    updatedAt = this.updatedAt,
+    company = this.company,
+    twitterUsername = this.twitterUsername,
+    gravatarId = this.gravatarId,
+    subscriptionsUrl = this.subscriptionsUrl,
+    receivedEventsUrl = this.receivedEventsUrl,
+    reposUrl = this.reposUrl,
+    starredUrl = this.starredUrl,
+    siteAdmin = this.siteAdmin,
+    url = this.url,
+    organizationsUrl = this.organizationsUrl,
+    type = this.type,
+    nodeId = this.nodeId,
+    htmlUrl = this.htmlUrl,
+    gistsUrl = this.gistsUrl,
+    eventsUrl = this.eventsUrl,
+    avatarUrl = this.avatarUrl,
+    blog = this.blog,
+    name = this.name,
+    username = this.login,
+    following = User.Following(this.following, this.followingUrl),
+    followers = User.Followers(this.followers, this.followersUrl),
+    favorite = favorite
+)
