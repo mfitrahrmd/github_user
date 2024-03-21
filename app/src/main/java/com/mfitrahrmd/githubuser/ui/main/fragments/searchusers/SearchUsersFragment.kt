@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.mfitrahrmd.githubuser.adapters.PopularUsersAdapter
-import com.mfitrahrmd.githubuser.adapters.SearchUsersAdapter
+import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class SearchUsersFragment :
     BaseFragment<FragmentSearchUsersBinding, SearchUsersViewModel>(SearchUsersViewModel::class.java) {
-    private val _searchUsersAdapter: SearchUsersAdapter = SearchUsersAdapter {
+    private val _searchUsersAdapter: UsersAdapter = UsersAdapter {
         findNavController().navigate(
             SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(
                 it.username
