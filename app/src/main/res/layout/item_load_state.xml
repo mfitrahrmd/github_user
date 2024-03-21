@@ -16,15 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
-
-            <include layout="@layout/item_popular_indo_users_shimmer" />
+            <include layout="@layout/item_user_shimmer" />
 
         </LinearLayout>
 

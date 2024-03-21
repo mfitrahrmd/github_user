@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
+import com.mfitrahrmd.githubuser.adapters.LoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.PopularUsersAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
@@ -72,7 +73,7 @@ class SearchUsersFragment :
                 layoutManager = LinearLayoutManager(
                     this@SearchUsersFragment.context,
                 )
-                adapter = _searchUsersAdapter
+                adapter = _searchUsersAdapter.withLoadStateFooter(LoaderStateAdapter {})
             }
             rvPopularIndoUsers.apply {
                 layoutManager = LinearLayoutManager(
