@@ -21,10 +21,6 @@ private const val ARG_USERNAME = "username"
 
 class DetailUserFragment :
     BaseFragment<FragmentDetailUserBinding, DetailUserViewModel>(DetailUserViewModel::class.java) {
-    override fun bind() {
-
-    }
-
     override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -89,30 +85,30 @@ class DetailUserFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setUsername(DetailUserFragmentArgs.fromBundle(arguments as Bundle).username)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            val pages: List<UserFollowingFollowersAdapter.Page> = mutableListOf(
-                UserFollowingFollowersAdapter.Page(
-                    "Following",
-                    UserFollowingFragment.newInstance(
-                        UserFollowingFragmentArgs.Builder(viewModel.username).build()
-                    )
-                ),
-                UserFollowingFollowersAdapter.Page(
-                    "Followers",
-                    UserFollowersFragment.newInstance(
-                        UserFollowersFragmentArgs.Builder(viewModel.username).build()
+            viewModel.getDetailUser()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                Log.d("USERNAME", viewModel.username)
+                val pages: List<UserFollowingFollowersAdapter.Page> = mutableListOf(
+                    UserFollowingFollowersAdapter.Page(
+                        "Following",
+                        UserFollowingFragment.newInstance(
+                            UserFollowingFragmentArgs.Builder(viewModel.username).build()
+                        )
+                    ),
+                    UserFollowingFollowersAdapter.Page(
+                        "Followers",
+                        UserFollowersFragment.newInstance(
+                            UserFollowersFragmentArgs.Builder(viewModel.username).build()
+                        )
                     )
                 )
-            )
-            with(viewBinding) {
-                vpFollowingFollowers.adapter = UserFollowingFollowersAdapter(pages, childFragmentManager, lifecycle)
-                TabLayoutMediator(tlFollowingFollowers, vpFollowingFollowers) { tab, position ->
-                    tab.text = pages[position].title
-                }.attach()
+                with(viewBinding) {
+                    vpFollowingFollowers.adapter = UserFollowingFollowersAdapter(pages, childFragmentManager, lifecycle)
+                    TabLayoutMediator(tlFollowingFollowers, vpFollowingFollowers) { tab, position ->
+                        tab.text = pages[position].title
+                    }.attach()
+                }
             }
         }
     }

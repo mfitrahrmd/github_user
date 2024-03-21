@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface DetailUserRepository {
     suspend fun getFollowing(username: String): Flow<PagingData<User>>
     suspend fun getFollowers(username: String): Flow<PagingData<User>>
-    suspend fun get(username: String): Flow<Result<User?>>
+    fun get(username: String): Flow<Result<User?>>
 }

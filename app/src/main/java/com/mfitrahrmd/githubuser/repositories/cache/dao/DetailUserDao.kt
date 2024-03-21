@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.mfitrahrmd.githubuser.entities.db.DBDetailUser
 
 @Dao
@@ -23,4 +24,10 @@ interface DetailUserDao {
 
     @Query("DELETE FROM detail_user")
     suspend fun deleteAll()
+
+    @Transaction
+    suspend fun replace(user: DBDetailUser) {
+        deleteOneByUsername(user.login)
+        insertOne(user)
+    }
 }

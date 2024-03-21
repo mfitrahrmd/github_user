@@ -1,5 +1,6 @@
 package com.mfitrahrmd.githubuser.repositories
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -34,7 +35,6 @@ class DetailUserRepositoryImpl(
     private val _favoriteUserDao: FavoriteUserDao
 ) : DetailUserRepository {
     override suspend fun getFollowing(username: String): Flow<PagingData<User>> {
-        delay(1_000L)
         return withContext(Dispatchers.IO) {
             val user = _detailUserDao.findOneByUsername(username)
             if (user == null) {
@@ -63,7 +63,6 @@ class DetailUserRepositoryImpl(
     }
 
     override suspend fun getFollowers(username: String): Flow<PagingData<User>> {
-        delay(1_000L)
         return withContext(Dispatchers.IO) {
             val user = _detailUserDao.findOneByUsername(username)
             if (user == null) {
@@ -95,13 +94,12 @@ class DetailUserRepositoryImpl(
         }
     }
 
-    override suspend fun get(username: String): Flow<Result<User?>> {
+    override fun get(username: String): Flow<Result<User?>> {
         return flow<Result<User?>> {
             try {
                 val sourceUser = _dataSource.findUserByUsername(username)
                 if (sourceUser != null) {
-                    _detailUserDao.deleteOneByUsername(username)
-                    _detailUserDao.insertOne(sourceUser.toDBDetailUser())
+                    _detailUserDao.replace(sourceUser.toDBDetailUser())
                 }
             } catch (e: Exception) {
                 emit(Result.Error(e.message))
