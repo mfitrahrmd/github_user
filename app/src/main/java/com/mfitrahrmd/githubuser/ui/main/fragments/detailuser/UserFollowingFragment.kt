@@ -28,14 +28,7 @@ class UserFollowingFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-            viewModel.initData()
-        }
+        viewModel.setUsername(UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username)
     }
 
     override fun onResume() {
@@ -59,7 +52,7 @@ class UserFollowingFragment :
     override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userFollowingState.collectLatest {
+                viewModel.userFollowing.collectLatest {
                     _listUserFollowingAdapter.submitData(lifecycle, it)
                 }
             }
