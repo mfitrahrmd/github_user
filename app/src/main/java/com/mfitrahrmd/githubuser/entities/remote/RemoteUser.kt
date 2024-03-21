@@ -1,11 +1,11 @@
-package com.mfitrahrmd.githubuser.entities.network
+package com.mfitrahrmd.githubuser.entities.remote
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SourceUser(
+data class RemoteUser(
 
     @field:SerializedName("gists_url")
     val gistsUrl: String,

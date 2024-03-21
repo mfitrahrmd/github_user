@@ -1,6 +1,6 @@
 package com.mfitrahrmd.githubuser.repositories.datasource.remote
 
-import com.mfitrahrmd.githubuser.entities.network.SourceUser
+import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
 import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
 
 class RemoteDataSource private constructor(
@@ -10,28 +10,28 @@ class RemoteDataSource private constructor(
         query: String,
         page: Int?,
         perPage: Int?
-    ): List<SourceUser> {
+    ): List<RemoteUser> {
         val res = _remoteService.userApi.searchUsers(query, page.toString(), perPage.toString())
         val body = res.body()
 
         return body?.items ?: emptyList()
     }
 
-    override suspend fun findUserByUsername(username: String): SourceUser? {
+    override suspend fun findUserByUsername(username: String): RemoteUser? {
         val res = _remoteService.userApi.findUserByUsername(username)
         val body = res.body()
 
         return body
     }
 
-    override suspend fun listUserFollowers(username: String, page: Int?, perPage: Int?): List<SourceUser> {
+    override suspend fun listUserFollowers(username: String, page: Int?, perPage: Int?): List<RemoteUser> {
         val res = _remoteService.userApi.listUserFollowers(username, page, perPage)
         val body = res.body()
 
         return body ?: emptyList()
     }
 
-    override suspend fun listUserFollowing(username: String, page: Int?, perPage: Int?): List<SourceUser> {
+    override suspend fun listUserFollowing(username: String, page: Int?, perPage: Int?): List<RemoteUser> {
         val res = _remoteService.userApi.listUserFollowing(username, page, perPage)
         val body = res.body()
 

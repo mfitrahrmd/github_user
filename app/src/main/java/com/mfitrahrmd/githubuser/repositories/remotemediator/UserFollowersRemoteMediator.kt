@@ -2,13 +2,11 @@ package com.mfitrahrmd.githubuser.repositories.remotemediator
 
 import com.mfitrahrmd.githubuser.base.BaseRemoteMediator
 import com.mfitrahrmd.githubuser.entities.db.DBUserFollowers
-import com.mfitrahrmd.githubuser.entities.network.SourceUser
+import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
 import com.mfitrahrmd.githubuser.mapper.toDBUserFollowers
-import com.mfitrahrmd.githubuser.mapper.toDBUserFollowing
 import com.mfitrahrmd.githubuser.repositories.cache.dao.DetailUserDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.UserFollowersDao
 import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
-import com.mfitrahrmd.githubuser.repositories.datasource.remote.services.UserService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -17,10 +15,10 @@ class UserFollowersRemoteMediator(
     private val _dataSource: DataSource,
     private val _userFollowersDao: UserFollowersDao,
     private val _detailUserDao: DetailUserDao
-) : BaseRemoteMediator<DBUserFollowers, SourceUser>(
+) : BaseRemoteMediator<DBUserFollowers, RemoteUser>(
     _userFollowersDao
 ) {
-    override suspend fun fetch(page: Int, pageSize: Int): List<SourceUser> {
+    override suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
         val followers = _dataSource.listUserFollowers(_username, page, pageSize)
 
         return followers
@@ -35,7 +33,7 @@ class UserFollowersRemoteMediator(
         }
     }
 
-    override suspend fun toLocalEntity(networkEntity: SourceUser): DBUserFollowers {
+    override suspend fun toLocalEntity(networkEntity: RemoteUser): DBUserFollowers {
         val user = _detailUserDao.findOneByUsername(_username)
         if (user == null) {
             throw Exception("user not found")

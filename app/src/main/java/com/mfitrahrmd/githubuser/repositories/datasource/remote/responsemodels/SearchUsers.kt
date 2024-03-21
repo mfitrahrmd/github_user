@@ -2,7 +2,7 @@ package com.mfitrahrmd.githubuser.repositories.datasource.remote.responsemodels
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.mfitrahrmd.githubuser.entities.network.SourceUser
+import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,5 +15,5 @@ class SearchUsers(
     val incompleteResults: Boolean,
 
     @field:SerializedName("items")
-    val items: List<SourceUser>
+    val items: List<RemoteUser>
 ) : Parcelable

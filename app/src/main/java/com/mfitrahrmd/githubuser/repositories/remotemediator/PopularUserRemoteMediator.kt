@@ -6,7 +6,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.mfitrahrmd.githubuser.entities.db.DBPopularUser
 import com.mfitrahrmd.githubuser.entities.db.DBPopularUserWithFavorite
-import com.mfitrahrmd.githubuser.entities.network.SourceUser
+import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
 import com.mfitrahrmd.githubuser.mapper.toDBPopularUser
 import com.mfitrahrmd.githubuser.repositories.cache.dao.PopularUserDao
 import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
@@ -21,7 +21,7 @@ class PopularUserRemoteMediator(
 ) : RemoteMediator<Int, DBPopularUserWithFavorite>() {
     private var _nextPage: Int? = null
 
-    private suspend fun fetch(page: Int, pageSize: Int): List<SourceUser> {
+    private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
         return _dataSource.searchUsers("location:$_location", page, pageSize)
     }
 
@@ -31,7 +31,7 @@ class PopularUserRemoteMediator(
         }
     }
 
-    private fun toLocalEntity(networkEntity: SourceUser): DBPopularUser {
+    private fun toLocalEntity(networkEntity: RemoteUser): DBPopularUser {
         return networkEntity.toDBPopularUser()
     }
 

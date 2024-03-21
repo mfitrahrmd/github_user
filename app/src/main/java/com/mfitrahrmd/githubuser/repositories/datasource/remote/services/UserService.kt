@@ -1,6 +1,6 @@
 package com.mfitrahrmd.githubuser.repositories.datasource.remote.services
 
-import com.mfitrahrmd.githubuser.entities.network.SourceUser
+import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
 import com.mfitrahrmd.githubuser.repositories.datasource.remote.responsemodels.SearchUsers
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,19 +16,19 @@ interface UserService {
     ): Response<SearchUsers?>
 
     @GET("users/{username}")
-    suspend fun findUserByUsername(@Path("username") username: String): Response<SourceUser?>
+    suspend fun findUserByUsername(@Path("username") username: String): Response<RemoteUser?>
 
     @GET("users/{username}/followers")
     suspend fun listUserFollowers(
         @Path("username") username: String,
         @Query("page") page: Int? = null,
         @Query("per_page") perPage: Int? = null
-    ): Response<List<SourceUser>?>
+    ): Response<List<RemoteUser>?>
 
     @GET("users/{username}/following")
     suspend fun listUserFollowing(
         @Path("username") username: String,
         @Query("page") page: Int? = null,
         @Query("per_page") perPage: Int? = null
-    ): Response<List<SourceUser>?>
+    ): Response<List<RemoteUser>?>
 }

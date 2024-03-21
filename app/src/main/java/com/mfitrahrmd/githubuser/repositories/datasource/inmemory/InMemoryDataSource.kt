@@ -1,10 +1,10 @@
 package com.mfitrahrmd.githubuser.repositories.datasource.inmemory
 
 import android.util.Log
-import com.mfitrahrmd.githubuser.entities.network.SourceUser
+import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
 import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
 
-private val _user = SourceUser(
+private val _user = RemoteUser(
     id = 0,
     login = "user0",
     name = "user0",
@@ -42,17 +42,17 @@ private val _user = SourceUser(
 
 class InMemoryDataSource private constructor() : DataSource {
 
-    private val _following: List<SourceUser> = List(100) { i ->
+    private val _following: List<RemoteUser> = List(100) { i ->
         _user.copy(
             id = i, login = "following$i", name = "following$i", email = "following$i@gmail.com"
         )
     }
-    private val _followers: List<SourceUser> = List(100) { i ->
+    private val _followers: List<RemoteUser> = List(100) { i ->
         _user.copy(
             id = i, login = "follower$i", name = "follower$i", email = "follower$i@gmail.com"
         )
     }
-    private val _users: List<SourceUser> = List(100) { i ->
+    private val _users: List<RemoteUser> = List(100) { i ->
         _user.copy(
             id = i,
             login = "user$i",
@@ -66,7 +66,7 @@ class InMemoryDataSource private constructor() : DataSource {
 
     override suspend fun searchUsers(
         query: String, page: Int?, perPage: Int?
-    ): List<SourceUser> {
+    ): List<RemoteUser> {
         val p = (page ?: 1) - 1
         val pp = perPage ?: 20
         val start = if (p == 0) 0 else p * pp
@@ -85,7 +85,7 @@ class InMemoryDataSource private constructor() : DataSource {
         return if (filtered.size > pp) filtered.slice(start..end) else filtered
     }
 
-    override suspend fun findUserByUsername(username: String): SourceUser? {
+    override suspend fun findUserByUsername(username: String): RemoteUser? {
         return _users.firstOrNull {
             it.login.contains(username)
         }
@@ -93,7 +93,7 @@ class InMemoryDataSource private constructor() : DataSource {
 
     override suspend fun listUserFollowers(
         username: String, page: Int?, perPage: Int?
-    ): List<SourceUser> {
+    ): List<RemoteUser> {
         val start = if (page == null || page == 0) 0 else page * (perPage ?: 20)
         val end = start + (perPage ?: 20)
 
@@ -102,7 +102,7 @@ class InMemoryDataSource private constructor() : DataSource {
 
     override suspend fun listUserFollowing(
         username: String, page: Int?, perPage: Int?
-    ): List<SourceUser> {
+    ): List<RemoteUser> {
         val p = (page ?: 1) - 1
         val pp = perPage ?: 20
         val start = if (p == 0) 0 else p * pp
