@@ -8,34 +8,29 @@ import androidx.paging.cachedIn
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.repositories.DetailUserRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class UserFollowersViewModel(private val _detailUserRepository: DetailUserRepository) :
     ViewModel() {
-    var username: String = ""
-    private val _userFollowersState: MutableStateFlow<PagingData<User>> =
-        MutableStateFlow(PagingData.empty())
-    val userFollowersState: StateFlow<PagingData<User>>
-        get() = _userFollowersState
+    private val _username = MutableStateFlow<String>("")
+    val username: String
+        get() = _username.value
 
-    suspend fun initData() {
+    fun setUsername(username: String) {
         viewModelScope.launch {
-            getFollowers()
+            _username.emit(username)
         }
     }
 
-    suspend fun getFollowers() {
-        try {
-            _detailUserRepository.getFollowers(username).cachedIn(viewModelScope).collect {
-                _userFollowersState.value = it
-            }
-        } catch (e: Exception) {
-            Log.d("USER NOT FOUND", e.message ?: "")
-        }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val userFollowers = _username.flatMapConcat {
+        _detailUserRepository.getFollowers(it).cachedIn(viewModelScope)
     }
 }

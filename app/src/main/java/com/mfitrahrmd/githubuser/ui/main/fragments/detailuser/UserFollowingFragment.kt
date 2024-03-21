@@ -1,8 +1,6 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -11,9 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfitrahrmd.githubuser.adapters.LoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
-import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentUserFollowBinding
-import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
