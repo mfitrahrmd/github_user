@@ -7,7 +7,8 @@ import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.utils.UsersDiff
 
-class SearchUsersAdapter(private val _onItemClick: (User) -> Unit) : PagingDataAdapter<User, ListUserAdapter.ListUserViewHolder>(UsersDiff) {
+class SearchUsersAdapter(private val _onItemClick: (User) -> Unit) :
+    PagingDataAdapter<User, ListUserAdapter.ListUserViewHolder>(UsersDiff) {
     override fun onBindViewHolder(holder: ListUserAdapter.ListUserViewHolder, position: Int) {
         holder.bind(getItem(position), _onItemClick)
     }

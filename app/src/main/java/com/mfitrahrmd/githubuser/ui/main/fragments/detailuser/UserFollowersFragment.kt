@@ -8,30 +8,28 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mfitrahrmd.githubuser.adapters.ListUserAdapter
+import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentUserFollowBinding
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class UserFollowersFragment :
     BaseFragment<FragmentUserFollowBinding, UserFollowersViewModel>(UserFollowersViewModel::class.java) {
     private lateinit var _username: String
-    private val _listUserFollowersAdapter: ListUserAdapter = ListUserAdapter(emptyList()).apply {
-        setOnItemClickListener {
-            findNavController().navigate(
-                DetailUserFragmentDirections.actionDetailUserFragmentSelf(
-                    it.username
-                )
+    private val _listUserFollowersAdapter: UsersAdapter = UsersAdapter {
+        findNavController().navigate(
+            DetailUserFragmentDirections.actionDetailUserFragmentSelf(
+                it.username
             )
-        }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
-        viewModel.username = _username
+        viewModel.username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,47 +60,8 @@ class UserFollowersFragment :
     override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userFollowersState.collect { currentUiState ->
-                    when (currentUiState) {
-                        is BaseState.Success -> {
-                            with(viewBinding) {
-                                shimmerFollow.apply {
-                                    stopShimmer()
-                                    visibility = View.GONE
-                                }
-                            }
-                            _listUserFollowersAdapter.apply {
-                                setUsers {
-                                    currentUiState.data ?: it
-                                }
-                            }
-                        }
-
-                        is BaseState.Loading -> {
-                            with(viewBinding) {
-                                shimmerFollow.apply {
-                                    startShimmer()
-                                    visibility = View.VISIBLE
-                                }
-                            }
-                        }
-
-                        is BaseState.Error -> {
-                            with(viewBinding) {
-                                shimmerFollow.apply {
-                                    stopShimmer()
-                                    visibility = View.GONE
-                                }
-                            }
-                            Toast.makeText(
-                                view?.context,
-                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else SearchUsersFragment.DEFAULT_ERROR_MESSAGE,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        else -> {}
-                    }
+                viewModel.userFollowersState.collectLatest {
+                    _listUserFollowersAdapter.submitData(lifecycle, it)
                 }
             }
         }

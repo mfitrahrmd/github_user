@@ -4,8 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "favorite_user")
-data class DBFavoriteUser(
+@Entity(
+    tableName = DBDetailUser.TABLE_NAME,
+    indices = [androidx.room.Index(value = ["login"], unique = true)],
+)
+data class DBDetailUser(
     @PrimaryKey(autoGenerate = true)
     val dbId: Int = 0,
 
@@ -71,7 +74,9 @@ data class DBFavoriteUser(
 
     val location: String?,
 
-    val nodeId: String?,
-
-    val addedAt: Date = Date()
-)
+    val nodeId: String?
+) {
+    companion object {
+        const val TABLE_NAME = "detail_user"
+    }
+}

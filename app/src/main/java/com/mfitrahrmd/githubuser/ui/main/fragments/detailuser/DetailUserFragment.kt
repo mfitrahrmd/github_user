@@ -1,6 +1,7 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
@@ -20,36 +21,14 @@ private const val ARG_USERNAME = "username"
 
 class DetailUserFragment :
     BaseFragment<FragmentDetailUserBinding, DetailUserViewModel>(DetailUserViewModel::class.java) {
-    private lateinit var username: String
-
     override fun bind() {
-        val pages = listOf(
-            UserFollowingFollowersAdapter.Page(
-                "Following",
-                UserFollowingFragment.newInstance(
-                    UserFollowingFragmentArgs.Builder(username).build()
-                )
-            ),
-            UserFollowingFollowersAdapter.Page(
-                "Followers",
-                UserFollowersFragment.newInstance(
-                    UserFollowersFragmentArgs.Builder(username).build()
-                )
-            )
-        )
-        with(viewBinding) {
-            vpFollowingFollowers.adapter =
-                UserFollowingFollowersAdapter(pages, childFragmentManager, lifecycle)
-            TabLayoutMediator(tlFollowingFollowers, vpFollowingFollowers) { tab, position ->
-                tab.text = pages[position].title
-            }.attach()
-        }
+
     }
 
     override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userState.collect { currentUiState ->
+                viewModel.detailUser.collect { currentUiState ->
                     when (currentUiState) {
                         is BaseState.Success -> {
                             with(viewBinding) {
@@ -109,14 +88,32 @@ class DetailUserFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        username = DetailUserFragmentArgs.fromBundle(arguments as Bundle).username
-        viewModel.username = username
+        viewModel.setUsername(DetailUserFragmentArgs.fromBundle(arguments as Bundle).username)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            viewModel.initData()
+            val pages: List<UserFollowingFollowersAdapter.Page> = mutableListOf(
+                UserFollowingFollowersAdapter.Page(
+                    "Following",
+                    UserFollowingFragment.newInstance(
+                        UserFollowingFragmentArgs.Builder(viewModel.username).build()
+                    )
+                ),
+                UserFollowingFollowersAdapter.Page(
+                    "Followers",
+                    UserFollowersFragment.newInstance(
+                        UserFollowersFragmentArgs.Builder(viewModel.username).build()
+                    )
+                )
+            )
+            with(viewBinding) {
+                vpFollowingFollowers.adapter = UserFollowingFollowersAdapter(pages, childFragmentManager, lifecycle)
+                TabLayoutMediator(tlFollowingFollowers, vpFollowingFollowers) { tab, position ->
+                    tab.text = pages[position].title
+                }.attach()
+            }
         }
     }
 

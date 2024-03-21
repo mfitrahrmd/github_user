@@ -1,40 +1,44 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mfitrahrmd.githubuser.base.BaseState
-import com.mfitrahrmd.githubuser.entities.User
-import com.mfitrahrmd.githubuser.repositories.UserDetailRepository
+import com.mfitrahrmd.githubuser.repositories.DetailUserRepository
+import com.mfitrahrmd.githubuser.repositories.Result
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 
-class DetailUserViewModel(private val _userDetailRepository: UserDetailRepository) : ViewModel() {
-    private val _userState: MutableStateFlow<BaseState<User>> =
-        MutableStateFlow(BaseState.Idle())
-    val userState: StateFlow<BaseState<User>>
-        get() = _userState
+class DetailUserViewModel(private val _detailUserRepository: DetailUserRepository) : ViewModel() {
+    private val _username = MutableStateFlow<String>("")
+    val username: String
+        get() = _username.value
 
-    var username: String = ""
-
-    suspend fun initData() {
-        if (_userState.value.data == null) {
-            getUser()
+    fun setUsername(username: String) {
+        viewModelScope.launch {
+            _username.emit(username)
         }
     }
 
-    suspend fun getUser() {
-        try {
-            _userState.update {
-                BaseState.Loading(null, null)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val detailUser = _username.flatMapConcat {
+        _detailUserRepository.get(it)
+            .map { result ->
+                when (result) {
+                    is Result.Error -> BaseState.Error(result.message, null)
+                    is Result.Loading -> BaseState.Loading(null, null)
+                    is Result.Success -> BaseState.Success(null, result.data)
+                }
             }
-            val user = _userDetailRepository.findUserByUsername(username)
-            _userState.update {
-                BaseState.Success(null, user)
+            .catch {  e ->
+                Log.d("USER NOT FOUND", e.message ?: "")
             }
-        } catch (e: Exception) {
-            _userState.update {
-                BaseState.Error(e.message, null)
-            }
-        }
+    }.onStart {
+        emit(BaseState.Idle())
     }
 }

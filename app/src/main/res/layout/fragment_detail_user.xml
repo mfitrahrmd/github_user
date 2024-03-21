@@ -11,8 +11,6 @@
         android:layout_height="wrap_content"
         android:padding="24dp">
 
-
-
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivAvatar"
             android:layout_width="100dp"

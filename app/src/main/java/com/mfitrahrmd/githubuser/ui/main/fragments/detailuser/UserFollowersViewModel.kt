@@ -1,43 +1,41 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.entities.User
-import com.mfitrahrmd.githubuser.repositories.UserDetailRepository
+import com.mfitrahrmd.githubuser.repositories.DetailUserRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class UserFollowersViewModel(private val _userDetailRepository: UserDetailRepository) :
+class UserFollowersViewModel(private val _detailUserRepository: DetailUserRepository) :
     ViewModel() {
-    private val _userFollowersState: MutableStateFlow<BaseState<List<User>>> = MutableStateFlow(
-        BaseState.Idle()
-    )
-    val userFollowersState: StateFlow<BaseState<List<User>>>
+    var username: String = ""
+    private val _userFollowersState: MutableStateFlow<PagingData<User>> =
+        MutableStateFlow(PagingData.empty())
+    val userFollowersState: StateFlow<PagingData<User>>
         get() = _userFollowersState
 
-    var username: String = ""
-
     suspend fun initData() {
-        if (_userFollowersState.value.data == null) {
-            getListFollowers()
+        viewModelScope.launch {
+            getFollowers()
         }
     }
 
-
-    suspend fun getListFollowers() {
+    suspend fun getFollowers() {
         try {
-            _userFollowersState.update {
-                BaseState.Loading(null, null)
-            }
-            val followers = _userDetailRepository.listUserFollowers(username)
-            _userFollowersState.update {
-                BaseState.Success(null, followers)
+            _detailUserRepository.getFollowers(username).cachedIn(viewModelScope).collect {
+                _userFollowersState.value = it
             }
         } catch (e: Exception) {
-            _userFollowersState.update {
-                BaseState.Error(e.message, null)
-            }
+            Log.d("USER NOT FOUND", e.message ?: "")
         }
     }
 }

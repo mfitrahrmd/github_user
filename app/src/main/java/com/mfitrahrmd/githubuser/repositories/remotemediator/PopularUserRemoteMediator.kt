@@ -1,38 +1,46 @@
-package com.mfitrahrmd.githubuser.base
+package com.mfitrahrmd.githubuser.repositories.remotemediator
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.mfitrahrmd.githubuser.repositories.cache.BatchOperation
+import com.mfitrahrmd.githubuser.entities.db.DBPopularUser
+import com.mfitrahrmd.githubuser.entities.db.DBPopularUserWithFavorite
+import com.mfitrahrmd.githubuser.entities.network.SourceUser
+import com.mfitrahrmd.githubuser.mapper.toDBPopularUser
+import com.mfitrahrmd.githubuser.repositories.cache.dao.PopularUserDao
+import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalPagingApi::class)
-abstract class BaseRemoteMediator<LocalEntity : Any, NetworkEntity>(
-    private val _batchOperation: BatchOperation<LocalEntity>, // local data source
-) : RemoteMediator<Int, LocalEntity>() {
+class PopularUserRemoteMediator(
+    private val _location: String,
+    private val _dataSource: DataSource,
+    private val _popularUserDao: PopularUserDao
+) : RemoteMediator<Int, DBPopularUserWithFavorite>() {
     private var _nextPage: Int? = null
 
-    // network data source where to get the latest data
-    abstract suspend fun fetch(page: Int, pageSize: Int): List<NetworkEntity>
+    private suspend fun fetch(page: Int, pageSize: Int): List<SourceUser> {
+        return _dataSource.searchUsers("location:$_location", page, pageSize)
+    }
 
-    // how local data source clean the data when loading type is "refresh"
-    abstract suspend fun cleanLocalData()
+    private suspend fun cleanLocalData() {
+        withContext(Dispatchers.IO) {
+            _popularUserDao.deleteAll()
+        }
+    }
 
-    // how to upsert to local data
-    abstract suspend fun upsertLocalData(localEntities: List<LocalEntity>)
+    private fun toLocalEntity(networkEntity: SourceUser): DBPopularUser {
+        return networkEntity.toDBPopularUser()
+    }
 
-    abstract suspend fun toLocalEntity(networkEntity: NetworkEntity): LocalEntity
-
-    override suspend fun initialize(): InitializeAction {
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
+    private fun upsertLocalData(localEntities: List<DBPopularUser>) {
+        _popularUserDao.insertMany(localEntities)
     }
 
     override suspend fun load(
-        loadType: LoadType,
-        state: PagingState<Int, LocalEntity>
+        loadType: LoadType, state: PagingState<Int, DBPopularUserWithFavorite>
     ): MediatorResult {
         val page: Int = when (loadType) {
             LoadType.REFRESH -> {
@@ -51,7 +59,9 @@ abstract class BaseRemoteMediator<LocalEntity : Any, NetworkEntity>(
         try {
             val items = fetch(page, state.config.pageSize)
             val end = items.isEmpty() || items.size < state.config.pageSize
-            _nextPage = if (loadType == LoadType.REFRESH) 2 else if (end) null else _nextPage?.plus(1)
+            _nextPage = if (loadType == LoadType.REFRESH) 2
+            else if (end) null
+            else _nextPage?.plus(1)
             withContext(Dispatchers.IO) {
                 if (loadType == LoadType.REFRESH) {
                     cleanLocalData()
@@ -63,7 +73,6 @@ abstract class BaseRemoteMediator<LocalEntity : Any, NetworkEntity>(
 
             return MediatorResult.Success(endOfPaginationReached = end)
         } catch (e: Exception) {
-            e.printStackTrace()
             return MediatorResult.Error(e)
         }
     }

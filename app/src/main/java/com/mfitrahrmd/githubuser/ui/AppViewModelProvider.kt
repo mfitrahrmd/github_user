@@ -17,22 +17,22 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         initializer {
             SearchUsersViewModel(
-                githubUserApplication().appContainer.userSearchRepository,
-                githubUserApplication().appContainer.userDetailRepository,
-                githubUserApplication().appContainer.userPopularRepository
+                githubUserApplication().appContainer.searchUsersRepository,
+                githubUserApplication().appContainer.userPopularRepository,
+                githubUserApplication().appContainer.userFavoriteRepository
             )
         }
         initializer {
-            DetailUserViewModel(githubUserApplication().appContainer.userDetailRepository)
+            DetailUserViewModel(githubUserApplication().appContainer.detailUserRepository)
         }
         initializer {
             EmptyViewModel()
         }
         initializer {
-            UserFollowingViewModel(githubUserApplication().appContainer.userDetailRepository)
+            UserFollowingViewModel(githubUserApplication().appContainer.detailUserRepository)
         }
         initializer {
-            UserFollowersViewModel(githubUserApplication().appContainer.userDetailRepository)
+            UserFollowersViewModel(githubUserApplication().appContainer.detailUserRepository)
         }
     }
 }

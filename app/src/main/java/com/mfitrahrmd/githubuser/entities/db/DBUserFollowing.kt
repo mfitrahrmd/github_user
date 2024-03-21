@@ -1,13 +1,18 @@
 package com.mfitrahrmd.githubuser.entities.db
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "favorite_user")
-data class DBFavoriteUser(
+@Entity(
+    tableName = DBUserFollowing.TABLE_NAME,
+)
+data class DBUserFollowing(
     @PrimaryKey(autoGenerate = true)
     val dbId: Int = 0,
+
+    val userDbId: Int? = null,
 
     val id: Int,
 
@@ -71,7 +76,9 @@ data class DBFavoriteUser(
 
     val location: String?,
 
-    val nodeId: String?,
-
-    val addedAt: Date = Date()
-)
+    val nodeId: String?
+) {
+    companion object {
+        const val TABLE_NAME = "user_following"
+    }
+}

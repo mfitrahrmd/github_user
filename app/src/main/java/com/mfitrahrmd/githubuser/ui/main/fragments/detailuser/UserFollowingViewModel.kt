@@ -1,42 +1,41 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.entities.User
-import com.mfitrahrmd.githubuser.repositories.UserDetailRepository
+import com.mfitrahrmd.githubuser.repositories.DetailUserRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class UserFollowingViewModel(private val _userDetailRepository: UserDetailRepository) :
+class UserFollowingViewModel(private val _detailUserRepository: DetailUserRepository) :
     ViewModel() {
-    private val _userFollowingState: MutableStateFlow<BaseState<List<User>>> = MutableStateFlow(
-        BaseState.Idle()
-    )
-    val userFollowingState: StateFlow<BaseState<List<User>>>
+    var username: String = ""
+    private val _userFollowingState: MutableStateFlow<PagingData<User>> =
+        MutableStateFlow(PagingData.empty())
+    val userFollowingState: StateFlow<PagingData<User>>
         get() = _userFollowingState
 
-    var username: String = ""
-
-    suspend fun initData() {
-        if (_userFollowingState.value.data == null) {
-            getListFollowing()
+    fun initData() {
+        viewModelScope.launch {
+            getFollowing()
         }
     }
 
-    suspend fun getListFollowing() {
+    suspend fun getFollowing() {
         try {
-            _userFollowingState.update {
-                BaseState.Loading(null, null)
-            }
-            val following = _userDetailRepository.listUserFollowing(username)
-            _userFollowingState.update {
-                BaseState.Success(null, following)
+            _detailUserRepository.getFollowing(username).cachedIn(viewModelScope).collect {
+                _userFollowingState.value = it
             }
         } catch (e: Exception) {
-            _userFollowingState.update {
-                BaseState.Error(e.message, null)
-            }
+            Log.d("USER NOT FOUND", e.message ?: "")
         }
     }
 }
