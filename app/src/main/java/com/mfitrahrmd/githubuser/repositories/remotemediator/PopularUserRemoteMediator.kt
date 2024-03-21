@@ -31,12 +31,10 @@ class PopularUserRemoteMediator(
         }
     }
 
-    private fun toLocalEntity(networkEntity: RemoteUser): DBPopularUser {
-        return networkEntity.toDBPopularUser()
-    }
-
-    private fun upsertLocalData(localEntities: List<DBPopularUser>) {
-        _popularUserDao.insertMany(localEntities)
+    private suspend fun upsertLocalData(localEntities: List<DBPopularUser>) {
+        withContext(Dispatchers.IO) {
+            _popularUserDao.insertMany(localEntities)
+        }
     }
 
     override suspend fun load(
@@ -66,9 +64,7 @@ class PopularUserRemoteMediator(
                 if (loadType == LoadType.REFRESH) {
                     cleanLocalData()
                 }
-                upsertLocalData(items.map {
-                    toLocalEntity(it)
-                })
+                upsertLocalData(items.toDBPopularUser())
             }
 
             return MediatorResult.Success(endOfPaginationReached = end)

@@ -4,5 +4,5 @@ import androidx.room.Insert
 
 interface BatchOperation<LocalEntity> {
     @Insert
-    fun insertMany(items: List<LocalEntity>)
+    suspend fun insertMany(items: List<LocalEntity>)
 }

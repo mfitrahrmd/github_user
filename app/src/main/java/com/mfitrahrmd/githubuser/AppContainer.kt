@@ -40,23 +40,20 @@ class AppDataContainer(private val _context: Context) : AppContainer {
     }
     override val searchUsersRepository: SearchUsersRepository by lazy {
         SearchUsersRepositoryImpl(
-            _inMemoryDataSource,
-            _userDatabase.searchUserDao(),
-            _userDatabase.favoriteUserDao(),
-            _userDatabase.remoteKeyDao()
+            _remoteDataSource,
+            _userDatabase.searchUserDao()
         )
     }
     override val detailUserRepository: DetailUserRepository by lazy {
-        DetailUserRepositoryImpl(_inMemoryDataSource, _userDatabase.detailUserDao(), _userDatabase.userFollowingDao(), _userDatabase.userFollowersDao(), _userDatabase.favoriteUserDao())
+        DetailUserRepositoryImpl(_remoteDataSource, _userDatabase.detailUserDao(), _userDatabase.userFollowingDao(), _userDatabase.userFollowersDao(), _userDatabase.favoriteUserDao())
     }
     override val userFavoriteRepository: UserFavoriteRepository by lazy {
         UserFavoriteRepositoryImpl(_userDatabase.favoriteUserDao())
     }
     override val userPopularRepository: UserPopularRepository by lazy {
         UserPopularRepositoryImpl(
-            _inMemoryDataSource,
-            _userDatabase.popularUserDao(),
-            _userDatabase.favoriteUserDao()
+            _remoteDataSource,
+            _userDatabase.popularUserDao()
         )
     }
 }

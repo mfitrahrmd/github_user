@@ -41,6 +41,8 @@ class UserFollowingRemoteMediator(
     }
 
     override suspend fun upsertLocalData(localEntities: List<DBUserFollowing>) {
-        _userFollowingDao.insertMany(localEntities)
+        withContext(Dispatchers.IO) {
+            _userFollowingDao.insertMany(localEntities)
+        }
     }
 }

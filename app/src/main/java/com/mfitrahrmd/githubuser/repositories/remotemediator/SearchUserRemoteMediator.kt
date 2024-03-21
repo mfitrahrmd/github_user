@@ -5,9 +5,9 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.mfitrahrmd.githubuser.entities.db.DBSearchUser
+import com.mfitrahrmd.githubuser.entities.db.DBSearchUserWithFavorite
 import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
 import com.mfitrahrmd.githubuser.mapper.toDBSearchUser
-import com.mfitrahrmd.githubuser.repositories.cache.dao.RemoteKeyDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.SearchUserDao
 import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
 import kotlinx.coroutines.Dispatchers
@@ -18,8 +18,7 @@ class SearchUserRemoteMediator(
     private val query: String,
     private val _dataSource: DataSource,
     private val _searchUserDao: SearchUserDao,
-    private val _remoteKeyDao: RemoteKeyDao
-) : RemoteMediator<Int, DBSearchUser>() {
+) : RemoteMediator<Int, DBSearchUserWithFavorite>() {
     private var _nextPage: Int? = null
 
     private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
@@ -32,16 +31,14 @@ class SearchUserRemoteMediator(
         }
     }
 
-    private fun toLocalEntity(networkEntity: RemoteUser): DBSearchUser {
-        return networkEntity.toDBSearchUser()
-    }
-
-    private fun upsertLocalData(localEntities: List<DBSearchUser>) {
-        _searchUserDao.insertMany(localEntities)
+    private suspend fun upsertLocalData(localEntities: List<DBSearchUser>) {
+        withContext(Dispatchers.IO) {
+            _searchUserDao.insertMany(localEntities)
+        }
     }
 
     override suspend fun load(
-        loadType: LoadType, state: PagingState<Int, DBSearchUser>
+        loadType: LoadType, state: PagingState<Int, DBSearchUserWithFavorite>
     ): MediatorResult {
         val page: Int = when (loadType) {
             LoadType.REFRESH -> {
@@ -67,9 +64,7 @@ class SearchUserRemoteMediator(
                 if (loadType == LoadType.REFRESH) {
                     cleanLocalData()
                 }
-                upsertLocalData(items.map {
-                    toLocalEntity(it)
-                })
+                upsertLocalData(items.toDBSearchUser())
             }
 
             return MediatorResult.Success(endOfPaginationReached = end)
