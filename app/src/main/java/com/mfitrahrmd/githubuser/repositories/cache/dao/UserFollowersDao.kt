@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.mfitrahrmd.githubuser.entities.db.DBUserFollowers
+import com.mfitrahrmd.githubuser.entities.db.DBUserFollowersWithFavorite
 import com.mfitrahrmd.githubuser.repositories.cache.BatchOperation
 
 @Dao
@@ -17,8 +18,8 @@ abstract class UserFollowersDao : BatchOperation<DBUserFollowers> {
     @Delete
     abstract suspend fun deleteOne(user: DBUserFollowers)
 
-    @Query("SELECT * FROM user_followers WHERE userDbId = :userDbId ORDER BY dbId")
-    abstract fun findManyByUserDbId(userDbId: Int): PagingSource<Int, DBUserFollowers>
+    @Query("SELECT * FROM user_followers LEFT JOIN favorite_user ON user_followers.login = favorite_user.login WHERE user_followers.userDbId = :userDbId ORDER BY dbId")
+    abstract fun findManyByUserDbIdWithFavorite(userDbId: Int): PagingSource<Int, DBUserFollowersWithFavorite>
 
     @Query("DELETE FROM user_followers WHERE userDbId = :userDbId")
     abstract suspend fun deleteManyByUserDbId(userDbId: Int)

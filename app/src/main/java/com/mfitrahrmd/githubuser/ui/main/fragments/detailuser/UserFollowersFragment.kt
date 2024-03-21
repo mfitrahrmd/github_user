@@ -29,7 +29,7 @@ class UserFollowersFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.username = UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username
+        viewModel.username = UserFollowersFragmentArgs.fromBundle(arguments as Bundle).username
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

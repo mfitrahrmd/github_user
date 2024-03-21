@@ -24,7 +24,7 @@ class UserFollowersRemoteMediator(
     private var _nextPage: Int? = null
 
     private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
-        return _dataSource.listUserFollowing(_username, page, pageSize)
+        return _dataSource.listUserFollowers(_username, page, pageSize)
     }
 
     private suspend fun cleanLocalData() {
