@@ -35,10 +35,5 @@ class DetailUserViewModel(private val _detailUserRepository: DetailUserRepositor
                     is Result.Success -> BaseState.Success(null, result.data)
                 }
             }
-            .catch {  e ->
-                Log.d("USER NOT FOUND", e.message ?: "")
-            }
-    }.onStart {
-        emit(BaseState.Idle())
     }
 }

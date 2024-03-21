@@ -108,7 +108,8 @@ class DetailUserRepositoryImpl(
             }
             val dbUser = _detailUserDao.findOneByUsername(username)
             if (dbUser == null) {
-                throw Exception("user not found")
+                emit(Result.Error("user not found"))
+                return@flow
             }
             val user = coroutineScope {
                 async {
