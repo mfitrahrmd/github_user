@@ -41,17 +41,6 @@ private val _user = RemoteUser(
 
 
 class InMemoryDataSource private constructor() : DataSource {
-
-    private val _following: List<RemoteUser> = List(100) { i ->
-        _user.copy(
-            id = i, login = "following$i", name = "following$i", email = "following$i@gmail.com"
-        )
-    }
-    private val _followers: List<RemoteUser> = List(100) { i ->
-        _user.copy(
-            id = i, login = "follower$i", name = "follower$i", email = "follower$i@gmail.com"
-        )
-    }
     private val _users: List<RemoteUser> = List(100) { i ->
         _user.copy(
             id = i,
@@ -59,8 +48,8 @@ class InMemoryDataSource private constructor() : DataSource {
             name = "user$i",
             email = "user$i@gmail.com",
             location = "indonesia",
-            following = _following.size,
-            followers = _followers.size
+            following = 100,
+            followers = 100
         )
     }
 
@@ -94,10 +83,16 @@ class InMemoryDataSource private constructor() : DataSource {
     override suspend fun listUserFollowers(
         username: String, page: Int?, perPage: Int?
     ): List<RemoteUser> {
-        val start = if (page == null || page == 0) 0 else page * (perPage ?: 20)
-        val end = start + (perPage ?: 20)
+        val p = (page ?: 1) - 1
+        val pp = perPage ?: 20
+        val start = if (p == 0) 0 else p * pp
+        val end = start + pp - 1
 
-        return _followers.slice(start..end)
+        return if (start > _users.size || end > _users.size) {
+            emptyList()
+        } else {
+            if (pp > _users.size) _users else _users.slice(start..end)
+        }
     }
 
     override suspend fun listUserFollowing(
@@ -107,13 +102,11 @@ class InMemoryDataSource private constructor() : DataSource {
         val pp = perPage ?: 20
         val start = if (p == 0) 0 else p * pp
         val end = start + pp - 1
-        Log.d("START", start.toString())
-        Log.d("END", end.toString())
 
-        return if (start > _following.size || end > _following.size) {
+        return if (start > _users.size || end > _users.size) {
             emptyList()
         } else {
-            if (pp > _following.size) _following else _following.slice(start..end)
+            if (pp > _users.size) _users else _users.slice(start..end)
         }
     }
 
