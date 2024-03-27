@@ -1,6 +1,5 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -30,30 +29,36 @@ class SearchUsersViewModel(
 
     fun searchUsers(username: String) {
         viewModelScope.launch {
-            _searchUsersRepository.get(username).cachedIn(viewModelScope).collect {
-                _searchUsersState.value = it
+            try {
+                _searchUsersRepository.get(username).cachedIn(viewModelScope).collect {
+                    _searchUsersState.value = it
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
 
     fun getPopularUsers() {
         viewModelScope.launch {
-            _userPopularRepository.get(POPULAR_USERS_LOCATION).cachedIn(viewModelScope)
-                .collect {
-                    _popularUsersState.value = it
-                }
+            try {
+                _userPopularRepository.get(POPULAR_USERS_LOCATION).cachedIn(viewModelScope)
+                    .collect {
+                        _popularUsersState.value = it
+                    }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
     fun addToFavorite(user: User) {
-        Log.d("ADD", user.toString())
         viewModelScope.launch {
             _userFavoriteRepository.add(user)
         }
     }
 
     fun removeFromFavorite(user: User) {
-        Log.d("REMOVE", user.toString())
         viewModelScope.launch {
             _userFavoriteRepository.remove(user)
         }

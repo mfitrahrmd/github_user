@@ -31,9 +31,6 @@ abstract class FavoriteUserDao : BatchOperation<DBFavoriteUser> {
     @Query("SELECT * FROM favorite_user WHERE login = :username")
     abstract fun findOneByUsername(username: String): DBFavoriteUser?
 
-    @Query("SELECT * FROM favorite_user WHERE login = :username")
-    abstract fun findOneByUsernameFlow(username: String): Flow<DBFavoriteUser?>
-
     @Query("DELETE FROM favorite_user")
     abstract suspend fun deleteAll()
 }

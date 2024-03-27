@@ -24,6 +24,6 @@ abstract class PopularUserDao : BatchOperation<DBPopularUser> {
     @Query("DELETE FROM popular_user")
     abstract suspend fun deleteAll()
 
-    @Query("SELECT * FROM popular_user LEFT JOIN favorite_user ON popular_user.login = favorite_user.login")
+    @Query("SELECT * FROM popular_user LEFT JOIN favorite_user ON popular_user.login = favorite_user.login ORDER BY popular_user.dbId")
     abstract fun findAllWithFavorite(): PagingSource<Int, DBPopularUserWithFavorite>
 }

@@ -21,7 +21,7 @@ abstract class SearchUserDao : BatchOperation<DBSearchUser> {
     @Query("SELECT * FROM search_user ORDER BY dbId")
     abstract fun findAll(): PagingSource<Int, DBSearchUser>
 
-    @Query("SELECT * FROM search_user LEFT JOIN favorite_user ON search_user.login = favorite_user.login")
+    @Query("SELECT * FROM search_user LEFT JOIN favorite_user ON search_user.login = favorite_user.login ORDER BY search_user.dbId")
     abstract fun findAllWithFavorite(): PagingSource<Int, DBSearchUserWithFavorite>
 
     @Query("DELETE FROM search_user")

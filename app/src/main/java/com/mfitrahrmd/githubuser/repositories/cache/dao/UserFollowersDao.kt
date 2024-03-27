@@ -18,7 +18,7 @@ abstract class UserFollowersDao : BatchOperation<DBUserFollowers> {
     @Delete
     abstract suspend fun deleteOne(user: DBUserFollowers)
 
-    @Query("SELECT * FROM user_followers LEFT JOIN favorite_user ON user_followers.login = favorite_user.login WHERE user_followers.userDbId = :userDbId ORDER BY dbId")
+    @Query("SELECT * FROM user_followers LEFT JOIN favorite_user ON user_followers.login = favorite_user.login WHERE user_followers.userDbId = :userDbId ORDER BY user_followers.dbId")
     abstract fun findManyByUserDbIdWithFavorite(userDbId: Int): PagingSource<Int, DBUserFollowersWithFavorite>
 
     @Query("DELETE FROM user_followers WHERE userDbId = :userDbId")
