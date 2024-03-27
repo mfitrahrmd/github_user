@@ -1,6 +1,5 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -8,13 +7,10 @@ import androidx.paging.cachedIn
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.repositories.DetailUserRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class UserFollowersViewModel(private val _detailUserRepository: DetailUserRepository) :
@@ -22,6 +18,10 @@ class UserFollowersViewModel(private val _detailUserRepository: DetailUserReposi
     private val _username = MutableStateFlow<String>("")
     val username: String
         get() = _username.value
+    private val _userFollowers: MutableStateFlow<BaseState<Flow<PagingData<User>>>> =
+        MutableStateFlow(BaseState.Idle())
+    val userFollowers: StateFlow<BaseState<Flow<PagingData<User>>>>
+        get() = _userFollowers
 
     fun setUsername(username: String) {
         viewModelScope.launch {
@@ -29,8 +29,17 @@ class UserFollowersViewModel(private val _detailUserRepository: DetailUserReposi
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val userFollowers = _username.flatMapConcat {
-        _detailUserRepository.getFollowers(it).cachedIn(viewModelScope)
+    init {
+        viewModelScope.launch {
+            _username.collectLatest {
+                _userFollowers.value = BaseState.Loading(null, null)
+                try {
+                    val followersPage = _detailUserRepository.getFollowers(it).cachedIn(viewModelScope)
+                    _userFollowers.value = BaseState.Success(null, followersPage)
+                } catch (e: Exception) {
+                    BaseState.Error(e.message, _userFollowers.value.data)
+                }
+            }
+        }
     }
 }

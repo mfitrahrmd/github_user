@@ -8,8 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.adapters.LoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
@@ -32,9 +30,6 @@ class UserFollowingFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setUsername(UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username)
-        lifecycleScope.launch {
-            viewModel.getUserFollowing()
-        }
     }
 
     override fun onResume() {

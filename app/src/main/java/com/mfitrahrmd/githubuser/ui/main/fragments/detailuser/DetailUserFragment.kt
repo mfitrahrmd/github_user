@@ -88,7 +88,6 @@ class DetailUserFragment :
         lifecycleScope.launch {
             viewModel.getDetailUser()
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                Log.d("USERNAME", viewModel.username)
                 val pages: List<UserFollowingFollowersAdapter.Page> = mutableListOf(
                     UserFollowingFollowersAdapter.Page(
                         "Following",
