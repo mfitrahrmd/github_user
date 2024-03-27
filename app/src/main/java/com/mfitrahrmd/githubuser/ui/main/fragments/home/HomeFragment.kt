@@ -12,9 +12,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, EmptyViewModel>(EmptyView
         with(viewBinding) {
             btnSearchUsers.setOnClickListener {
                 findNavController().navigate(
-                    R.id.action_homeFragment_to_searchUsers, null, null, FragmentNavigatorExtras(
-                        ivLogo to "ivLogo"
-                    )
+                    R.id.action_homeFragment_to_searchUsers
                 )
             }
         }

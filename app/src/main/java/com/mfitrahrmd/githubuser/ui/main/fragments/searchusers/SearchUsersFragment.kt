@@ -39,12 +39,6 @@ class SearchUsersFragment :
         }
     })
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        sharedElementEnterTransition =
-            TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getPopularUsers()
@@ -62,7 +56,6 @@ class SearchUsersFragment :
                         searchBar.setText(searchView.text)
                         searchView.hide()
                         lifecycleScope.launch {
-                            Log.d("BEGIN SEARCH", searchView.text.toString())
                             viewModel.searchUsers(searchView.text.toString())
                         }
 
