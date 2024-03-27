@@ -1,15 +1,21 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.mfitrahrmd.githubuser.R
 import com.mfitrahrmd.githubuser.adapters.LoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentUserFollowBinding
+import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -26,6 +32,9 @@ class UserFollowingFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setUsername(UserFollowingFragmentArgs.fromBundle(arguments as Bundle).username)
+        lifecycleScope.launch {
+            viewModel.getUserFollowing()
+        }
     }
 
     override fun onResume() {
@@ -49,8 +58,45 @@ class UserFollowingFragment :
     override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userFollowing.collectLatest {
-                    _listUserFollowingAdapter.submitData(lifecycle, it)
+                viewModel.userFollowing.collect { currentUiState ->
+                    when (currentUiState) {
+                        is BaseState.Success -> {
+                            with(viewBinding) {
+                                shimmer.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
+                                currentUiState.data?.collectLatest {
+                                    _listUserFollowingAdapter.submitData(lifecycle, it)
+                                }
+                            }
+                        }
+
+                        is BaseState.Loading -> {
+                            with(viewBinding) {
+                                shimmer.apply {
+                                    startShimmer()
+                                    visibility = View.VISIBLE
+                                }
+                            }
+                        }
+
+                        is BaseState.Error -> {
+                            with(viewBinding) {
+                                shimmer.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
+                            }
+                            Toast.makeText(
+                                view?.context,
+                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else SearchUsersFragment.DEFAULT_ERROR_MESSAGE,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        else -> {}
+                    }
                 }
             }
         }
