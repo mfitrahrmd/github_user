@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_searchUsers_to_detailUserFragment"
             app:destination="@id/detailUserFragment" />
+        <action
+            android:id="@+id/action_searchUsers_to_userFavoriteFragment"
+            app:destination="@id/userFavoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailUserFragment"
@@ -49,6 +52,14 @@
         <argument
             android:name="username"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFavoriteFragment"
+        android:name="com.mfitrahrmd.githubuser.ui.main.fragments.userfavorite.UserFavoriteFragment"
+        android:label="UserFavoriteFragment" >
+        <action
+            android:id="@+id/action_userFavoriteFragment_to_detailUserFragment"
+            app:destination="@id/detailUserFragment" />
     </fragment>
 
 </navigation>

@@ -6,7 +6,6 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.TransitionInflater
 import com.mfitrahrmd.githubuser.adapters.LoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.PopularUsersAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
@@ -75,6 +74,11 @@ class SearchUsersFragment :
                     false
                 )
                 adapter = _popularUsersAdapter
+            }
+            btnToFavorite.setOnClickListener {
+                findNavController().navigate(
+                    SearchUsersFragmentDirections.actionSearchUsersToUserFavoriteFragment()
+                )
             }
         }
     }

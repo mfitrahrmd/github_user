@@ -10,6 +10,7 @@ import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserViewMode
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowersViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowingViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersViewModel
+import com.mfitrahrmd.githubuser.ui.main.fragments.userfavorite.UserFavoriteViewModel
 
 class EmptyViewModel : ViewModel()
 
@@ -33,6 +34,9 @@ object AppViewModelProvider {
         }
         initializer {
             UserFollowersViewModel(githubUserApplication().appContainer.detailUserRepository)
+        }
+        initializer {
+            UserFavoriteViewModel(githubUserApplication().appContainer.userFavoriteRepository)
         }
     }
 }
