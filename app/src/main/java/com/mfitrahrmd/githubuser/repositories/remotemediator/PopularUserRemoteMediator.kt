@@ -11,6 +11,8 @@ import com.mfitrahrmd.githubuser.mapper.toDBPopularUser
 import com.mfitrahrmd.githubuser.repositories.cache.dao.PopularUserDao
 import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalPagingApi::class)
@@ -22,7 +24,16 @@ class PopularUserRemoteMediator(
     private var _nextPage: Int? = null
 
     private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
-        return _dataSource.searchUsers("location:$_location", page, pageSize)
+        val popularUsers = _dataSource.searchUsers("location:$_location", page, pageSize)
+        val popularUsersDetail = withContext(Dispatchers.IO) {
+            popularUsers.map {
+                async {
+                    _dataSource.findUserByUsername(it.login)
+                }
+            }
+        }.awaitAll().filterNotNull()
+
+        return popularUsersDetail
     }
 
     private suspend fun cleanLocalData() {
