@@ -34,11 +34,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -60,13 +56,6 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
-
-    implementation("androidx.compose.ui:ui:1.6.1")
-    implementation("androidx.compose.compiler:compiler:1.5.9")
-    implementation("androidx.compose.runtime:runtime-android:1.6.1")
-    implementation("androidx.compose.foundation:foundation-android:1.6.1")
-    implementation("androidx.compose.material3:material3:1.2.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")

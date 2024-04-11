@@ -139,6 +139,7 @@ class SearchUsersFragment :
 
                     is BaseState.Loading -> {
                         with(viewBinding) {
+                            tvTitlePopularUsers.visibility = View.GONE
                             rvPopularUsers.apply {
                                 visibility = View.GONE
                             }

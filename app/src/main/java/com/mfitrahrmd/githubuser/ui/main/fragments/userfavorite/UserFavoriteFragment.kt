@@ -39,7 +39,7 @@ class UserFavoriteFragment :
                     false
                 )
                 adapter =
-                    _listUserFavoriteAdapter.withLoadStateFooter(LoaderStateAdapter {/*TODO*/ })
+                    _listUserFavoriteAdapter.withLoadStateFooter(LoaderStateAdapter { })
             }
         }
     }
