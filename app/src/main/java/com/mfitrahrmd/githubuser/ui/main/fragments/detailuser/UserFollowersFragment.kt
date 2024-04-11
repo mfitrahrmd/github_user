@@ -19,13 +19,19 @@ import kotlinx.coroutines.launch
 
 class UserFollowersFragment :
     BaseFragment<FragmentUserFollowBinding, UserFollowersViewModel>(UserFollowersViewModel::class.java) {
-    private val _listUserFollowersAdapter: UsersAdapter = UsersAdapter {
+    private val _listUserFollowersAdapter: UsersAdapter = UsersAdapter({
         findNavController().navigate(
             DetailUserFragmentDirections.actionDetailUserFragmentSelf(
                 it.username
             )
         )
-    }
+    }, {
+        if (it.favorite.`is`) {
+            viewModel.removeFromFavorite(it)
+        } else {
+            viewModel.addToFavorite(it)
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +91,7 @@ class UserFollowersFragment :
                             }
                             Toast.makeText(
                                 view?.context,
-                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else SearchUsersFragment.DEFAULT_ERROR_MESSAGE,
+                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -99,9 +105,11 @@ class UserFollowersFragment :
 
     companion object {
         @JvmStatic
-        fun newInstance(userFollowersFragmentArgs: UserFollowersFragmentArgs) =
+        fun newInstance(args: UserFollowersFragmentArgs) =
             UserFollowersFragment().apply {
-                arguments = userFollowersFragmentArgs.toBundle()
+                arguments = args.toBundle()
             }
+
+        const val DEFAULT_ERROR_MESSAGE = "unexpected error"
     }
 }

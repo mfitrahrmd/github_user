@@ -1,7 +1,6 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
@@ -16,8 +15,6 @@ import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentDetailUserBinding
 import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.launch
-
-private const val ARG_USERNAME = "username"
 
 class DetailUserFragment :
     BaseFragment<FragmentDetailUserBinding, DetailUserViewModel>(DetailUserViewModel::class.java) {
@@ -37,15 +34,22 @@ class DetailUserFragment :
                                     R.string.username,
                                     currentUiState.data?.username
                                 )
-                                tvFollowingCount.text = this@DetailUserFragment.getString(
-                                    R.string.followingCount,
-                                    currentUiState.data?.following?.count
-                                )
-                                tvFollowersCount.text = this@DetailUserFragment.getString(
-                                    R.string.followersCount,
-                                    currentUiState.data?.followers?.count
-                                )
                                 tvBio.text = currentUiState.data?.bio
+                                if (currentUiState.data?.company.isNullOrEmpty()) {
+                                    tvCompany.visibility = View.GONE
+                                } else {
+                                    tvCompany.text = currentUiState.data?.company
+                                }
+                                if (currentUiState.data?.location.isNullOrEmpty()) {
+                                    tvLocation.visibility = View.GONE
+                                } else {
+                                    tvLocation.text = currentUiState.data?.location
+                                }
+                                if (currentUiState.data?.twitterUsername.isNullOrEmpty()) {
+                                    tvTwitter.visibility = View.GONE
+                                } else {
+                                    tvTwitter.text = currentUiState.data?.twitterUsername
+                                }
                                 Glide.with(this@DetailUserFragment)
                                     .load(currentUiState.data?.avatarUrl)
                                     .into(ivAvatar)
@@ -70,7 +74,7 @@ class DetailUserFragment :
                             }
                             Toast.makeText(
                                 view?.context,
-                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else SearchUsersFragment.DEFAULT_ERROR_MESSAGE,
+                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -103,7 +107,8 @@ class DetailUserFragment :
                     )
                 )
                 with(viewBinding) {
-                    vpFollowingFollowers.adapter = UserFollowingFollowersAdapter(pages, childFragmentManager, lifecycle)
+                    vpFollowingFollowers.adapter =
+                        UserFollowingFollowersAdapter(pages, childFragmentManager, lifecycle)
                     TabLayoutMediator(tlFollowingFollowers, vpFollowingFollowers) { tab, position ->
                         tab.text = pages[position].title
                     }.attach()
@@ -114,8 +119,11 @@ class DetailUserFragment :
 
     companion object {
         @JvmStatic
-        fun newInstance(args: DetailUserFragmentArgs) = DetailUserFragment().apply {
-            arguments = args.toBundle()
-        }
+        fun newInstance(args: DetailUserFragmentArgs) =
+            DetailUserFragment().apply {
+                arguments = args.toBundle()
+            }
+
+        const val DEFAULT_ERROR_MESSAGE = "unexpected error"
     }
 }

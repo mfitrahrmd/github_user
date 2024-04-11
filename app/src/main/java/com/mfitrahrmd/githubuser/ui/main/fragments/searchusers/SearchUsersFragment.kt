@@ -1,34 +1,40 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfitrahrmd.githubuser.adapters.LoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.PopularUsersAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
+import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
+import com.mfitrahrmd.githubuser.ui.main.fragments.main.MainFragmentDirections
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class SearchUsersFragment :
     BaseFragment<FragmentSearchUsersBinding, SearchUsersViewModel>(SearchUsersViewModel::class.java) {
-    private val _searchUsersAdapter: UsersAdapter = UsersAdapter {
+    private val _searchUsersAdapter: UsersAdapter = UsersAdapter({
         findNavController().navigate(
-            SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(
-                it.username
-            )
+            MainFragmentDirections.actionMainFragmentToDetailUserFragment(it.username)
         )
-    }
+    }, {
+        if (it.favorite.`is`) {
+            viewModel.removeFromFavorite(it)
+        } else {
+            viewModel.addToFavorite(it)
+        }
+    })
 
     private val _popularUsersAdapter: PopularUsersAdapter = PopularUsersAdapter({
         findNavController().navigate(
-            SearchUsersFragmentDirections.actionSearchUsersToDetailUserFragment(
-                it.username
-            )
+            MainFragmentDirections.actionMainFragmentToDetailUserFragment(it.username)
         )
     }, {
         if (it.favorite.`is`) {
@@ -67,7 +73,7 @@ class SearchUsersFragment :
                 )
                 adapter = _searchUsersAdapter.withLoadStateFooter(LoaderStateAdapter {})
             }
-            rvPopularIndoUsers.apply {
+            rvPopularUsers.apply {
                 layoutManager = LinearLayoutManager(
                     this@SearchUsersFragment.context,
                     LinearLayoutManager.HORIZONTAL,
@@ -75,23 +81,74 @@ class SearchUsersFragment :
                 )
                 adapter = _popularUsersAdapter
             }
-            btnToFavorite.setOnClickListener {
-                findNavController().navigate(
-                    SearchUsersFragmentDirections.actionSearchUsersToUserFavoriteFragment()
-                )
-            }
         }
     }
 
     override fun observe() {
         lifecycleScope.launch {
-            viewModel.searchUsersState.collectLatest {
-                _searchUsersAdapter.submitData(lifecycle, it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchUsersState.collectLatest { currentUiState ->
+                    when(currentUiState) {
+                        is BaseState.Success -> {
+                            with(viewBinding) {
+                                tvTitleSearchResult.visibility = View.VISIBLE
+                                rvSearchUsers.apply {
+                                    visibility = View.VISIBLE
+                                }
+                                currentUiState.data?.collectLatest {
+                                    _searchUsersAdapter.submitData(lifecycle, it)
+                                }
+                            }
+                        }
+                        is BaseState.Loading -> {
+                            with(viewBinding) {
+                                rvSearchUsers.apply {
+                                    visibility = View.GONE
+                                }
+                            }
+                        }
+                        is BaseState.Error -> {
+                            Toast.makeText(
+                                view?.context,
+                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is BaseState.Idle -> {}
+                    }
+                }
             }
         }
         lifecycleScope.launch {
-            viewModel.popularUsersState.collectLatest {
-                _popularUsersAdapter.submitData(lifecycle, it)
+            viewModel.popularUsersState.collectLatest { currentUiState ->
+                when(currentUiState) {
+                    is BaseState.Success -> {
+                        with(viewBinding) {
+                            tvTitlePopularUsers.visibility = View.VISIBLE
+                            rvPopularUsers.apply {
+                                visibility = View.VISIBLE
+                            }
+                            currentUiState.data?.collectLatest {
+                                _popularUsersAdapter.submitData(lifecycle, it)
+                            }
+                        }
+                    }
+                    is BaseState.Loading -> {
+                        with(viewBinding) {
+                            rvPopularUsers.apply {
+                                visibility = View.GONE
+                            }
+                        }
+                    }
+                    is BaseState.Error -> {
+                        Toast.makeText(
+                            view?.context,
+                            if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is BaseState.Idle -> {}
+                }
             }
         }
     }

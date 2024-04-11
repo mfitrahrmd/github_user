@@ -8,7 +8,6 @@ import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.mapper.toDBFavoriteUser
 import com.mfitrahrmd.githubuser.mapper.toUser
 import com.mfitrahrmd.githubuser.repositories.cache.dao.FavoriteUserDao
-import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

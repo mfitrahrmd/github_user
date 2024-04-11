@@ -11,7 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:background="@color/gray"
+        android:background="@android:color/darker_gray"
         app:shapeAppearanceOverlay="@style/Theme.GithubUser.CircleImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -29,12 +29,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/gray" />
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:background="@color/gray"
+            android:background="@android:color/darker_gray"
             android:layout_marginTop="4dp" />
 
         <LinearLayout
@@ -45,11 +45,11 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:background="@color/gray" />
+                android:background="@android:color/darker_gray" />
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@android:color/darker_gray"
                 android:layout_marginStart="12dp" />
         </LinearLayout>
 
@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@color/gray"
+        android:background="@android:color/darker_gray"
         app:layout_constraintTop_toBottomOf="@id/ivAvatar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

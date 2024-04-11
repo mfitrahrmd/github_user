@@ -1,6 +1,5 @@
 package com.mfitrahrmd.githubuser.repositories
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -13,13 +12,12 @@ import com.mfitrahrmd.githubuser.repositories.cache.dao.DetailUserDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.FavoriteUserDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.UserFollowersDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.UserFollowingDao
-import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
+import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
 import com.mfitrahrmd.githubuser.repositories.remotemediator.UserFollowersRemoteMediator
 import com.mfitrahrmd.githubuser.repositories.remotemediator.UserFollowingRemoteMediator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -28,7 +26,7 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalPagingApi::class)
 class DetailUserRepositoryImpl(
-    private val _dataSource: DataSource,
+    private val _User_dataSource: UserDataSource,
     private val _detailUserDao: DetailUserDao,
     private val _userFollowingDao: UserFollowingDao,
     private val _userFollowersDao: UserFollowersDao,
@@ -45,7 +43,7 @@ class DetailUserRepositoryImpl(
                 pagingSourceFactory = { _userFollowingDao.findManyByUserDbIdWithFavorite(user.dbId) },
                 remoteMediator = UserFollowingRemoteMediator(
                     username,
-                    _dataSource,
+                    _User_dataSource,
                     _userFollowingDao,
                     _detailUserDao
                 )
@@ -77,7 +75,7 @@ class DetailUserRepositoryImpl(
                 pagingSourceFactory = { _userFollowersDao.findManyByUserDbIdWithFavorite(user.dbId) },
                 remoteMediator = UserFollowersRemoteMediator(
                     username,
-                    _dataSource,
+                    _User_dataSource,
                     _userFollowersDao,
                     _detailUserDao
                 )
@@ -97,7 +95,7 @@ class DetailUserRepositoryImpl(
     override fun get(username: String): Flow<Result<User?>> {
         return flow<Result<User?>> {
             try {
-                val sourceUser = _dataSource.findUserByUsername(username)
+                val sourceUser = _User_dataSource.findUserByUsername(username)
                 if (sourceUser != null) {
                     _detailUserDao.replace(sourceUser.toDBDetailUser())
                 }

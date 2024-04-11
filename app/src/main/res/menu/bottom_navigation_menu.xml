@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/searchUsers"
+        android:title="Search"
+        android:icon="@drawable/search_24" />
+    <item android:id="@+id/userFavorite"
+        android:title="Favorite"
+        android:icon="@drawable/heart_outlined_24" />
+    <item android:id="@+id/settings"
+        android:title="Settings"
+        android:icon="@drawable/settings_24" />
+</menu>

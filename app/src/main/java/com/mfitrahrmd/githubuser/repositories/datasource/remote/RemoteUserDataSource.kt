@@ -1,11 +1,11 @@
 package com.mfitrahrmd.githubuser.repositories.datasource.remote
 
 import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
-import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
+import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
 
-class RemoteDataSource private constructor(
+class RemoteUserDataSource private constructor(
     private val _remoteService: RemoteService
-) : DataSource {
+) : UserDataSource {
     override suspend fun searchUsers(
         query: String,
         page: Int?,
@@ -40,11 +40,11 @@ class RemoteDataSource private constructor(
 
     companion object {
         @Volatile
-        private var _INSTANCE: RemoteDataSource? = null
+        private var _INSTANCE: RemoteUserDataSource? = null
 
-        fun getInstance(remoteService: RemoteService): RemoteDataSource {
+        fun getInstance(remoteService: RemoteService): RemoteUserDataSource {
             return _INSTANCE ?: synchronized(this) {
-                val instance = RemoteDataSource(remoteService)
+                val instance = RemoteUserDataSource(remoteService)
                 _INSTANCE = instance
 
                 instance

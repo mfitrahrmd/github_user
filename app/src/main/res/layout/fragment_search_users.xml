@@ -5,7 +5,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="12dp"
     tools:context=".ui.main.fragments.searchusers.SearchUsersFragment">
 
     <LinearLayout
@@ -13,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,6 +23,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".20"
             android:src="@drawable/icons8_github_400"
+            android:scaleType="fitCenter"
             android:transitionName="ivLogo" />
 
         <com.google.android.material.search.SearchBar
@@ -33,56 +34,62 @@
             android:layout_weight="1"
             android:backgroundTint="#00000000"
             android:hint="@string/search"
-            app:backgroundTint="#00000000"
-            app:navigationIconTint="@color/blackLight"
-            app:strokeColor="@color/blackLight"
-            app:subtitleTextColor="@color/blackLight"
-            app:titleTextColor="@color/blackLight" />
+            app:backgroundTint="@android:color/transparent" />
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnToFavorite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        android:text="To Favorite"
-        android:textFontWeight="700"
-        app:layout_constraintTop_toBottomOf="@id/topBar" />
-
-    <TextView
-        android:id="@+id/tvTitlePopularIndoUsers"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
-        android:text="@string/popular_users"
-        android:textFontWeight="700"
-        app:layout_constraintTop_toBottomOf="@id/btnToFavorite" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPopularIndoUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvTitlePopularIndoUsers" />
-
-    <TextView
-        android:id="@+id/tvTitleSearchResult"
-        style="@style/TextAppearance.Material3.TitleLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
-        android:text="@string/search_result"
-        android:textFontWeight="700"
-        app:layout_constraintTop_toBottomOf="@id/rvPopularIndoUsers" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearchUsers"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTitleSearchResult"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/tvTitlePopularUsers"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="6dp"
+            android:text="@string/popular_users"
+            android:textFontWeight="700"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/topBar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPopularUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="6dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvTitlePopularUsers" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="12dp"/>
+
+        <TextView
+            android:id="@+id/tvTitleSearchResult"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="6dp"
+            android:text="@string/search_result"
+            android:textFontWeight="700"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/rvPopularUsers" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchUsers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="6dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleSearchResult"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
 
     <com.google.android.material.search.SearchView
         android:id="@+id/searchView"

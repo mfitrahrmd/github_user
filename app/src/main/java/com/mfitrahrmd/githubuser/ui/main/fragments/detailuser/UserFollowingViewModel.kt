@@ -7,13 +7,17 @@ import androidx.paging.cachedIn
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.repositories.DetailUserRepository
+import com.mfitrahrmd.githubuser.repositories.UserFavoriteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class UserFollowingViewModel(private val _detailUserRepository: DetailUserRepository) :
+class UserFollowingViewModel(
+    private val _detailUserRepository: DetailUserRepository,
+    private val _userFavoriteRepository: UserFavoriteRepository
+) :
     ViewModel() {
     private val _username = MutableStateFlow<String>("")
     val username: String
@@ -29,12 +33,25 @@ class UserFollowingViewModel(private val _detailUserRepository: DetailUserReposi
         }
     }
 
+    fun addToFavorite(user: User) {
+        viewModelScope.launch {
+            _userFavoriteRepository.add(user)
+        }
+    }
+
+    fun removeFromFavorite(user: User) {
+        viewModelScope.launch {
+            _userFavoriteRepository.remove(user)
+        }
+    }
+
     init {
         viewModelScope.launch {
             _username.collectLatest {
                 _userFollowing.value = BaseState.Loading(null, null)
                 try {
-                    val followingPage = _detailUserRepository.getFollowing(it).cachedIn(viewModelScope)
+                    val followingPage =
+                        _detailUserRepository.getFollowing(it).cachedIn(viewModelScope)
                     _userFollowing.value = BaseState.Success(null, followingPage)
                 } catch (e: Exception) {
                     BaseState.Error(e.message, _userFollowing.value.data)

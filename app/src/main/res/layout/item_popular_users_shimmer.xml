@@ -9,7 +9,7 @@
         android:id="@+id/ivAvatar"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:background="@color/gray"
+        android:background="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:background="@color/gray"
+            android:background="@android:color/darker_gray"
             android:textFontWeight="700" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="24dp"
             android:layout_marginTop="6dp"
-            android:background="@color/gray"
+            android:background="@android:color/darker_gray"
             />
 
     </LinearLayout>

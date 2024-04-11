@@ -1,8 +1,7 @@
 package com.mfitrahrmd.githubuser.repositories.datasource.inmemory
 
-import android.util.Log
 import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
-import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
+import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
 
 private val _user = RemoteUser(
     id = 0,
@@ -40,7 +39,7 @@ private val _user = RemoteUser(
 )
 
 
-class InMemoryDataSource private constructor() : DataSource {
+class InMemoryUserDataSource private constructor() : UserDataSource {
     private val _users: List<RemoteUser> = List(100) { i ->
         _user.copy(
             id = i,
@@ -112,11 +111,11 @@ class InMemoryDataSource private constructor() : DataSource {
 
     companion object {
         @Volatile
-        private var _INSTANCE: InMemoryDataSource? = null
+        private var _INSTANCE: InMemoryUserDataSource? = null
 
-        fun getInstance(): InMemoryDataSource {
+        fun getInstance(): InMemoryUserDataSource {
             return _INSTANCE ?: synchronized(this) {
-                val instance = InMemoryDataSource()
+                val instance = InMemoryUserDataSource()
                 _INSTANCE = instance
 
                 instance

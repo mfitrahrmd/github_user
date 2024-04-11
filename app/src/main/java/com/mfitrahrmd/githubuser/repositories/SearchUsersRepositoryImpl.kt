@@ -8,24 +8,24 @@ import androidx.paging.map
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.mapper.toUser
 import com.mfitrahrmd.githubuser.repositories.cache.dao.SearchUserDao
-import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
-import com.mfitrahrmd.githubuser.repositories.remotemediator.SearchUserRemoteMediator
+import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
+import com.mfitrahrmd.githubuser.repositories.remotemediator.SearchUsersRemoteMediator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 
 @OptIn(ExperimentalPagingApi::class)
 class SearchUsersRepositoryImpl(
-    private val _dataSource: DataSource,
+    private val _User_dataSource: UserDataSource,
     private val _searchUserDao: SearchUserDao
 ) : SearchUsersRepository {
     override fun get(query: String): Flow<PagingData<User>> {
         return Pager(
             config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, maxSize = DEFAULT_MAX_SIZE),
             pagingSourceFactory = { _searchUserDao.findAllWithFavorite() },
-            remoteMediator = SearchUserRemoteMediator(
+            remoteMediator = SearchUsersRemoteMediator(
                 query,
-                _dataSource,
+                _User_dataSource,
                 _searchUserDao,
             )
         ).flow.map {

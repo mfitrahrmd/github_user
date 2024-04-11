@@ -4,6 +4,6 @@ import androidx.paging.PagingData
 import com.mfitrahrmd.githubuser.entities.User
 import kotlinx.coroutines.flow.Flow
 
-interface UserPopularRepository {
+interface PopularUsersRepository {
     fun get(location: String): Flow<PagingData<User>>
 }

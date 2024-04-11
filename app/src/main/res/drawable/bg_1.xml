@@ -10,92 +10,92 @@
       android:strokeColor="#7189ff"/>
   <path
       android:pathData="M50.16,0.99m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M61.87,12.7a1,1 0,1 1,0 -1.4A1,1 0,0 1,61.87 12.7Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M72.88,23.71a1,1 0,0 1,-1.41 0,1 1,0 0,1 1.41,-1.41A1,1 0,0 1,72.88 23.71Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M83.88,34.71a1,1 0,1 1,0 -1.4A1,1 0,0 1,83.88 34.71Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M94.18,45.01m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M41,11.53a1,1 0,1 1,0 -1.4A1,1 0,0 1,41 11.53Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M51.33,21.83m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M62.34,32.84m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M73.34,43.84m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M84.35,54.85m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M31.2,21.36a1,1 0,1 1,0 -1.4A1,1 0,0 1,31.2 21.36Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M41.5,31.67m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M52.51,42.67m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M63.51,53.68m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M75.22,65.38a1,1 0,0 1,-1.41 0,1 1,0 0,1 0,-1.4 1,1 0,1 1,1.41 1.4Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M21.36,31.2a1,1 0,0 1,-1.4 0,1 1,0 1,1 1.4,0Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M32.37,42.2a1,1 0,1 1,0 -1.4A1,1 0,0 1,32.37 42.2Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M42.67,52.51m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M54.38,64.21a1,1 0,1 1,0 -1.4A1,1 0,0 1,54.38 64.21Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M65.38,75.22A1,1 0,1 1,64 73.81a1,1 0,0 1,1.4 0A1,1 0,0 1,65.38 75.22Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M11.53,41a1,1 0,1 1,0 -1.4A1,1 0,0 1,11.53 41Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M21.83,51.33m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M32.84,62.34m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M43.84,73.34m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M55.55,85.05a1,1 0,1 1,0 -1.4A1,1 0,0 1,55.55 85.05Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M1.7,50.87a1,1 0,0 1,-1.41 0A1,1 0,0 1,1.7 49.46,1 1,0 0,1 1.7,50.87Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M12,61.17m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M23,72.17m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M34.01,83.18m-0.99,0a0.99,0.99 0,1 1,1.98 0a0.99,0.99 0,1 1,-1.98 0"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
   <path
       android:pathData="M45.71,94.89a1,1 0,0 1,-1.4 -1.41,1 1,0 0,1 1.4,0A1,1 0,0 1,45.71 94.89Z"
-      android:fillColor="@color/blackLight"/>
+      android:fillColor="@android:color/black"/>
 </vector>

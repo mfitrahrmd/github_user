@@ -9,18 +9,17 @@
     android:paddingVertical="24dp"
     tools:context=".ui.main.fragments.home.HomeFragment">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivLogo"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="@drawable/circle_image"
         android:src="@drawable/icons8_github_400"
-        android:transitionName="ivLogo"
+        app:shapeAppearanceOverlay="@style/Theme.GithubUser.CircleImageView"
         app:layout_constraintVertical_bias=".25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/tvTitle"

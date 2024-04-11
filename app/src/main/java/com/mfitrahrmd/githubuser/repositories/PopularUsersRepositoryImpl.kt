@@ -8,15 +8,15 @@ import androidx.paging.map
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.mapper.toUser
 import com.mfitrahrmd.githubuser.repositories.cache.dao.PopularUserDao
-import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
-import com.mfitrahrmd.githubuser.repositories.remotemediator.PopularUserRemoteMediator
+import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
+import com.mfitrahrmd.githubuser.repositories.remotemediator.PopularUsersRemoteMediator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPopularRepositoryImpl(
-    private val _dataSource: DataSource,
+class PopularUsersRepositoryImpl(
+    private val _User_dataSource: UserDataSource,
     private val _popularUserDao: PopularUserDao,
-) : UserPopularRepository {
+) : PopularUsersRepository {
     @OptIn(ExperimentalPagingApi::class)
     override fun get(
         location: String
@@ -24,7 +24,7 @@ class UserPopularRepositoryImpl(
         return Pager(
             config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, maxSize = DEFAULT_MAX_SIZE),
             pagingSourceFactory = { _popularUserDao.findAllWithFavorite() },
-            remoteMediator = PopularUserRemoteMediator(location, _dataSource, _popularUserDao)
+            remoteMediator = PopularUsersRemoteMediator(location, _User_dataSource, _popularUserDao)
         ).flow.map {
             it.map { e ->
                 e.popularUser.toUser(User.Favorite(e.favoriteUser != null, e.favoriteUser?.addedAt))

@@ -10,21 +10,21 @@ import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
 import com.mfitrahrmd.githubuser.mapper.toDBUserFollowers
 import com.mfitrahrmd.githubuser.repositories.cache.dao.DetailUserDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.UserFollowersDao
-import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
+import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalPagingApi::class)
 class UserFollowersRemoteMediator(
     private val _username: String,
-    private val _dataSource: DataSource,
+    private val _User_dataSource: UserDataSource,
     private val _userFollowersDao: UserFollowersDao,
     private val _detailUserDao: DetailUserDao
 ) : RemoteMediator<Int, DBUserFollowersWithFavorite>() {
     private var _nextPage: Int? = null
 
     private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
-        return _dataSource.listUserFollowers(_username, page, pageSize)
+        return _User_dataSource.listUserFollowers(_username, page, pageSize)
     }
 
     private suspend fun cleanLocalData() {

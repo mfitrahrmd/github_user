@@ -4,41 +4,52 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.mfitrahrmd.githubuser.entities.db.DBSearchUser
-import com.mfitrahrmd.githubuser.entities.db.DBSearchUserWithFavorite
+import com.mfitrahrmd.githubuser.entities.db.DBPopularUser
+import com.mfitrahrmd.githubuser.entities.db.DBPopularUserWithFavorite
 import com.mfitrahrmd.githubuser.entities.remote.RemoteUser
-import com.mfitrahrmd.githubuser.mapper.toDBSearchUser
-import com.mfitrahrmd.githubuser.repositories.cache.dao.SearchUserDao
-import com.mfitrahrmd.githubuser.repositories.datasource.DataSource
+import com.mfitrahrmd.githubuser.mapper.toDBPopularUser
+import com.mfitrahrmd.githubuser.repositories.cache.dao.PopularUserDao
+import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalPagingApi::class)
-class SearchUserRemoteMediator(
-    private val query: String,
-    private val _dataSource: DataSource,
-    private val _searchUserDao: SearchUserDao,
-) : RemoteMediator<Int, DBSearchUserWithFavorite>() {
+class PopularUsersRemoteMediator(
+    private val _location: String,
+    private val _User_dataSource: UserDataSource,
+    private val _popularUserDao: PopularUserDao
+) : RemoteMediator<Int, DBPopularUserWithFavorite>() {
     private var _nextPage: Int? = null
 
     private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
-        return _dataSource.searchUsers(query, page, pageSize)
+        val popularUsers = _User_dataSource.searchUsers("location:$_location", page, pageSize)
+        val popularUsersDetail = withContext(Dispatchers.IO) {
+            popularUsers.map {
+                async {
+                    _User_dataSource.findUserByUsername(it.login)
+                }
+            }
+        }.awaitAll().filterNotNull()
+
+        return popularUsersDetail
     }
 
     private suspend fun cleanLocalData() {
         withContext(Dispatchers.IO) {
-            _searchUserDao.deleteAll()
+            _popularUserDao.deleteAll()
         }
     }
 
-    private suspend fun upsertLocalData(localEntities: List<DBSearchUser>) {
+    private suspend fun upsertLocalData(localEntities: List<DBPopularUser>) {
         withContext(Dispatchers.IO) {
-            _searchUserDao.insertMany(localEntities)
+            _popularUserDao.insertMany(localEntities)
         }
     }
 
     override suspend fun load(
-        loadType: LoadType, state: PagingState<Int, DBSearchUserWithFavorite>
+        loadType: LoadType, state: PagingState<Int, DBPopularUserWithFavorite>
     ): MediatorResult {
         val page: Int = when (loadType) {
             LoadType.REFRESH -> {
@@ -64,7 +75,7 @@ class SearchUserRemoteMediator(
                 if (loadType == LoadType.REFRESH) {
                     cleanLocalData()
                 }
-                upsertLocalData(items.toDBSearchUser())
+                upsertLocalData(items.toDBPopularUser())
             }
 
             return MediatorResult.Success(endOfPaginationReached = end)
