@@ -13,7 +13,6 @@ import com.mfitrahrmd.githubuser.adapters.UserFollowingFollowersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentDetailUserBinding
-import com.mfitrahrmd.githubuser.ui.main.fragments.searchusers.SearchUsersFragment
 import kotlinx.coroutines.launch
 
 class DetailUserFragment :
@@ -31,8 +30,7 @@ class DetailUserFragment :
                                 }
                                 tvName.text = currentUiState.data?.name
                                 tvUsername.text = this@DetailUserFragment.getString(
-                                    R.string.username,
-                                    currentUiState.data?.username
+                                    R.string.username, currentUiState.data?.username
                                 )
                                 tvBio.text = currentUiState.data?.bio
                                 if (currentUiState.data?.company.isNullOrEmpty()) {
@@ -51,8 +49,7 @@ class DetailUserFragment :
                                     tvTwitter.text = currentUiState.data?.twitterUsername
                                 }
                                 Glide.with(this@DetailUserFragment)
-                                    .load(currentUiState.data?.avatarUrl)
-                                    .into(ivAvatar)
+                                    .load(currentUiState.data?.avatarUrl).into(ivAvatar)
                             }
                         }
 
@@ -94,14 +91,11 @@ class DetailUserFragment :
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 val pages: List<UserFollowingFollowersAdapter.Page> = mutableListOf(
                     UserFollowingFollowersAdapter.Page(
-                        "Following",
-                        UserFollowingFragment.newInstance(
+                        "Following", UserFollowingFragment.newInstance(
                             UserFollowingFragmentArgs.Builder(viewModel.username).build()
                         )
-                    ),
-                    UserFollowingFollowersAdapter.Page(
-                        "Followers",
-                        UserFollowersFragment.newInstance(
+                    ), UserFollowingFollowersAdapter.Page(
+                        "Followers", UserFollowersFragment.newInstance(
                             UserFollowersFragmentArgs.Builder(viewModel.username).build()
                         )
                     )
@@ -119,10 +113,9 @@ class DetailUserFragment :
 
     companion object {
         @JvmStatic
-        fun newInstance(args: DetailUserFragmentArgs) =
-            DetailUserFragment().apply {
-                arguments = args.toBundle()
-            }
+        fun newInstance(args: DetailUserFragmentArgs) = DetailUserFragment().apply {
+            arguments = args.toBundle()
+        }
 
         const val DEFAULT_ERROR_MESSAGE = "unexpected error"
     }

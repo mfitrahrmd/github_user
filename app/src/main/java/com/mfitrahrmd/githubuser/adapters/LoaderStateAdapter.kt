@@ -11,7 +11,10 @@ import com.mfitrahrmd.githubuser.databinding.ItemLoadStateBinding
 
 class LoaderStateAdapter(private val _retry: () -> Unit) :
     LoadStateAdapter<LoaderStateAdapter.LoaderViewHolder>() {
-    class LoaderViewHolder(private val _binding: ItemLoadStateBinding, private val _retry: () -> Unit) :
+    class LoaderViewHolder(
+        private val _binding: ItemLoadStateBinding,
+        private val _retry: () -> Unit
+    ) :
         RecyclerView.ViewHolder(_binding.root) {
 
         fun bind(loadState: LoadState) {

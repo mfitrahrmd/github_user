@@ -6,9 +6,9 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.entities.User
+import com.mfitrahrmd.githubuser.repositories.PopularUsersRepository
 import com.mfitrahrmd.githubuser.repositories.SearchUsersRepository
 import com.mfitrahrmd.githubuser.repositories.UserFavoriteRepository
-import com.mfitrahrmd.githubuser.repositories.PopularUsersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,7 +45,8 @@ class SearchUsersViewModel(
         viewModelScope.launch {
             _popularUsersState.value = BaseState.Loading(null, null)
             try {
-                val popularUsersPage = _popularUsersRepository.get(POPULAR_USERS_LOCATION).cachedIn(viewModelScope)
+                val popularUsersPage =
+                    _popularUsersRepository.get(POPULAR_USERS_LOCATION).cachedIn(viewModelScope)
                 _popularUsersState.value = BaseState.Success(null, popularUsersPage)
             } catch (e: Exception) {
                 BaseState.Error(e.message, _searchUsersState.value.data)

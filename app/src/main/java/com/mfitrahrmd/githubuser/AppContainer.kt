@@ -3,22 +3,22 @@ package com.mfitrahrmd.githubuser
 import android.content.Context
 import com.mfitrahrmd.githubuser.repositories.DetailUserRepository
 import com.mfitrahrmd.githubuser.repositories.DetailUserRepositoryImpl
-import com.mfitrahrmd.githubuser.repositories.UserFavoriteRepository
-import com.mfitrahrmd.githubuser.repositories.UserFavoriteRepositoryImpl
 import com.mfitrahrmd.githubuser.repositories.PopularUsersRepository
 import com.mfitrahrmd.githubuser.repositories.PopularUsersRepositoryImpl
 import com.mfitrahrmd.githubuser.repositories.SearchUsersRepository
 import com.mfitrahrmd.githubuser.repositories.SearchUsersRepositoryImpl
 import com.mfitrahrmd.githubuser.repositories.SettingsRepository
 import com.mfitrahrmd.githubuser.repositories.SettingsRepositoryImpl
+import com.mfitrahrmd.githubuser.repositories.UserFavoriteRepository
+import com.mfitrahrmd.githubuser.repositories.UserFavoriteRepositoryImpl
 import com.mfitrahrmd.githubuser.repositories.cache.database.UserDatabase
 import com.mfitrahrmd.githubuser.repositories.datasource.SettingsDataSource
 import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
 import com.mfitrahrmd.githubuser.repositories.datasource.datastore.DataStoreSettingsDataSource
 import com.mfitrahrmd.githubuser.repositories.datasource.datastore.dataStore
 import com.mfitrahrmd.githubuser.repositories.datasource.inmemory.InMemoryUserDataSource
-import com.mfitrahrmd.githubuser.repositories.datasource.remote.RemoteUserDataSource
 import com.mfitrahrmd.githubuser.repositories.datasource.remote.RemoteService
+import com.mfitrahrmd.githubuser.repositories.datasource.remote.RemoteUserDataSource
 
 interface AppContainer {
     val searchUsersRepository: SearchUsersRepository
@@ -38,6 +38,7 @@ class AppDataContainer(private val _context: Context) : AppContainer {
     private val _remoteUserDataSource: UserDataSource by lazy {
         RemoteUserDataSource.getInstance(_remoteService)
     }
+
     /*
     * InMemory UserDataSource implementation for testing
     * */
@@ -54,7 +55,13 @@ class AppDataContainer(private val _context: Context) : AppContainer {
         )
     }
     override val detailUserRepository: DetailUserRepository by lazy {
-        DetailUserRepositoryImpl(_remoteUserDataSource, _userDatabase.detailUserDao(), _userDatabase.userFollowingDao(), _userDatabase.userFollowersDao(), _userDatabase.favoriteUserDao())
+        DetailUserRepositoryImpl(
+            _remoteUserDataSource,
+            _userDatabase.detailUserDao(),
+            _userDatabase.userFollowingDao(),
+            _userDatabase.userFollowersDao(),
+            _userDatabase.favoriteUserDao()
+        )
     }
     override val userFavoriteRepository: UserFavoriteRepository by lazy {
         UserFavoriteRepositoryImpl(_userDatabase.favoriteUserDao())

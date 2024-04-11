@@ -27,7 +27,7 @@ class UserFavoriteRepositoryImpl(
             config = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, maxSize = DEFAULT_MAX_SIZE),
             pagingSourceFactory = { _userFavoriteDao.findAll() }
         ).flow.map {
-            it.map {  dbFU ->
+            it.map { dbFU ->
                 dbFU.toUser()
             }
         }

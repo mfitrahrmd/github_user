@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class UserFollowersViewModel(private val _detailUserRepository: DetailUserRepository, private val _userFavoriteRepository: UserFavoriteRepository) :
+class UserFollowersViewModel(
+    private val _detailUserRepository: DetailUserRepository,
+    private val _userFavoriteRepository: UserFavoriteRepository
+) :
     ViewModel() {
     private val _username = MutableStateFlow<String>("")
     val username: String
@@ -47,7 +50,8 @@ class UserFollowersViewModel(private val _detailUserRepository: DetailUserReposi
             _username.collectLatest {
                 _userFollowers.value = BaseState.Loading(null, null)
                 try {
-                    val followersPage = _detailUserRepository.getFollowers(it).cachedIn(viewModelScope)
+                    val followersPage =
+                        _detailUserRepository.getFollowers(it).cachedIn(viewModelScope)
                     _userFollowers.value = BaseState.Success(null, followersPage)
                 } catch (e: Exception) {
                     BaseState.Error(e.message, _userFollowers.value.data)

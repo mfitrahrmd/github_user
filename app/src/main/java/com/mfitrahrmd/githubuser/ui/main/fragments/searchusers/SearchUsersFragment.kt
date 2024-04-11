@@ -88,7 +88,7 @@ class SearchUsersFragment :
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.searchUsersState.collectLatest { currentUiState ->
-                    when(currentUiState) {
+                    when (currentUiState) {
                         is BaseState.Success -> {
                             with(viewBinding) {
                                 tvTitleSearchResult.visibility = View.VISIBLE
@@ -100,6 +100,7 @@ class SearchUsersFragment :
                                 }
                             }
                         }
+
                         is BaseState.Loading -> {
                             with(viewBinding) {
                                 rvSearchUsers.apply {
@@ -107,6 +108,7 @@ class SearchUsersFragment :
                                 }
                             }
                         }
+
                         is BaseState.Error -> {
                             Toast.makeText(
                                 view?.context,
@@ -114,6 +116,7 @@ class SearchUsersFragment :
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
+
                         is BaseState.Idle -> {}
                     }
                 }
@@ -121,7 +124,7 @@ class SearchUsersFragment :
         }
         lifecycleScope.launch {
             viewModel.popularUsersState.collectLatest { currentUiState ->
-                when(currentUiState) {
+                when (currentUiState) {
                     is BaseState.Success -> {
                         with(viewBinding) {
                             tvTitlePopularUsers.visibility = View.VISIBLE
@@ -133,6 +136,7 @@ class SearchUsersFragment :
                             }
                         }
                     }
+
                     is BaseState.Loading -> {
                         with(viewBinding) {
                             rvPopularUsers.apply {
@@ -140,6 +144,7 @@ class SearchUsersFragment :
                             }
                         }
                     }
+
                     is BaseState.Error -> {
                         Toast.makeText(
                             view?.context,
@@ -147,6 +152,7 @@ class SearchUsersFragment :
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+
                     is BaseState.Idle -> {}
                 }
             }

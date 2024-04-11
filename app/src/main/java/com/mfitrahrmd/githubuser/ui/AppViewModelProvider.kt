@@ -29,10 +29,16 @@ object AppViewModelProvider {
             EmptyViewModel()
         }
         initializer {
-            UserFollowingViewModel(githubUserApplication().appContainer.detailUserRepository, githubUserApplication().appContainer.userFavoriteRepository)
+            UserFollowingViewModel(
+                githubUserApplication().appContainer.detailUserRepository,
+                githubUserApplication().appContainer.userFavoriteRepository
+            )
         }
         initializer {
-            UserFollowersViewModel(githubUserApplication().appContainer.detailUserRepository, githubUserApplication().appContainer.userFavoriteRepository)
+            UserFollowersViewModel(
+                githubUserApplication().appContainer.detailUserRepository,
+                githubUserApplication().appContainer.userFavoriteRepository
+            )
         }
         initializer {
             UserFavoriteViewModel(githubUserApplication().appContainer.userFavoriteRepository)

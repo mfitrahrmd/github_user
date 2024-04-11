@@ -11,7 +11,10 @@ import com.mfitrahrmd.githubuser.databinding.ItemUserBinding
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.utils.UsersDiff
 
-class UsersAdapter(private val _onItemClick: (User) -> Unit, private val _onFavoriteClick: (User) -> Unit) :
+class UsersAdapter(
+    private val _onItemClick: (User) -> Unit,
+    private val _onFavoriteClick: (User) -> Unit
+) :
     PagingDataAdapter<User, UsersAdapter.UsersViewHolder>(UsersDiff) {
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
         holder.bind(getItem(position), _onItemClick, _onFavoriteClick)
@@ -32,15 +35,29 @@ class UsersAdapter(private val _onItemClick: (User) -> Unit, private val _onFavo
 
     class UsersViewHolder(private val _binding: ItemUserBinding) :
         RecyclerView.ViewHolder(_binding.root) {
-        fun bind(user: User?, onItemClickListener: ((User) -> Unit)?, onFavoriteClick: (User) -> Unit) {
+        fun bind(
+            user: User?,
+            onItemClickListener: ((User) -> Unit)?,
+            onFavoriteClick: (User) -> Unit
+        ) {
             if (user != null) {
                 with(user) {
                     with(_binding) {
                         tvUsername.text = itemView.context.getString(R.string.username, username)
                         if (user.favorite.`is`) {
-                            ivIsFavorite.setImageDrawable(ContextCompat.getDrawable(ivIsFavorite.context, R.drawable.heart_24))
+                            ivIsFavorite.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    ivIsFavorite.context,
+                                    R.drawable.heart_24
+                                )
+                            )
                         } else {
-                            ivIsFavorite.setImageDrawable(ContextCompat.getDrawable(ivIsFavorite.context, R.drawable.heart_outlined_24))
+                            ivIsFavorite.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    ivIsFavorite.context,
+                                    R.drawable.heart_outlined_24
+                                )
+                            )
                         }
                         ivIsFavorite.setOnClickListener {
                             onFavoriteClick(user)

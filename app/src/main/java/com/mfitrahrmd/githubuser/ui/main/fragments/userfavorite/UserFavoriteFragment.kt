@@ -20,7 +20,8 @@ class UserFavoriteFragment :
     BaseFragment<FragmentUserFavoriteBinding, UserFavoriteViewModel>(UserFavoriteViewModel::class.java) {
     private val _listUserFavoriteAdapter: UsersAdapter = UsersAdapter({
         findNavController().navigate(
-            MainFragmentDirections.actionMainFragmentToDetailUserFragment(it.username)        )
+            MainFragmentDirections.actionMainFragmentToDetailUserFragment(it.username)
+        )
     }, {
         if (it.favorite.`is`) {
             viewModel.removeFromFavorite(it)
@@ -37,7 +38,8 @@ class UserFavoriteFragment :
                     LinearLayoutManager.VERTICAL,
                     false
                 )
-                adapter = _listUserFavoriteAdapter.withLoadStateFooter(LoaderStateAdapter {/*TODO*/})
+                adapter =
+                    _listUserFavoriteAdapter.withLoadStateFooter(LoaderStateAdapter {/*TODO*/ })
             }
         }
     }

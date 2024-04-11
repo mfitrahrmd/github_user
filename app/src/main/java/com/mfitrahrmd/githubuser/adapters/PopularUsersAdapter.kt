@@ -11,7 +11,10 @@ import com.mfitrahrmd.githubuser.databinding.ItemPopularUsersBinding
 import com.mfitrahrmd.githubuser.entities.User
 import com.mfitrahrmd.githubuser.utils.UsersDiff
 
-class PopularUsersAdapter(private val _onItemClick: (User) -> Unit, private val _onFavoriteClick: (User) -> Unit) :
+class PopularUsersAdapter(
+    private val _onItemClick: (User) -> Unit,
+    private val _onFavoriteClick: (User) -> Unit
+) :
     PagingDataAdapter<User, PopularUsersAdapter.PopularUsersViewHolder>(UsersDiff) {
     class PopularUsersViewHolder(private val _binding: ItemPopularUsersBinding) :
         RecyclerView.ViewHolder(_binding.root) {
@@ -22,9 +25,19 @@ class PopularUsersAdapter(private val _onItemClick: (User) -> Unit, private val 
                     tvUsername.text = user.username
                     tvBio.text = user.bio
                     if (user.favorite.`is`) {
-                        ivIsFavorite.setImageDrawable(ContextCompat.getDrawable(ivIsFavorite.context, R.drawable.heart_24))
+                        ivIsFavorite.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                ivIsFavorite.context,
+                                R.drawable.heart_24
+                            )
+                        )
                     } else {
-                        ivIsFavorite.setImageDrawable(ContextCompat.getDrawable(ivIsFavorite.context, R.drawable.heart_outlined_24))
+                        ivIsFavorite.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                ivIsFavorite.context,
+                                R.drawable.heart_outlined_24
+                            )
+                        )
                     }
                     ivIsFavorite.setOnClickListener {
                         onFavoriteClick(user)

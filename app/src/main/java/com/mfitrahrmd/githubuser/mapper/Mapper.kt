@@ -106,10 +106,12 @@ object RemoteUserToDBUserFollowing : Mapper<RemoteUser, DBUserFollowing> {
     }
 }
 
-object ListRemoteUserToListUserFollowing : ListMapperImpl<RemoteUser, DBUserFollowing>(RemoteUserToDBUserFollowing)
+object ListRemoteUserToListUserFollowing :
+    ListMapperImpl<RemoteUser, DBUserFollowing>(RemoteUserToDBUserFollowing)
 
 fun RemoteUser.toDBUserFollowing() = RemoteUserToDBUserFollowing.map(this)
-fun RemoteUser.toDBUserFollowing(userDbId: Int) = RemoteUserToDBUserFollowing.map(this).copy(userDbId = userDbId)
+fun RemoteUser.toDBUserFollowing(userDbId: Int) =
+    RemoteUserToDBUserFollowing.map(this).copy(userDbId = userDbId)
 
 fun List<RemoteUser>.toDBUserFollowing() = ListRemoteUserToListUserFollowing.map(this)
 
@@ -152,10 +154,12 @@ object RemoteUserToDBUserFollowers : Mapper<RemoteUser, DBUserFollowers> {
     }
 }
 
-object ListRemoteUserToListUserFollowers : ListMapperImpl<RemoteUser, DBUserFollowers>(RemoteUserToDBUserFollowers)
+object ListRemoteUserToListUserFollowers :
+    ListMapperImpl<RemoteUser, DBUserFollowers>(RemoteUserToDBUserFollowers)
 
 fun RemoteUser.toDBUserFollowers() = RemoteUserToDBUserFollowers.map(this)
-fun RemoteUser.toDBUserFollowers(userDbId: Int) = RemoteUserToDBUserFollowers.map(this).copy(userDbId = userDbId)
+fun RemoteUser.toDBUserFollowers(userDbId: Int) =
+    RemoteUserToDBUserFollowers.map(this).copy(userDbId = userDbId)
 
 fun List<RemoteUser>.toDBUserFollowers() = ListRemoteUserToListUserFollowers.map(this)
 
@@ -198,7 +202,8 @@ object RemoteUserToDBPopularUser : Mapper<RemoteUser, DBPopularUser> {
     }
 }
 
-object ListRemoteUserToListPopularUser : ListMapperImpl<RemoteUser, DBPopularUser>(RemoteUserToDBPopularUser)
+object ListRemoteUserToListPopularUser :
+    ListMapperImpl<RemoteUser, DBPopularUser>(RemoteUserToDBPopularUser)
 
 fun RemoteUser.toDBPopularUser() = RemoteUserToDBPopularUser.map(this)
 
@@ -243,7 +248,8 @@ object RemoteUserToDBDetailUser : Mapper<RemoteUser, DBDetailUser> {
     }
 }
 
-object ListRemoteUserToListDetailUser : ListMapperImpl<RemoteUser, DBDetailUser>(RemoteUserToDBDetailUser)
+object ListRemoteUserToListDetailUser :
+    ListMapperImpl<RemoteUser, DBDetailUser>(RemoteUserToDBDetailUser)
 
 fun RemoteUser.toDBDetailUser() = RemoteUserToDBDetailUser.map(this)
 
@@ -288,7 +294,8 @@ object RemoteUserToDBSearchUser : Mapper<RemoteUser, DBSearchUser> {
     }
 }
 
-object ListRemoteUserToListSearchUser : ListMapperImpl<RemoteUser, DBSearchUser>(RemoteUserToDBSearchUser)
+object ListRemoteUserToListSearchUser :
+    ListMapperImpl<RemoteUser, DBSearchUser>(RemoteUserToDBSearchUser)
 
 fun RemoteUser.toDBSearchUser() = RemoteUserToDBSearchUser.map(this)
 

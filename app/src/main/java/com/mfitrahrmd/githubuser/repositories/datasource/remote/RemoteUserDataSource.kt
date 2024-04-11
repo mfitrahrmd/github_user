@@ -24,14 +24,22 @@ class RemoteUserDataSource private constructor(
         return body
     }
 
-    override suspend fun listUserFollowers(username: String, page: Int?, perPage: Int?): List<RemoteUser> {
+    override suspend fun listUserFollowers(
+        username: String,
+        page: Int?,
+        perPage: Int?
+    ): List<RemoteUser> {
         val res = _remoteService.userApi.listUserFollowers(username, page, perPage)
         val body = res.body()
 
         return body ?: emptyList()
     }
 
-    override suspend fun listUserFollowing(username: String, page: Int?, perPage: Int?): List<RemoteUser> {
+    override suspend fun listUserFollowing(
+        username: String,
+        page: Int?,
+        perPage: Int?
+    ): List<RemoteUser> {
         val res = _remoteService.userApi.listUserFollowing(username, page, perPage)
         val body = res.body()
 

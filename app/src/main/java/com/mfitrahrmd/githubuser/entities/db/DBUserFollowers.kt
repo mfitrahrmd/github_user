@@ -1,7 +1,6 @@
 package com.mfitrahrmd.githubuser.entities.db
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.util.Date
 

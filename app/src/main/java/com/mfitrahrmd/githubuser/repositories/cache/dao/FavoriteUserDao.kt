@@ -1,6 +1,5 @@
 package com.mfitrahrmd.githubuser.repositories.cache.dao
 
-import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Delete
@@ -9,7 +8,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.mfitrahrmd.githubuser.entities.db.DBFavoriteUser
 import com.mfitrahrmd.githubuser.repositories.cache.BatchOperation
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class FavoriteUserDao : BatchOperation<DBFavoriteUser> {
