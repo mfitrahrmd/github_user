@@ -1,4 +1,4 @@
-BEFORE RUN :
+***How to run*** :
 - set config field Github API Key with your Github Key in build.gradle(app)
 
 ### UI
