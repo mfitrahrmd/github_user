@@ -15,7 +15,6 @@ import com.mfitrahrmd.githubuser.entities.db.RemoteKey
 import com.mfitrahrmd.githubuser.repositories.cache.dao.DetailUserDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.FavoriteUserDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.PopularUserDao
-import com.mfitrahrmd.githubuser.repositories.cache.dao.RemoteKeyDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.SearchUserDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.UserFollowersDao
 import com.mfitrahrmd.githubuser.repositories.cache.dao.UserFollowingDao
@@ -29,7 +28,6 @@ abstract class UserDatabase : RoomDatabase() {
     abstract fun favoriteUserDao(): FavoriteUserDao
     abstract fun popularUserDao(): PopularUserDao
     abstract fun searchUserDao(): SearchUserDao
-    abstract fun remoteKeyDao(): RemoteKeyDao
     abstract fun detailUserDao(): DetailUserDao
     abstract fun userFollowingDao(): UserFollowingDao
     abstract fun userFollowersDao(): UserFollowersDao
