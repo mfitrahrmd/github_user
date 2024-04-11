@@ -20,7 +20,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_BASE_URL", "\"https://api.github.com/\"")
-        buildConfigField("String", "API_KEY", "\"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\"")
+        buildConfigField("String", "API_KEY", "\"\"")
     }
 
     buildTypes {
@@ -51,6 +51,7 @@ dependencies {
 
     implementation("androidx.room:room-paging:2.6.1")
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation("androidx.preference:preference:1.2.1")
 
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-runtime:2.6.1")
