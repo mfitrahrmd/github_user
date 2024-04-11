@@ -18,17 +18,17 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalPagingApi::class)
 class PopularUsersRemoteMediator(
     private val _location: String,
-    private val _User_dataSource: UserDataSource,
+    private val _userDataSource: UserDataSource,
     private val _popularUserDao: PopularUserDao
 ) : RemoteMediator<Int, DBPopularUserWithFavorite>() {
     private var _nextPage: Int? = null
 
     private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
-        val popularUsers = _User_dataSource.searchUsers("location:$_location", page, pageSize)
+        val popularUsers = _userDataSource.searchUsers("location:$_location", page, pageSize)
         val popularUsersDetail = withContext(Dispatchers.IO) {
             popularUsers.map {
                 async {
-                    _User_dataSource.findUserByUsername(it.login)
+                    _userDataSource.findUserByUsername(it.login)
                 }
             }
         }.awaitAll().filterNotNull()

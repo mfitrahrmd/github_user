@@ -16,13 +16,13 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalPagingApi::class)
 class SearchUsersRemoteMediator(
     private val query: String,
-    private val _User_dataSource: UserDataSource,
+    private val _userDataSource: UserDataSource,
     private val _searchUserDao: SearchUserDao,
 ) : RemoteMediator<Int, DBSearchUserWithFavorite>() {
     private var _nextPage: Int? = null
 
     private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
-        return _User_dataSource.searchUsers(query, page, pageSize)
+        return _userDataSource.searchUsers(query, page, pageSize)
     }
 
     private suspend fun cleanLocalData() {

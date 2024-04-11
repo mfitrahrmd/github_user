@@ -17,14 +17,14 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalPagingApi::class)
 class UserFollowingRemoteMediator(
     private val _username: String,
-    private val _User_dataSource: UserDataSource,
+    private val _userDataSource: UserDataSource,
     private val _userFollowingDao: UserFollowingDao,
     private val _detailUserDao: DetailUserDao
 ) : RemoteMediator<Int, DBUserFollowingWithFavorite>() {
     private var _nextPage: Int? = null
 
     private suspend fun fetch(page: Int, pageSize: Int): List<RemoteUser> {
-        return _User_dataSource.listUserFollowing(_username, page, pageSize)
+        return _userDataSource.listUserFollowing(_username, page, pageSize)
     }
 
     private suspend fun cleanLocalData() {

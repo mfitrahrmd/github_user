@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 
 @OptIn(ExperimentalPagingApi::class)
 class SearchUsersRepositoryImpl(
-    private val _User_dataSource: UserDataSource,
+    private val _userDataSource: UserDataSource,
     private val _searchUserDao: SearchUserDao
 ) : SearchUsersRepository {
     override fun get(query: String): Flow<PagingData<User>> {
@@ -25,7 +25,7 @@ class SearchUsersRepositoryImpl(
             pagingSourceFactory = { _searchUserDao.findAllWithFavorite() },
             remoteMediator = SearchUsersRemoteMediator(
                 query,
-                _User_dataSource,
+                _userDataSource,
                 _searchUserDao,
             )
         ).flow.map {
