@@ -95,6 +95,10 @@ class SearchUsersFragment :
                                 rvSearchUsers.apply {
                                     visibility = View.VISIBLE
                                 }
+                                shimmerSearchUsers.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
                                 currentUiState.data?.collectLatest {
                                     _searchUsersAdapter.submitData(lifecycle, it)
                                 }
@@ -106,10 +110,21 @@ class SearchUsersFragment :
                                 rvSearchUsers.apply {
                                     visibility = View.GONE
                                 }
+                                tvTitleSearchResult.visibility = View.VISIBLE
+                                shimmerSearchUsers.apply {
+                                    startShimmer()
+                                    visibility = View.VISIBLE
+                                }
                             }
                         }
 
                         is BaseState.Error -> {
+                            with(viewBinding) {
+                                shimmerSearchUsers.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
+                            }
                             Toast.makeText(
                                 view?.context,
                                 if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,
@@ -131,6 +146,10 @@ class SearchUsersFragment :
                             rvPopularUsers.apply {
                                 visibility = View.VISIBLE
                             }
+                            shimmerPopularUsers.apply {
+                                stopShimmer()
+                                visibility = View.GONE
+                            }
                             currentUiState.data?.collectLatest {
                                 _popularUsersAdapter.submitData(lifecycle, it)
                             }
@@ -139,7 +158,11 @@ class SearchUsersFragment :
 
                     is BaseState.Loading -> {
                         with(viewBinding) {
-                            tvTitlePopularUsers.visibility = View.GONE
+                            shimmerPopularUsers.apply {
+                                startShimmer()
+                                visibility = View.VISIBLE
+                            }
+                            tvTitlePopularUsers.visibility = View.VISIBLE
                             rvPopularUsers.apply {
                                 visibility = View.GONE
                             }
@@ -147,6 +170,12 @@ class SearchUsersFragment :
                     }
 
                     is BaseState.Error -> {
+                        with(viewBinding) {
+                            shimmerPopularUsers.apply {
+                                stopShimmer()
+                                visibility = View.GONE
+                            }
+                        }
                         Toast.makeText(
                             view?.context,
                             if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,

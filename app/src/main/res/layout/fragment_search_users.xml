@@ -57,6 +57,17 @@
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/topBar" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerPopularUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_popular_users_shimmer" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPopularUsers"
             android:layout_width="match_parent"
@@ -80,6 +91,17 @@
             android:textFontWeight="700"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/rvPopularUsers" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerSearchUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_user_shimmer" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchUsers"
