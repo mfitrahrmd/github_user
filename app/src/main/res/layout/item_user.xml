@@ -12,7 +12,6 @@
         android:layout_height="48dp"
         app:strokeWidth="2dp"
         android:padding="2dp"
-        app:strokeColor="?attr/strokeColor"
         app:shapeAppearanceOverlay="@style/Theme.GithubUser.CircleImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>

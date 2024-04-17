@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!--colors for dark mode-->
-    <color name="contentBodyColor">#2A2E43</color>
-    <color name="contentTextColor">#FFFFFF</color>
-    <color name="strokeColor">@color/colorPrimary50</color>
-    <color name="colorPrimary">#33286F</color>
-</resources>

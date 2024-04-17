@@ -14,7 +14,6 @@
         android:layout_height="75dp"
         android:padding="1dp"
         app:strokeWidth="1dp"
-        app:strokeColor="?attr/strokeColor"
         app:shapeAppearanceOverlay="@style/Theme.GithubUser.RoundedSquareImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
