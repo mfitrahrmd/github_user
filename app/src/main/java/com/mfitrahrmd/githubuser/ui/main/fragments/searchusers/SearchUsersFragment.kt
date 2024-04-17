@@ -8,8 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mfitrahrmd.githubuser.adapters.LoaderStateAdapter
+import com.mfitrahrmd.githubuser.adapters.UsersLoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.PopularUsersAdapter
+import com.mfitrahrmd.githubuser.adapters.PopularUsersLoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
@@ -71,7 +72,7 @@ class SearchUsersFragment :
                 layoutManager = LinearLayoutManager(
                     this@SearchUsersFragment.context,
                 )
-                adapter = _searchUsersAdapter.withLoadStateFooter(LoaderStateAdapter {})
+                adapter = _searchUsersAdapter.withLoadStateFooter(UsersLoaderStateAdapter {})
             }
             rvPopularUsers.apply {
                 layoutManager = LinearLayoutManager(
@@ -79,7 +80,7 @@ class SearchUsersFragment :
                     LinearLayoutManager.HORIZONTAL,
                     false
                 )
-                adapter = _popularUsersAdapter
+                adapter = _popularUsersAdapter.withLoadStateFooter(PopularUsersLoaderStateAdapter {})
             }
         }
     }
@@ -87,52 +88,14 @@ class SearchUsersFragment :
     override fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.searchUsersState.collectLatest { currentUiState ->
-                    when (currentUiState) {
+                viewModel.searchUsersState.collectLatest {
+                    when(it) {
                         is BaseState.Success -> {
-                            with(viewBinding) {
-                                tvTitleSearchResult.visibility = View.VISIBLE
-                                rvSearchUsers.apply {
-                                    visibility = View.VISIBLE
-                                }
-                                shimmerSearchUsers.apply {
-                                    stopShimmer()
-                                    visibility = View.GONE
-                                }
-                                currentUiState.data?.collectLatest {
-                                    _searchUsersAdapter.submitData(lifecycle, it)
-                                }
+                            it.data?.collect { paging ->
+                                _searchUsersAdapter.submitData(lifecycle, paging)
                             }
                         }
-
-                        is BaseState.Loading -> {
-                            with(viewBinding) {
-                                rvSearchUsers.apply {
-                                    visibility = View.GONE
-                                }
-                                tvTitleSearchResult.visibility = View.VISIBLE
-                                shimmerSearchUsers.apply {
-                                    startShimmer()
-                                    visibility = View.VISIBLE
-                                }
-                            }
-                        }
-
-                        is BaseState.Error -> {
-                            with(viewBinding) {
-                                shimmerSearchUsers.apply {
-                                    stopShimmer()
-                                    visibility = View.GONE
-                                }
-                            }
-                            Toast.makeText(
-                                view?.context,
-                                if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        is BaseState.Idle -> {}
+                        else -> {}
                     }
                 }
             }

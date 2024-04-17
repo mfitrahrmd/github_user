@@ -17,6 +17,10 @@
             android:orientation="vertical">
 
             <include layout="@layout/item_user_shimmer" />
+            <include layout="@layout/item_user_shimmer" />
+            <include layout="@layout/item_user_shimmer" />
+            <include layout="@layout/item_user_shimmer" />
+            <include layout="@layout/item_user_shimmer" />
 
         </LinearLayout>
 

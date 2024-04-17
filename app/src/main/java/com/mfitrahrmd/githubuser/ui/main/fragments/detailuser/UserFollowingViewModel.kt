@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.launch
 
 class UserFollowingViewModel(
@@ -22,9 +23,8 @@ class UserFollowingViewModel(
     private val _username = MutableStateFlow<String>("")
     val username: String
         get() = _username.value
-    private val _userFollowing: MutableStateFlow<BaseState<Flow<PagingData<User>>>> =
-        MutableStateFlow(BaseState.Idle())
-    val userFollowing: StateFlow<BaseState<Flow<PagingData<User>>>>
+    private val _userFollowing: MutableStateFlow<PagingData<User>> = MutableStateFlow(PagingData.empty())
+    val userFollowing: StateFlow<PagingData<User>>
         get() = _userFollowing
 
     fun setUsername(username: String) {
@@ -48,13 +48,12 @@ class UserFollowingViewModel(
     init {
         viewModelScope.launch {
             _username.collectLatest {
-                _userFollowing.value = BaseState.Loading(null, null)
                 try {
                     val followingPage =
                         _detailUserRepository.getFollowing(it).cachedIn(viewModelScope)
-                    _userFollowing.value = BaseState.Success(null, followingPage)
+                    _userFollowing.emitAll(followingPage)
                 } catch (e: Exception) {
-                    BaseState.Error(e.message, _userFollowing.value.data)
+                    e.printStackTrace()
                 }
             }
         }

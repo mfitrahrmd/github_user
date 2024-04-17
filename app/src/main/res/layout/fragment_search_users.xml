@@ -73,7 +73,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="6dp"
-            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/tvTitlePopularUsers" />
 
         <com.google.android.material.divider.MaterialDivider
@@ -92,23 +91,11 @@
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/rvPopularUsers" />
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmerSearchUsers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <include layout="@layout/item_user_shimmer" />
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchUsers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="6dp"
-            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/tvTitleSearchResult"
             app:layout_constraintBottom_toBottomOf="parent" />
     </LinearLayout>

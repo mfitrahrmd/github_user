@@ -26,7 +26,7 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalPagingApi::class)
 class DetailUserRepositoryImpl(
-    private val _User_dataSource: UserDataSource,
+    private val _userDataSource: UserDataSource,
     private val _detailUserDao: DetailUserDao,
     private val _userFollowingDao: UserFollowingDao,
     private val _userFollowersDao: UserFollowersDao,
@@ -43,7 +43,7 @@ class DetailUserRepositoryImpl(
                 pagingSourceFactory = { _userFollowingDao.findManyByUserDbIdWithFavorite(user.dbId) },
                 remoteMediator = UserFollowingRemoteMediator(
                     username,
-                    _User_dataSource,
+                    _userDataSource,
                     _userFollowingDao,
                     _detailUserDao
                 )
@@ -75,7 +75,7 @@ class DetailUserRepositoryImpl(
                 pagingSourceFactory = { _userFollowersDao.findManyByUserDbIdWithFavorite(user.dbId) },
                 remoteMediator = UserFollowersRemoteMediator(
                     username,
-                    _User_dataSource,
+                    _userDataSource,
                     _userFollowersDao,
                     _detailUserDao
                 )
@@ -95,7 +95,7 @@ class DetailUserRepositoryImpl(
     override fun get(username: String): Flow<Result<User?>> {
         return flow<Result<User?>> {
             try {
-                val sourceUser = _User_dataSource.findUserByUsername(username)
+                val sourceUser = _userDataSource.findUserByUsername(username)
                 if (sourceUser != null) {
                     _detailUserDao.replace(sourceUser.toDBDetailUser())
                 }

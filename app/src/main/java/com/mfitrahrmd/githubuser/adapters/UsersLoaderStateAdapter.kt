@@ -7,12 +7,12 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mfitrahrmd.githubuser.databinding.ItemLoadStateBinding
+import com.mfitrahrmd.githubuser.databinding.ItemUserLoadStateBinding
 
-class LoaderStateAdapter(private val _retry: () -> Unit) :
-    LoadStateAdapter<LoaderStateAdapter.LoaderViewHolder>() {
+class UsersLoaderStateAdapter(private val _retry: () -> Unit) :
+    LoadStateAdapter<UsersLoaderStateAdapter.LoaderViewHolder>() {
     class LoaderViewHolder(
-        private val _binding: ItemLoadStateBinding,
+        private val _binding: ItemUserLoadStateBinding,
         private val _retry: () -> Unit
     ) :
         RecyclerView.ViewHolder(_binding.root) {
@@ -42,7 +42,7 @@ class LoaderStateAdapter(private val _retry: () -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoaderViewHolder {
         return LoaderViewHolder(
-            ItemLoadStateBinding.inflate(
+            ItemUserLoadStateBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

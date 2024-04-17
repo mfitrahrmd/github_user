@@ -49,7 +49,7 @@ class SearchUsersViewModel(
                     _popularUsersRepository.get(POPULAR_USERS_LOCATION).cachedIn(viewModelScope)
                 _popularUsersState.value = BaseState.Success(null, popularUsersPage)
             } catch (e: Exception) {
-                BaseState.Error(e.message, _searchUsersState.value.data)
+                BaseState.Error(e.message, _popularUsersState.value.data)
             }
         }
     }

@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mfitrahrmd.githubuser.adapters.LoaderStateAdapter
+import com.mfitrahrmd.githubuser.adapters.UsersLoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
 import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
@@ -39,7 +39,7 @@ class UserFavoriteFragment :
                     false
                 )
                 adapter =
-                    _listUserFavoriteAdapter.withLoadStateFooter(LoaderStateAdapter { })
+                    _listUserFavoriteAdapter.withLoadStateFooter(UsersLoaderStateAdapter { })
             }
         }
     }

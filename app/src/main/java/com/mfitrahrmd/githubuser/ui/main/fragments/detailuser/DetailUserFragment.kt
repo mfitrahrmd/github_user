@@ -33,6 +33,12 @@ class DetailUserFragment :
                                     R.string.username, currentUiState.data?.username
                                 )
                                 tvBio.text = currentUiState.data?.bio
+                                tvFollowingCount.text = this@DetailUserFragment.getString(
+                                    R.string.followingCount, currentUiState.data?.following?.count
+                                )
+                                tvFollowersCount.text = this@DetailUserFragment.getString(
+                                    R.string.followersCount, currentUiState.data?.followers?.count
+                                )
                                 if (currentUiState.data?.company.isNullOrEmpty()) {
                                     tvCompany.visibility = View.GONE
                                 } else {

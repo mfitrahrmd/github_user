@@ -26,15 +26,11 @@ class SearchUsersRemoteMediator(
     }
 
     private suspend fun cleanLocalData() {
-        withContext(Dispatchers.IO) {
-            _searchUserDao.deleteAll()
-        }
+        _searchUserDao.deleteAll()
     }
 
     private suspend fun upsertLocalData(localEntities: List<DBSearchUser>) {
-        withContext(Dispatchers.IO) {
-            _searchUserDao.insertMany(localEntities)
-        }
+        _searchUserDao.insertMany(localEntities)
     }
 
     override suspend fun load(

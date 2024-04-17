@@ -26,4 +26,7 @@ abstract class SearchUserDao : BatchOperation<DBSearchUser> {
 
     @Query("DELETE FROM search_user")
     abstract suspend fun deleteAll()
+
+    @Query("SELECT COUNT(*) FROM search_user")
+    abstract fun count(): Int
 }
