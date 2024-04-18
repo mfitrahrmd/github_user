@@ -12,4 +12,5 @@
     <string name="find_a_user">Find a User..</string>
     <string name="retry">Retry</string>
     <string name="dark_theme">Dark Theme</string>
+    <string name="share">"Share "</string>
 </resources>

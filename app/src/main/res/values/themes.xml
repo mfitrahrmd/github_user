@@ -38,6 +38,10 @@
         <item name="android:paddingVertical">8dp</item>
     </style>
 
+    <style name="Theme.GithubUser.Neo.Secondary" parent="Theme.GithubUser.Neo">
+        <item name="android:background">@drawable/neo_secondary</item>
+    </style>
+
     <style name="Theme.GithubUser.RoundedSquareImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10%</item>

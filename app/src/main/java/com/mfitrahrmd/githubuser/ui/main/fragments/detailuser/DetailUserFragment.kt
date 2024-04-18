@@ -1,5 +1,6 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -30,7 +31,7 @@ class DetailUserFragment :
                                     visibility = View.GONE
                                 }
                                 if (currentUiState.data == null) return@collect
-                                fabIsFavorite.setOnClickListener {
+                                ivIsFavorite.setOnClickListener {
                                     if (currentUiState.data.favorite.`is`) {
                                         mainViewModel.removeFromFavorite(currentUiState.data)
                                     } else {
@@ -38,9 +39,9 @@ class DetailUserFragment :
                                     }
                                 }
                                 if (currentUiState.data.favorite.`is`) {
-                                    fabIsFavorite.setImageResource(R.drawable.heart_24)
+                                    ivIsFavorite.setImageResource(R.drawable.heart_24)
                                 } else {
-                                    fabIsFavorite.setImageResource(R.drawable.heart_outlined_24)
+                                    ivIsFavorite.setImageResource(R.drawable.heart_outlined_24)
                                 }
                                 tvName.text = currentUiState.data.name
                                 tvUsername.text = this@DetailUserFragment.getString(

@@ -33,6 +33,12 @@ class UserFavoriteRepositoryImpl(
         }
     }
 
+    override fun getAll(): List<User> {
+        return _userFavoriteDao.getAll().map {
+            it.toUser()
+        }
+    }
+
     companion object {
         const val DEFAULT_PAGE_SIZE = 10
         const val DEFAULT_MAX_SIZE = 50

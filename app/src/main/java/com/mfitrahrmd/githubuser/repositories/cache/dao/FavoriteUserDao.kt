@@ -31,4 +31,7 @@ abstract class FavoriteUserDao : BatchOperation<DBFavoriteUser> {
 
     @Query("DELETE FROM favorite_user")
     abstract suspend fun deleteAll()
+
+    @Query("SELECT * FROM favorite_user")
+    abstract fun getAll(): List<DBFavoriteUser>
 }

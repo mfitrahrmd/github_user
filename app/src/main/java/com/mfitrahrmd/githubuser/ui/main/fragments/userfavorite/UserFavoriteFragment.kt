@@ -1,5 +1,7 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.userfavorite
 
+import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
@@ -13,6 +15,7 @@ import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentUserFavoriteBinding
 import com.mfitrahrmd.githubuser.ui.main.fragments.main.MainFragmentDirections
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -24,9 +27,9 @@ class UserFavoriteFragment :
         )
     }, {
         if (it.favorite.`is`) {
-            viewModel.removeFromFavorite(it)
+            mainViewModel.removeFromFavorite(it)
         } else {
-            viewModel.addToFavorite(it)
+            mainViewModel.addToFavorite(it)
         }
     })
 
@@ -40,6 +43,25 @@ class UserFavoriteFragment :
                 )
                 adapter =
                     _listUserFavoriteAdapter.withLoadStateFooter(UsersLoaderStateAdapter { })
+            }
+            btnShare.setOnClickListener {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val favorites = viewModel.getAllFavorites()
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, favorites.map {
+                            """
+                                Name : ${it.name}
+                                Username : ${it.username}
+                                Added At : ${it.favorite.addedAt}
+                            """.trimIndent()
+                        }.joinToString("\n"))
+                        type = "text/plain"
+                    }
+
+                    val shareIntent = Intent.createChooser(sendIntent, "User Favorites")
+                    startActivity(shareIntent)
+                }
             }
         }
     }

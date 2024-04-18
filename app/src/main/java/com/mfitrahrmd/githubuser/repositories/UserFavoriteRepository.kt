@@ -8,4 +8,5 @@ interface UserFavoriteRepository {
     suspend fun add(user: User)
     suspend fun remove(user: User)
     fun get(): Flow<PagingData<User>>
+    fun getAll(): List<User>
 }

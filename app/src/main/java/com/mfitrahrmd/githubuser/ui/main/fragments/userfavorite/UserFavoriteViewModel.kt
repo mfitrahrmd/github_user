@@ -20,18 +20,6 @@ class UserFavoriteViewModel(
     val userFavorite: StateFlow<BaseState<Flow<PagingData<User>>>>
         get() = _userFavorite
 
-    fun addToFavorite(user: User) {
-        viewModelScope.launch {
-            _userFavoriteRepository.add(user)
-        }
-    }
-
-    fun removeFromFavorite(user: User) {
-        viewModelScope.launch {
-            _userFavoriteRepository.remove(user)
-        }
-    }
-
     init {
         viewModelScope.launch {
             _userFavorite.value = BaseState.Loading(null, null)
@@ -42,5 +30,9 @@ class UserFavoriteViewModel(
                 BaseState.Error(e.message, _userFavorite.value.data)
             }
         }
+    }
+
+    fun getAllFavorites(): List<User> {
+        return _userFavoriteRepository.getAll()
     }
 }
