@@ -11,7 +11,7 @@ The UI implements single activity architecture
 
    b) `DetailUserFragment` - Show more information about a user.
 
-   c) `UserFavoriteFragment` - Show saved users.
+   c) `UserFavoriteFragment` - Show & share saved users.
 
    d) `SettingsFragment` - For app settings
 
