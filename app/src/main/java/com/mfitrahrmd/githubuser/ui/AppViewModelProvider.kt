@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.mfitrahrmd.githubuser.GithubUserApplication
 import com.mfitrahrmd.githubuser.ui.main.EmptyViewModel
+import com.mfitrahrmd.githubuser.ui.main.MainViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.DetailUserViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowersViewModel
 import com.mfitrahrmd.githubuser.ui.main.fragments.detailuser.UserFollowingViewModel
@@ -19,7 +20,6 @@ object AppViewModelProvider {
             SearchUsersViewModel(
                 githubUserApplication().appContainer.searchUsersRepository,
                 githubUserApplication().appContainer.popularUsersRepository,
-                githubUserApplication().appContainer.userFavoriteRepository
             )
         }
         initializer {
@@ -31,13 +31,11 @@ object AppViewModelProvider {
         initializer {
             UserFollowingViewModel(
                 githubUserApplication().appContainer.detailUserRepository,
-                githubUserApplication().appContainer.userFavoriteRepository
             )
         }
         initializer {
             UserFollowersViewModel(
                 githubUserApplication().appContainer.detailUserRepository,
-                githubUserApplication().appContainer.userFavoriteRepository
             )
         }
         initializer {
@@ -45,6 +43,13 @@ object AppViewModelProvider {
         }
         initializer {
             SettingsViewModel(githubUserApplication().appContainer.settingsRepository)
+        }
+        initializer {
+            MainViewModel(
+                githubUserApplication().appContainer.userFavoriteRepository,
+                githubUserApplication().appContainer.searchUsersRepository,
+                githubUserApplication().appContainer.popularUsersRepository
+            )
         }
     }
 }

@@ -7,27 +7,27 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.mfitrahrmd.githubuser.entities.db.DBDetailUser
+import com.mfitrahrmd.githubuser.entities.db.DBDetailUserWithFavorite
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface DetailUserDao {
+abstract class DetailUserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertOne(user: DBDetailUser)
+    abstract suspend fun insertOne(user: DBDetailUser)
 
     @Delete
-    suspend fun deleteOne(user: DBDetailUser)
+    abstract suspend fun deleteOne(user: DBDetailUser)
 
     @Query("DELETE FROM detail_user WHERE login = :username")
-    suspend fun deleteOneByUsername(username: String)
+    abstract suspend fun deleteOneByUsername(username: String)
 
     @Query("SELECT * FROM detail_user WHERE login = :username")
-    suspend fun findOneByUsername(username: String): DBDetailUser?
-
-    @Query("DELETE FROM detail_user")
-    suspend fun deleteAll()
+    abstract suspend fun findOneByUsername(username: String): DBDetailUser?
 
     @Transaction
-    suspend fun replace(user: DBDetailUser) {
-        deleteOneByUsername(user.login)
-        insertOne(user)
-    }
+    @Query("SELECT * FROM detail_user WHERE login = :username")
+    abstract fun findOneByUsernameWithFavorite(username: String): Flow<DBDetailUserWithFavorite>
+
+    @Query("DELETE FROM detail_user")
+    abstract suspend fun deleteAll()
 }

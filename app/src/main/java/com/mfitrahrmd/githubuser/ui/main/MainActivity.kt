@@ -3,14 +3,19 @@ package com.mfitrahrmd.githubuser.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.mfitrahrmd.githubuser.GithubUserApplication
 import com.mfitrahrmd.githubuser.databinding.ActivityMainBinding
+import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityMainBinding
+    private val _viewModel: MainViewModel by lazy {
+        ViewModelProvider(this, AppViewModelProvider.Factory)[MainViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

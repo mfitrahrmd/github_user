@@ -3,11 +3,13 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.mfitrahrmd.githubuser.adapters.UsersLoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.PopularUsersAdapter
 import com.mfitrahrmd.githubuser.adapters.PopularUsersLoaderStateAdapter
@@ -16,6 +18,7 @@ import com.mfitrahrmd.githubuser.base.BaseFragment
 import com.mfitrahrmd.githubuser.base.BaseState
 import com.mfitrahrmd.githubuser.databinding.FragmentSearchUsersBinding
 import com.mfitrahrmd.githubuser.ui.main.fragments.main.MainFragmentDirections
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -27,9 +30,9 @@ class SearchUsersFragment :
         )
     }, {
         if (it.favorite.`is`) {
-            viewModel.removeFromFavorite(it)
+            mainViewModel.removeFromFavorite(it)
         } else {
-            viewModel.addToFavorite(it)
+            mainViewModel.addToFavorite(it)
         }
     })
 
@@ -39,15 +42,34 @@ class SearchUsersFragment :
         )
     }, {
         if (it.favorite.`is`) {
-            viewModel.removeFromFavorite(it)
+            mainViewModel.removeFromFavorite(it)
         } else {
-            viewModel.addToFavorite(it)
+            mainViewModel.addToFavorite(it)
         }
     })
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.getPopularUsers()
+    override fun onResume() {
+        super.onResume()
+        with(viewBinding) {
+            _searchUsersAdapter.addLoadStateListener {
+                loadStateListener(it, shimmerSearchUsers, rvSearchUsers)
+            }
+            _popularUsersAdapter.addLoadStateListener {
+                loadStateListener(it, shimmerPopularUsers, rvPopularUsers)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        with(viewBinding) {
+            _searchUsersAdapter.removeLoadStateListener {
+                loadStateListener(it, shimmerSearchUsers, rvSearchUsers)
+            }
+            _popularUsersAdapter.removeLoadStateListener {
+                loadStateListener(it, shimmerPopularUsers, rvPopularUsers)
+            }
+        }
     }
 
     override fun bind() {
@@ -59,11 +81,8 @@ class SearchUsersFragment :
                 setupWithSearchBar(searchBar)
                 editText
                     .setOnEditorActionListener { _, _, _ ->
-                        searchBar.setText(searchView.text)
                         searchView.hide()
-                        lifecycleScope.launch {
-                            viewModel.searchUsers(searchView.text.toString())
-                        }
+                        mainViewModel.setSearchUsername(searchView.text.toString())
 
                         true
                     }
@@ -87,67 +106,40 @@ class SearchUsersFragment :
 
     override fun observe() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.searchUsersState.collectLatest {
-                    when(it) {
-                        is BaseState.Success -> {
-                            it.data?.collect { paging ->
-                                _searchUsersAdapter.submitData(lifecycle, paging)
-                            }
-                        }
-                        else -> {}
-                    }
+            mainViewModel.searchUsername.collect {
+                with(viewBinding) {
+                    searchBar.setText(it)
                 }
             }
         }
         lifecycleScope.launch {
-            viewModel.popularUsersState.collectLatest { currentUiState ->
-                when (currentUiState) {
-                    is BaseState.Success -> {
-                        with(viewBinding) {
-                            tvTitlePopularUsers.visibility = View.VISIBLE
-                            rvPopularUsers.apply {
-                                visibility = View.VISIBLE
-                            }
-                            shimmerPopularUsers.apply {
-                                stopShimmer()
-                                visibility = View.GONE
-                            }
-                            currentUiState.data?.collectLatest {
-                                _popularUsersAdapter.submitData(lifecycle, it)
-                            }
-                        }
-                    }
+            mainViewModel.searchUsers.collect {
+                _searchUsersAdapter.submitData(lifecycle, it)
+            }
+        }
+        lifecycleScope.launch {
+            mainViewModel.popularUsers.collect {
+                _popularUsersAdapter.submitData(lifecycle, it)
+            }
+        }
+    }
 
-                    is BaseState.Loading -> {
-                        with(viewBinding) {
-                            shimmerPopularUsers.apply {
-                                startShimmer()
-                                visibility = View.VISIBLE
-                            }
-                            tvTitlePopularUsers.visibility = View.VISIBLE
-                            rvPopularUsers.apply {
-                                visibility = View.GONE
-                            }
-                        }
-                    }
-
-                    is BaseState.Error -> {
-                        with(viewBinding) {
-                            shimmerPopularUsers.apply {
-                                stopShimmer()
-                                visibility = View.GONE
-                            }
-                        }
-                        Toast.makeText(
-                            view?.context,
-                            if (!currentUiState.message.isNullOrEmpty()) currentUiState.message else DEFAULT_ERROR_MESSAGE,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                    is BaseState.Idle -> {}
-                }
+    private fun loadStateListener(combinedLoadStates: CombinedLoadStates, shimmer: ShimmerFrameLayout, recyclerView: RecyclerView): Unit {
+        if (combinedLoadStates.refresh is LoadState.Loading) {
+            shimmer.apply {
+                startShimmer()
+                visibility = View.VISIBLE
+            }
+            recyclerView.apply {
+                visibility = View.GONE
+            }
+        } else {
+            shimmer.apply {
+                stopShimmer()
+                visibility = View.GONE
+            }
+            recyclerView.apply {
+                visibility = View.VISIBLE
             }
         }
     }

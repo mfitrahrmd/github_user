@@ -17,12 +17,11 @@ import kotlinx.coroutines.launch
 
 class UserFollowingViewModel(
     private val _detailUserRepository: DetailUserRepository,
-    private val _userFavoriteRepository: UserFavoriteRepository
 ) :
     ViewModel() {
     private val _username = MutableStateFlow<String>("")
-    val username: String
-        get() = _username.value
+    val username: StateFlow<String>
+        get() = _username
     private val _userFollowing: MutableStateFlow<PagingData<User>> = MutableStateFlow(PagingData.empty())
     val userFollowing: StateFlow<PagingData<User>>
         get() = _userFollowing
@@ -30,18 +29,6 @@ class UserFollowingViewModel(
     fun setUsername(username: String) {
         viewModelScope.launch {
             _username.emit(username)
-        }
-    }
-
-    fun addToFavorite(user: User) {
-        viewModelScope.launch {
-            _userFavoriteRepository.add(user)
-        }
-    }
-
-    fun removeFromFavorite(user: User) {
-        viewModelScope.launch {
-            _userFavoriteRepository.remove(user)
         }
     }
 

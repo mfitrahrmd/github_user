@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.mfitrahrmd.githubuser.ui.AppViewModelProvider
+import com.mfitrahrmd.githubuser.ui.main.MainViewModel
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>(private val _viewModelClass: Class<VM>) :
@@ -20,6 +22,10 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel>(private val _viewM
     protected val viewModel: VM by lazy {
         ViewModelProvider(this, AppViewModelProvider.Factory)[_viewModelClass]
     }
+
+    protected val mainViewModel: MainViewModel by activityViewModels(
+        factoryProducer = { AppViewModelProvider.Factory }
+    )
 
     protected open fun bind() {
 

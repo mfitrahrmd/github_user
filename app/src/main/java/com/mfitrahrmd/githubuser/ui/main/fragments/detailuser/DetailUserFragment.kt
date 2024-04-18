@@ -3,6 +3,7 @@ package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -28,34 +29,47 @@ class DetailUserFragment :
                                     stopShimmer()
                                     visibility = View.GONE
                                 }
-                                tvName.text = currentUiState.data?.name
+                                if (currentUiState.data == null) return@collect
+                                fabIsFavorite.setOnClickListener {
+                                    if (currentUiState.data.favorite.`is`) {
+                                        mainViewModel.removeFromFavorite(currentUiState.data)
+                                    } else {
+                                        mainViewModel.addToFavorite(currentUiState.data)
+                                    }
+                                }
+                                if (currentUiState.data.favorite.`is`) {
+                                    fabIsFavorite.setImageResource(R.drawable.heart_24)
+                                } else {
+                                    fabIsFavorite.setImageResource(R.drawable.heart_outlined_24)
+                                }
+                                tvName.text = currentUiState.data.name
                                 tvUsername.text = this@DetailUserFragment.getString(
-                                    R.string.username, currentUiState.data?.username
+                                    R.string.username, currentUiState.data.username
                                 )
-                                tvBio.text = currentUiState.data?.bio
+                                tvBio.text = currentUiState.data.bio
                                 tvFollowingCount.text = this@DetailUserFragment.getString(
-                                    R.string.followingCount, currentUiState.data?.following?.count
+                                    R.string.followingCount, currentUiState.data.following.count
                                 )
                                 tvFollowersCount.text = this@DetailUserFragment.getString(
-                                    R.string.followersCount, currentUiState.data?.followers?.count
+                                    R.string.followersCount, currentUiState.data.followers.count
                                 )
-                                if (currentUiState.data?.company.isNullOrEmpty()) {
+                                if (currentUiState.data.company.isNullOrEmpty()) {
                                     tvCompany.visibility = View.GONE
                                 } else {
-                                    tvCompany.text = currentUiState.data?.company
+                                    tvCompany.text = currentUiState.data.company
                                 }
-                                if (currentUiState.data?.location.isNullOrEmpty()) {
+                                if (currentUiState.data.location.isNullOrEmpty()) {
                                     tvLocation.visibility = View.GONE
                                 } else {
-                                    tvLocation.text = currentUiState.data?.location
+                                    tvLocation.text = currentUiState.data.location
                                 }
-                                if (currentUiState.data?.twitterUsername.isNullOrEmpty()) {
+                                if (currentUiState.data.twitterUsername.isNullOrEmpty()) {
                                     tvTwitter.visibility = View.GONE
                                 } else {
-                                    tvTwitter.text = currentUiState.data?.twitterUsername
+                                    tvTwitter.text = currentUiState.data.twitterUsername
                                 }
                                 Glide.with(this@DetailUserFragment)
-                                    .load(currentUiState.data?.avatarUrl).into(ivAvatar)
+                                    .load(currentUiState.data.avatarUrl).into(ivAvatar)
                             }
                         }
 
@@ -92,27 +106,28 @@ class DetailUserFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setUsername(DetailUserFragmentArgs.fromBundle(arguments as Bundle).username)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            viewModel.getDetailUser()
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val pages: List<UserFollowingFollowersAdapter.Page> = mutableListOf(
-                    UserFollowingFollowersAdapter.Page(
-                        "Following", UserFollowingFragment.newInstance(
-                            UserFollowingFragmentArgs.Builder(viewModel.username).build()
-                        )
-                    ), UserFollowingFollowersAdapter.Page(
-                        "Followers", UserFollowersFragment.newInstance(
-                            UserFollowersFragmentArgs.Builder(viewModel.username).build()
-                        )
+            val pages: List<UserFollowingFollowersAdapter.Page> = mutableListOf(
+                UserFollowingFollowersAdapter.Page(
+                    "Following", UserFollowingFragment.newInstance(
+                        UserFollowingFragmentArgs.Builder(viewModel.username.value).build()
+                    )
+                ), UserFollowingFollowersAdapter.Page(
+                    "Followers", UserFollowersFragment.newInstance(
+                        UserFollowersFragmentArgs.Builder(viewModel.username.value).build()
                     )
                 )
-                with(viewBinding) {
-                    vpFollowingFollowers.adapter =
-                        UserFollowingFollowersAdapter(pages, childFragmentManager, lifecycle)
-                    TabLayoutMediator(tlFollowingFollowers, vpFollowingFollowers) { tab, position ->
-                        tab.text = pages[position].title
-                    }.attach()
-                }
+            )
+            with(viewBinding) {
+                vpFollowingFollowers.adapter =
+                    UserFollowingFollowersAdapter(pages, childFragmentManager, lifecycle)
+                TabLayoutMediator(tlFollowingFollowers, vpFollowingFollowers) { tab, position ->
+                    tab.text = pages[position].title
+                }.attach()
             }
         }
     }

@@ -4,10 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(
-    tableName = DBDetailUser.TABLE_NAME,
-    indices = [androidx.room.Index(value = ["login"], unique = true)],
-)
+@Entity(tableName = "detail_user")
 data class DBDetailUser(
     @PrimaryKey(autoGenerate = true)
     val dbId: Int = 0,
@@ -75,8 +72,4 @@ data class DBDetailUser(
     val location: String?,
 
     val nodeId: String?
-) {
-    companion object {
-        const val TABLE_NAME = "detail_user"
-    }
-}
+)

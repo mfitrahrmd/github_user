@@ -1,5 +1,6 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.searchusers
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -12,32 +13,43 @@ import com.mfitrahrmd.githubuser.repositories.UserFavoriteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.launch
 
 class SearchUsersViewModel(
     private val _searchUsersRepository: SearchUsersRepository,
     private val _popularUsersRepository: PopularUsersRepository,
-    private val _userFavoriteRepository: UserFavoriteRepository
 ) : ViewModel() {
-    private val _searchUsersState: MutableStateFlow<BaseState<Flow<PagingData<User>>>> =
-        MutableStateFlow(BaseState.Idle())
-    val searchUsersState: StateFlow<BaseState<Flow<PagingData<User>>>>
+    private val _username = MutableStateFlow<String>("")
+    val username: String
+        get() = _username.value
+    private val _searchUsersState: MutableStateFlow<PagingData<User>> =
+        MutableStateFlow(PagingData.empty())
+    val searchUsersState: StateFlow<PagingData<User>>
         get() = _searchUsersState
     private val _popularUsersState: MutableStateFlow<BaseState<Flow<PagingData<User>>>> =
         MutableStateFlow(BaseState.Idle())
     val popularUsersState: StateFlow<BaseState<Flow<PagingData<User>>>>
         get() = _popularUsersState
 
-
-    fun searchUsers(username: String) {
+    init {
         viewModelScope.launch {
-            _searchUsersState.value = BaseState.Loading(null, null)
-            try {
-                val searchUsersPage = _searchUsersRepository.get(username).cachedIn(viewModelScope)
-                _searchUsersState.value = BaseState.Success(null, searchUsersPage)
-            } catch (e: Exception) {
-                BaseState.Error(e.message, _searchUsersState.value.data)
+            _username.collectLatest {
+                try {
+                    val followingPage =
+                        _searchUsersRepository.get(it).cachedIn(viewModelScope)
+                    _searchUsersState.emitAll(followingPage)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
+        }
+    }
+
+    fun setUsername(username: String) {
+        viewModelScope.launch {
+            _username.emit(username)
         }
     }
 
@@ -51,18 +63,6 @@ class SearchUsersViewModel(
             } catch (e: Exception) {
                 BaseState.Error(e.message, _popularUsersState.value.data)
             }
-        }
-    }
-
-    fun addToFavorite(user: User) {
-        viewModelScope.launch {
-            _userFavoriteRepository.add(user)
-        }
-    }
-
-    fun removeFromFavorite(user: User) {
-        viewModelScope.launch {
-            _userFavoriteRepository.remove(user)
         }
     }
 

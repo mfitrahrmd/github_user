@@ -16,8 +16,7 @@ import com.mfitrahrmd.githubuser.repositories.datasource.UserDataSource
 import com.mfitrahrmd.githubuser.repositories.remotemediator.UserFollowersRemoteMediator
 import com.mfitrahrmd.githubuser.repositories.remotemediator.UserFollowingRemoteMediator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -34,6 +33,7 @@ class DetailUserRepositoryImpl(
 ) : DetailUserRepository {
     override suspend fun getFollowing(username: String): Flow<PagingData<User>> {
         return withContext(Dispatchers.IO) {
+            delay(500L)
             val user = _detailUserDao.findOneByUsername(username)
             if (user == null) {
                 throw Exception("user not found")
@@ -62,6 +62,7 @@ class DetailUserRepositoryImpl(
 
     override suspend fun getFollowers(username: String): Flow<PagingData<User>> {
         return withContext(Dispatchers.IO) {
+            delay(500L)
             val user = _detailUserDao.findOneByUsername(username)
             if (user == null) {
                 throw Exception("user not found")
@@ -92,30 +93,34 @@ class DetailUserRepositoryImpl(
         }
     }
 
-    override fun get(username: String): Flow<Result<User?>> {
+    override suspend fun get(username: String): Flow<Result<User?>> {
         return flow<Result<User?>> {
             try {
                 val sourceUser = _userDataSource.findUserByUsername(username)
                 if (sourceUser != null) {
-                    _detailUserDao.replace(sourceUser.toDBDetailUser())
+                    _detailUserDao.deleteOneByUsername(sourceUser.login)
+                    _detailUserDao.insertOne(sourceUser.toDBDetailUser())
                 }
             } catch (e: Exception) {
                 emit(Result.Error(e.message))
             }
-            val dbUser = _detailUserDao.findOneByUsername(username)
-            if (dbUser == null) {
-                emit(Result.Error("user not found"))
-                return@flow
-            }
-            val user = coroutineScope {
-                async {
-                    return@async withContext(Dispatchers.IO) {
-                        val favorite = _favoriteUserDao.findOneByDbId(dbUser.dbId)
-                        dbUser.toUser(User.Favorite(favorite != null, favorite?.addedAt))
-                    }
+            val dbUser = _detailUserDao.findOneByUsernameWithFavorite(username)
+            dbUser.collect {
+                if (it.detailUser == null) {
+                    emit(Result.Error("user not found"))
+                } else {
+                    emit(
+                        Result.Success(
+                            it.detailUser.toUser(
+                                User.Favorite(
+                                    it.favoriteUser != null,
+                                    it.favoriteUser?.addedAt
+                                )
+                            )
+                        )
+                    )
                 }
             }
-            emit(Result.Success(user.await()))
         }.onStart { emit(Result.Loading()) }
     }
 

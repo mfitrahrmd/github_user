@@ -1,10 +1,13 @@
 package com.mfitrahrmd.githubuser.ui.main.fragments.detailuser
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfitrahrmd.githubuser.adapters.UsersLoaderStateAdapter
 import com.mfitrahrmd.githubuser.adapters.UsersAdapter
@@ -22,9 +25,9 @@ class UserFollowingFragment :
         )
     }, {
         if (it.favorite.`is`) {
-            viewModel.removeFromFavorite(it)
+            mainViewModel.removeFromFavorite(it)
         } else {
-            viewModel.addToFavorite(it)
+            mainViewModel.addToFavorite(it)
         }
     })
 
@@ -36,6 +39,12 @@ class UserFollowingFragment :
     override fun onResume() {
         super.onResume()
         viewBinding.root.requestLayout()
+        _listUserFollowingAdapter.addLoadStateListener(::loadStateListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        _listUserFollowingAdapter.removeLoadStateListener(::loadStateListener)
     }
 
     override fun bind() {
@@ -56,6 +65,30 @@ class UserFollowingFragment :
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userFollowing.collect {
                     _listUserFollowingAdapter.submitData(lifecycle, it)
+                }
+            }
+        }
+    }
+
+    private fun loadStateListener(combinedLoadState: CombinedLoadStates): Unit {
+        if (combinedLoadState.refresh is LoadState.Loading) {
+            with(viewBinding) {
+                shimmer.apply {
+                    startShimmer()
+                    visibility = View.VISIBLE
+                }
+                rvFollow.apply {
+                    visibility = View.GONE
+                }
+            }
+        } else {
+            with(viewBinding) {
+                shimmer.apply {
+                    stopShimmer()
+                    visibility = View.GONE
+                }
+                rvFollow.apply {
+                    visibility = View.VISIBLE
                 }
             }
         }
